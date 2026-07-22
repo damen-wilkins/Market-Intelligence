@@ -1,0 +1,58 @@
+from psycopg import connect
+from datetime import date
+
+class MarketDataRepository:
+    def __init__(self, connection_string: str):
+        self.connection_string = connection_string
+
+    def insert_market_data(self, rows: list[dict]) -> dict:
+        query = """
+            INSERT INTO market_data (
+                ticker,
+                trade_date,
+                open,
+                high,
+                low,
+                close,
+                volume
+            )
+            VALUES (
+                %(ticker)s,
+                %(trade_date)s,
+                %(open)s,
+                %(high)s,
+                %(low)s,
+                %(close)s,
+                %(volume)s
+            )
+            ON CONFLICT (ticker, trade_date)
+            DO NOTHING;
+        """
+
+        inserted = 0
+
+        with connect(self.connection_string) as conn:
+            with conn.cursor() as cur:
+                for row in rows:
+                    cur.execute(query, row)
+                    inserted += cur.rowcount
+
+        skipped = len(rows) - inserted
+
+        return {
+            "downloaded": len(rows),
+            "inserted": inserted,
+            "skipped": skipped,
+        }
+
+    def get_latest_trade_date(self, ticker: str) -> date | None:
+        query = """
+            SELECT MAX(trade_date)
+            FROM market_data
+            WHERE ticker = %s;
+        """
+
+        with connect(self.connection_string) as conn:
+            with conn.cursor() as cur:
+                cur.execute(query, (ticker,))
+                return cur.fetchone()[0]
