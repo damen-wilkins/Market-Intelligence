@@ -2,3 +2,4 @@ alembic
 psycopg[binary]
 python-dotenv
 yfinance
+pandas-ta==0.4.71b0
