@@ -1,5 +1,14 @@
 alembic
+fredapi
+numpy
+pandas
+pandas-ta==0.4.71b0
 psycopg[binary]
 python-dotenv
+scikit-learn
+SQLAlchemy
+statsmodels
+torch
+torchaudio
+torchvision
 yfinance
-pandas-ta==0.4.71b0
