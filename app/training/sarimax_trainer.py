@@ -1,6 +1,5 @@
 from app.training.sarimax_parameter_selector import SarimaxParameterSelector
 
-
 class SarimaxTrainer:
     def __init__(self):
         self.selector = SarimaxParameterSelector()

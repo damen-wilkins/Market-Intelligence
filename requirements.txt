@@ -1,8 +1,12 @@
 alembic
+arch
 fredapi
+joblib
+matplotlib
 numpy
 pandas
 pandas-ta==0.4.71b0
+pmdarima
 psycopg[binary]
 python-dotenv
 scikit-learn
