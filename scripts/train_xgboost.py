@@ -1,5 +1,6 @@
 import pandas as pd
 
+from app.training.residual_data_splitter import ResidualDataSplitter
 from app.training.experiment_tracker import ExperimentTracker
 from app.training.model_comparison_evaluator import ModelComparisonEvaluator
 from app.training.model_serializer import ModelSerializer
@@ -36,7 +37,7 @@ def main():
     dataset = repository.get_training_data("SPY")
     dataset = dataset.dropna(subset=["log_return"]).reset_index(drop=True)
 
-    sarimax_predictions = pd.read_csv(
+    predictions = pd.read_csv(
         "models/sarimax_predictions.csv"
     ).squeeze("columns")
 
@@ -46,30 +47,34 @@ def main():
 
     dataset = dataset.tail(len(actual)).reset_index(drop=True)
 
-    builder = ResidualDatasetBuilder()
-
-    residual_dataset = builder.build(
+    residual_dataset = ResidualDatasetBuilder().build(
         features=dataset,
-        predictions=sarimax_predictions,
+        predictions=predictions,
     )
 
-    X = residual_dataset.drop(
-        columns=["sarimax_residual"]
-    )
-
+    X = residual_dataset.drop(columns=["sarimax_residual"])
     y = residual_dataset["sarimax_residual"]
+
+    splitter = ResidualDataSplitter()
+
+    X_train, X_validation, X_test = splitter.split(X)
+    y_train, y_validation, y_test = splitter.split(y)
+
+    _, prediction_validation, _ = splitter.split(predictions)
+    _, actual_validation, _ = splitter.split(actual)
 
     selector = XGBoostParameterSelector()
 
     parameters = selector.select_best_parameters(
-        X,
-        y,
+        X_train,
+        y_train,
     )
 
     trainer = XGBoostTrainer()
 
     model = trainer.train(
-        residual_dataset,
+        X_train,
+        y_train,
         parameters,
     )
 
@@ -83,22 +88,22 @@ def main():
 
     predicted_residuals = predictor.predict(
         model,
-        residual_dataset,
+        X_validation,
     )
 
     corrected_predictions = ResidualForecastCorrector().apply(
-        sarimax_predictions=sarimax_predictions,
+        sarimax_predictions=prediction_validation,
         predicted_residuals=predicted_residuals,
     )
 
     regression_metrics = XGBoostEvaluator().evaluate(
-        actual=actual,
+        actual=actual_validation,
         predicted=corrected_predictions,
     )
 
     comparison_metrics = ModelComparisonEvaluator().evaluate(
-        actual_labels=direction(actual),
-        sarimax_labels=direction(sarimax_predictions),
+        actual_labels=direction(actual_validation),
+        sarimax_labels=direction(prediction_validation),
         xgboost_labels=direction(corrected_predictions),
     )
 
