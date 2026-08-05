@@ -1,9 +1,13 @@
 from datetime import date
+import pandas as pd
 from psycopg import connect
+from sqlalchemy import create_engine
+
 
 class FeatureRepository:
     def __init__(self, connection_string: str):
         self.connection_string = connection_string
+        self.engine = create_engine(connection_string)
 
     def insert_features(self, rows: list[dict]) -> dict:
         query = """
@@ -72,3 +76,17 @@ class FeatureRepository:
             with conn.cursor() as cur:
                 cur.execute(query, (ticker,))
                 return cur.fetchone()[0]
+
+    def get_features(self, ticker: str) -> pd.DataFrame:
+        query = """
+            SELECT
+                ticker,
+                trade_date,
+                daily_return,
+                log_return
+            FROM market_features
+            WHERE ticker = %(ticker)s
+            ORDER BY trade_date;
+        """
+
+        return pd.read_sql(query, self.engine, params={"ticker": ticker})

@@ -69,7 +69,7 @@ FEATURES = [
         "provider": "FRED",
         "provider_symbol": "T10YIE",
         "active": True,
-        "training_feature": True,
+        "training_feature": False,
     },
 ]
 def main():
