@@ -1,0 +1,76 @@
+{
+    "experiment_name": "xgboost_residual",
+    "model_name": "XGBoost",
+    "timestamp_utc": "20260806_222052",
+    "parameters": {
+        "n_estimators": 800,
+        "max_depth": 6,
+        "learning_rate": 0.2979124645977093,
+        "subsample": 0.5649471767930356,
+        "colsample_bytree": 0.7811831245766238,
+        "min_child_weight": 10,
+        "gamma": 4.639049865013683,
+        "reg_alpha": 3.0603939301573386e-08,
+        "reg_lambda": 0.6359568575456499
+    },
+    "metrics": {
+        "sarimax_regression": {
+            "mae": 0.006978567171584462,
+            "mse": 0.0001403134117809862,
+            "rmse": 0.011845396227268474,
+            "r2": 0.0037272352006073595
+        },
+        "xgboost_regression": {
+            "mae": 0.0069443462875337795,
+            "mse": 0.0001400870989369593,
+            "rmse": 0.011835839595776857,
+            "r2": 0.005334133072781078
+        },
+        "classification_comparison": {
+            "sarimax": {
+                "accuracy": 0.6164274322169059,
+                "precision": 0.3799827791895281,
+                "recall": 0.6164274322169059,
+                "f1": 0.4701513617204423
+            },
+            "xgboost": {
+                "accuracy": 0.6164274322169059,
+                "precision": 0.3799827791895281,
+                "recall": 0.6164274322169059,
+                "f1": 0.4701513617204423
+            }
+        },
+        "direction_thresholds": {
+            "lower": -0.0064150185871107,
+            "upper": 0.0059207191510551
+        },
+        "observations": {
+            "train": 4875,
+            "validation": 1254,
+            "test_held_out": 1254
+        },
+        "date_ranges": {
+            "train_start": "1996-12-24",
+            "train_end": "2016-06-30",
+            "validation_start": "2016-07-01",
+            "validation_end": "2021-07-08"
+        }
+    },
+    "features": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "daily_return",
+        "10-Year Treasury Constant Maturity",
+        "2-Year Treasury Constant Maturity",
+        "3-Month Treasury Constant Maturity",
+        "Consumer Price Index",
+        "Federal Funds Effective Rate",
+        "Industrial Production Index",
+        "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity",
+        "Unemployment Rate",
+        "sarimax_prediction"
+    ]
+}

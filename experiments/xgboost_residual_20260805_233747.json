@@ -1,0 +1,56 @@
+{
+    "experiment_name": "xgboost_residual",
+    "model_name": "XGBoost",
+    "timestamp_utc": "20260805_233747",
+    "parameters": {
+        "n_estimators": 150,
+        "max_depth": 10,
+        "learning_rate": 0.03969860733413857,
+        "subsample": 0.7364294377360403,
+        "colsample_bytree": 0.7357540275934751,
+        "min_child_weight": 5,
+        "gamma": 0.0009277570635025344,
+        "reg_alpha": 8.13177661407121e-05,
+        "reg_lambda": 8.20727869801478e-08
+    },
+    "metrics": {
+        "regression": {
+            "mae": 0.009583670288945457,
+            "mse": 0.0001536864270038828,
+            "rmse": 0.01239703299196557,
+            "r2": -0.42227862784781167
+        },
+        "comparison": {
+            "sarimax": {
+                "accuracy": 0.576,
+                "precision": 0.33177599999999996,
+                "recall": 0.576,
+                "f1": 0.42103553299492386
+            },
+            "xgboost": {
+                "accuracy": 0.44,
+                "precision": 0.4271111111111111,
+                "recall": 0.44,
+                "f1": 0.43187969924812036
+            }
+        }
+    },
+    "features": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "daily_return",
+        "log_return",
+        "10-Year Treasury Constant Maturity",
+        "2-Year Treasury Constant Maturity",
+        "3-Month Treasury Constant Maturity",
+        "Consumer Price Index",
+        "Federal Funds Effective Rate",
+        "Industrial Production Index",
+        "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity",
+        "Unemployment Rate",
+        "sarimax_prediction"
+    ]
+}
