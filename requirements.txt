@@ -4,10 +4,12 @@ fredapi
 joblib
 matplotlib
 numpy
+optuna
 pandas
 pandas-ta==0.4.71b0
 pmdarima
 psycopg[binary]
+pytest
 python-dotenv
 scikit-learn
 SQLAlchemy
@@ -15,4 +17,5 @@ statsmodels
 torch
 torchaudio
 torchvision
+xgboost
 yfinance

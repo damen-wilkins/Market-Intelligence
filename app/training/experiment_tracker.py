@@ -1,6 +1,8 @@
-from datetime import datetime
-from pathlib import Path
+from datetime import datetime, timezone
 import json
+from pathlib import Path
+
+import numpy as np
 
 
 class ExperimentTracker:
@@ -19,9 +21,9 @@ class ExperimentTracker:
         metrics: dict,
         features: list[str],
     ) -> Path:
-        timestamp = datetime.utcnow().strftime(
-            "%Y%m%d_%H%M%S"
-        )
+        timestamp = datetime.now(
+            timezone.utc
+        ).strftime("%Y%m%d_%H%M%S_%f")
 
         experiment = {
             "experiment_name": experiment_name,
@@ -45,6 +47,26 @@ class ExperimentTracker:
                 experiment,
                 file,
                 indent=4,
+                default=self._json_default,
             )
 
         return output_path
+
+    @staticmethod
+    def _json_default(value):
+        if isinstance(value, np.integer):
+            return int(value)
+
+        if isinstance(value, np.floating):
+            return float(value)
+
+        if isinstance(value, np.ndarray):
+            return value.tolist()
+
+        if isinstance(value, Path):
+            return str(value)
+
+        raise TypeError(
+            f"Object of type {type(value).__name__} "
+            "is not JSON serializable."
+        )

@@ -1,0 +1,111 @@
+{
+    "experiment_name": "lstm_residual",
+    "model_name": "LSTM",
+    "timestamp_utc": "20260807_015957_198338",
+    "parameters": {
+        "sequence_length": 40,
+        "hidden_size": 64,
+        "num_layers": 3,
+        "dropout": 0.04647472022088614,
+        "batch_size": 128,
+        "learning_rate": 0.0021073266370188384,
+        "weight_decay": 2.753083733883837e-08,
+        "gradient_clip": 1.5776410046333234,
+        "epochs": 9
+    },
+    "metrics": {
+        "regression_comparison": {
+            "sarimax": {
+                "mae": 0.006951066738529977,
+                "mse": 0.0001381903585683416,
+                "rmse": 0.01175543953105717,
+                "r2": 0.018801632345758268
+            },
+            "xgboost": {
+                "mae": 0.007040472805151206,
+                "mse": 0.00013989837502683932,
+                "rmse": 0.01182786434766815,
+                "r2": 0.006674136778288986
+            },
+            "lstm": {
+                "mae": 0.006977378645364207,
+                "mse": 0.0001384560227665342,
+                "rmse": 0.011766733733986429,
+                "r2": 0.016915326525936303
+            }
+        },
+        "classification_comparison": {
+            "sarimax": {
+                "accuracy": 0.6172248803827751,
+                "precision": 0.6163306946900008,
+                "recall": 0.6172248803827751,
+                "f1": 0.47197294694582737
+            },
+            "xgboost": {
+                "accuracy": 0.6172248803827751,
+                "precision": 0.6163306946900008,
+                "recall": 0.6172248803827751,
+                "f1": 0.47197294694582737
+            },
+            "lstm": {
+                "accuracy": 0.6172248803827751,
+                "precision": 0.6163306946900008,
+                "recall": 0.6172248803827751,
+                "f1": 0.47197294694582737
+            }
+        },
+        "direction_thresholds": {
+            "lower": -0.0064150185871107,
+            "upper": 0.0059207191510551
+        },
+        "parameter_selection": {
+            "cv_mse": 0.00014727692813328386,
+            "best_trial_number": 23,
+            "fold_best_epochs": [
+                13,
+                5,
+                9
+            ],
+            "completed_trials": 30
+        },
+        "observations": {
+            "train_rows": 4875,
+            "train_sequences": 4835,
+            "validation_rows": 1254,
+            "validation_sequences": 1254,
+            "test_held_out": 1254
+        },
+        "date_ranges": {
+            "train_start": "1996-12-24",
+            "train_end": "2016-06-30",
+            "validation_start": "2016-07-01",
+            "validation_end": "2021-07-08"
+        }
+    },
+    "features": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "sma_10",
+        "sma_20",
+        "sma_50",
+        "ema_20",
+        "rsi_14",
+        "macd",
+        "macd_signal",
+        "macd_histogram",
+        "bollinger_upper",
+        "bollinger_middle",
+        "bollinger_lower",
+        "daily_return",
+        "10-Year Treasury Constant Maturity",
+        "2-Year Treasury Constant Maturity",
+        "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity",
+        "sarimax_prediction",
+        "previous_residual",
+        "previous_absolute_residual",
+        "previous_squared_residual"
+    ]
+}

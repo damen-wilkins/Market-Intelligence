@@ -1,4 +1,5 @@
 from datetime import date
+
 import pandas as pd
 from psycopg import connect
 from sqlalchemy import create_engine
@@ -51,11 +52,11 @@ class FeatureRepository:
 
         inserted = 0
 
-        with connect(self.connection_string) as conn:
-            with conn.cursor() as cur:
+        with connect(self.connection_string) as connection:
+            with connection.cursor() as cursor:
                 for row in rows:
-                    cur.execute(query, row)
-                    inserted += cur.rowcount
+                    cursor.execute(query, row)
+                    inserted += cursor.rowcount
 
         processed = len(rows)
 
@@ -72,16 +73,27 @@ class FeatureRepository:
             WHERE ticker = %s;
         """
 
-        with connect(self.connection_string) as conn:
-            with conn.cursor() as cur:
-                cur.execute(query, (ticker,))
-                return cur.fetchone()[0]
+        with connect(self.connection_string) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query, (ticker,))
+                return cursor.fetchone()[0]
 
     def get_features(self, ticker: str) -> pd.DataFrame:
         query = """
             SELECT
                 ticker,
                 trade_date,
+                sma_10,
+                sma_20,
+                sma_50,
+                ema_20,
+                rsi_14,
+                macd,
+                macd_signal,
+                macd_histogram,
+                bollinger_upper,
+                bollinger_middle,
+                bollinger_lower,
                 daily_return,
                 log_return
             FROM market_features
@@ -89,4 +101,8 @@ class FeatureRepository:
             ORDER BY trade_date;
         """
 
-        return pd.read_sql(query, self.engine, params={"ticker": ticker})
+        return pd.read_sql(
+            query,
+            self.engine,
+            params={"ticker": ticker},
+        )

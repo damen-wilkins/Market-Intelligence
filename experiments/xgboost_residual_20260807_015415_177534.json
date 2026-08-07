@@ -1,0 +1,82 @@
+{
+    "experiment_name": "xgboost_residual",
+    "model_name": "XGBoost",
+    "timestamp_utc": "20260807_015415_177534",
+    "parameters": {
+        "n_estimators": 150,
+        "max_depth": 8,
+        "learning_rate": 0.0052901975029868206,
+        "subsample": 0.6431973634471215,
+        "colsample_bytree": 0.6514550840520197,
+        "min_child_weight": 0.009861762309257623,
+        "gamma": 5.573690565984002e-05,
+        "reg_alpha": 0.0018268049697176818,
+        "reg_lambda": 9.866009598412475
+    },
+    "metrics": {
+        "sarimax_regression": {
+            "mae": 0.006951066738529977,
+            "mse": 0.0001381903585683416,
+            "rmse": 0.01175543953105717,
+            "r2": 0.018801632345758268
+        },
+        "xgboost_regression": {
+            "mae": 0.007040472805151213,
+            "mse": 0.00013989837502683937,
+            "rmse": 0.011827864347668152,
+            "r2": 0.006674136778288764
+        },
+        "classification_comparison": {
+            "sarimax": {
+                "accuracy": 0.6172248803827751,
+                "precision": 0.6163306946900008,
+                "recall": 0.6172248803827751,
+                "f1": 0.47197294694582737
+            },
+            "xgboost": {
+                "accuracy": 0.6172248803827751,
+                "precision": 0.6163306946900008,
+                "recall": 0.6172248803827751,
+                "f1": 0.47197294694582737
+            }
+        },
+        "direction_thresholds": {
+            "lower": -0.0064150185871107,
+            "upper": 0.0059207191510551
+        },
+        "observations": {
+            "train": 4875,
+            "validation": 1254,
+            "test_held_out": 1254
+        },
+        "date_ranges": {
+            "train_start": "1996-12-24",
+            "train_end": "2016-06-30",
+            "validation_start": "2016-07-01",
+            "validation_end": "2021-07-08"
+        }
+    },
+    "features": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "sma_10",
+        "sma_20",
+        "sma_50",
+        "ema_20",
+        "rsi_14",
+        "macd",
+        "macd_signal",
+        "macd_histogram",
+        "bollinger_upper",
+        "bollinger_middle",
+        "bollinger_lower",
+        "daily_return",
+        "10-Year Treasury Constant Maturity",
+        "2-Year Treasury Constant Maturity",
+        "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity",
+        "sarimax_prediction"
+    ]
+}
