@@ -17,5 +17,6 @@ statsmodels
 torch
 torchaudio
 torchvision
+xlstm==2.0.5
 xgboost
 yfinance

@@ -1,12 +1,13 @@
 from datetime import date, timedelta
-from app.ingestion.provider import MarketDataProvider
+from app.ingestion.provider import DataProvider
 from database.connection import get_env
 from database.market_data_repository import MarketDataRepository
+
 
 class IngestionService:
     def __init__(
         self,
-        provider: MarketDataProvider,
+        provider: DataProvider,
         repository: MarketDataRepository,
     ):
         self.provider = provider
@@ -23,7 +24,7 @@ class IngestionService:
         end_date = date.today().isoformat()
 
         dataframe = self.provider.get_historical_data(
-            ticker=ticker,
+            symbol=ticker,
             start_date=start_date,
             end_date=end_date,
         )

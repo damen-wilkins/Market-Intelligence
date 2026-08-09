@@ -24,53 +24,59 @@ class DateAwareDataSplitter:
         self,
         dataframe: pd.DataFrame,
         reference_dates: pd.Series | None = None,
+        date_column: str = "trade_date",
     ) -> tuple[
         pd.DataFrame,
         pd.DataFrame,
         pd.DataFrame,
     ]:
-        if "trade_date" not in dataframe.columns:
+        if date_column not in dataframe.columns:
             raise ValueError(
-                "Dataframe must contain a trade_date column."
+                f"Dataframe must contain a {date_column} column."
             )
 
         data = dataframe.copy()
-        data["trade_date"] = pd.to_datetime(
-            data["trade_date"]
+        data[date_column] = pd.to_datetime(
+            data[date_column]
         )
 
-        if data["trade_date"].isna().any():
+        if data[date_column].isna().any():
             raise ValueError(
-                "Dataframe contains invalid trade dates."
+                f"Dataframe contains invalid {date_column} values."
             )
 
-        if data["trade_date"].duplicated().any():
+        if data[date_column].duplicated().any():
             raise ValueError(
-                "Dataframe contains duplicate trade dates."
+                f"Dataframe contains duplicate {date_column} values."
             )
 
         data = data.sort_values(
-            "trade_date"
+            date_column
         ).reset_index(drop=True)
 
         if reference_dates is None:
-            dates = data["trade_date"].copy()
+            dates = data[date_column].copy()
         else:
             dates = pd.to_datetime(
                 pd.Series(reference_dates)
             ).dropna()
 
-            dates = dates.drop_duplicates().sort_values(
-            ).reset_index(drop=True)
+            dates = (
+                dates
+                .drop_duplicates()
+                .sort_values()
+                .reset_index(drop=True)
+            )
 
         if len(dates) < 3:
             raise ValueError(
-                "At least three unique trade dates are required."
+                "At least three unique dates are required."
             )
 
         train_end_index = int(
             len(dates) * self.train_size
         )
+
         validation_end_index = int(
             len(dates)
             * (
@@ -97,27 +103,28 @@ class DateAwareDataSplitter:
         validation_start_date = dates.iloc[
             train_end_index
         ]
+
         test_start_date = dates.iloc[
             validation_end_index
         ]
 
         train = data.loc[
-            data["trade_date"] < validation_start_date
+            data[date_column] < validation_start_date
         ].copy()
 
         validation = data.loc[
             (
-                data["trade_date"]
+                data[date_column]
                 >= validation_start_date
             )
             & (
-                data["trade_date"]
+                data[date_column]
                 < test_start_date
             )
         ].copy()
 
         test = data.loc[
-            data["trade_date"] >= test_start_date
+            data[date_column] >= test_start_date
         ].copy()
 
         train = train.reset_index(drop=True)
@@ -132,6 +139,11 @@ class DateAwareDataSplitter:
         if validation.empty:
             raise ValueError(
                 "Validation split is empty."
+            )
+
+        if test.empty:
+            raise ValueError(
+                "Test split is empty."
             )
 
         return train, validation, test

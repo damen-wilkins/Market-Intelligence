@@ -1,0 +1,148 @@
+{
+    "experiment_name": "tcn_direction_classifier",
+    "model_name": "tcn_direction_v1",
+    "timestamp_utc": "20260807_210501_120376",
+    "parameters": {
+        "sequence_length": 10,
+        "channel_width": 128,
+        "num_blocks": 4,
+        "kernel_size": 2,
+        "dropout": 0.1986327847960402,
+        "learning_rate": 0.0009216474954614816,
+        "batch_size": 128,
+        "weight_decay": 1.9062009956245587e-05,
+        "gradient_clip": 1.0,
+        "loss_name": "focal",
+        "focal_gamma": 2.254271239111145,
+        "epochs": 9,
+        "receptive_field": 31
+    },
+    "metrics": {
+        "selection": {
+            "cv_macro_f1": 0.37602980386465107,
+            "cv_macro_f1_std": 0.013633939581656944,
+            "fold_macro_f1": [
+                0.3745357594938774,
+                0.36012893320024975,
+                0.39342471889982605
+            ]
+        },
+        "validation": {
+            "accuracy": 0.37142857142857144,
+            "balanced_accuracy": 0.34289208956341577,
+            "macro_f1": 0.33490428056638094,
+            "per_class": {
+                "DOWN": {
+                    "precision": 0.4122448979591837,
+                    "recall": 0.3423728813559322,
+                    "f1": 0.37407407407407406,
+                    "support": 295
+                },
+                "FLAT": {
+                    "precision": 0.14204545454545456,
+                    "recall": 0.25773195876288657,
+                    "f1": 0.18315018315018314,
+                    "support": 97
+                },
+                "UP": {
+                    "precision": 0.4681528662420382,
+                    "recall": 0.42857142857142855,
+                    "f1": 0.4474885844748858,
+                    "support": 343
+                }
+            },
+            "confusion_matrix": [
+                [
+                    101,
+                    68,
+                    126
+                ],
+                [
+                    31,
+                    25,
+                    41
+                ],
+                [
+                    113,
+                    83,
+                    147
+                ]
+            ],
+            "class_counts": {
+                "DOWN": 295,
+                "FLAT": 97,
+                "UP": 343
+            }
+        },
+        "training_majority_baseline": {
+            "accuracy": 0.4666666666666667,
+            "balanced_accuracy": 0.3333333333333333,
+            "macro_f1": 0.21212121212121213,
+            "per_class": {
+                "DOWN": {
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1": 0.0,
+                    "support": 295
+                },
+                "FLAT": {
+                    "precision": 0.0,
+                    "recall": 0.0,
+                    "f1": 0.0,
+                    "support": 97
+                },
+                "UP": {
+                    "precision": 0.4666666666666667,
+                    "recall": 1.0,
+                    "f1": 0.6363636363636364,
+                    "support": 343
+                }
+            },
+            "confusion_matrix": [
+                [
+                    0,
+                    0,
+                    295
+                ],
+                [
+                    0,
+                    0,
+                    97
+                ],
+                [
+                    0,
+                    0,
+                    343
+                ]
+            ],
+            "class_counts": {
+                "DOWN": 295,
+                "FLAT": 97,
+                "UP": 343
+            }
+        }
+    },
+    "features": [
+        "log_return",
+        "overnight_gap",
+        "intraday_return",
+        "high_low_range",
+        "log_volume_change",
+        "close_vs_sma_10",
+        "close_vs_sma_20",
+        "close_vs_sma_50",
+        "close_vs_ema_20",
+        "rsi_14",
+        "macd_normalized",
+        "macd_signal_normalized",
+        "macd_histogram_normalized",
+        "bollinger_width",
+        "bollinger_position",
+        "vix_level",
+        "vix_change",
+        "vvix_level",
+        "vvix_change",
+        "vvix_vix_ratio",
+        "realized_volatility_20"
+    ]
+}

@@ -1,10 +1,8 @@
-from datetime import timedelta
 import numpy as np
 import pandas as pd
 
 from app.feature_engineering.indicator_calculator import IndicatorCalculator
 
-LOOKBACK_DAYS = 60
 
 class FeatureEngineeringService:
     def __init__(
@@ -20,16 +18,7 @@ class FeatureEngineeringService:
     def generate_features(self, ticker: str) -> dict:
         latest_feature_date = self.feature_repository.get_latest_trade_date(ticker)
 
-        if latest_feature_date is None:
-            rows = self.market_repository.get_market_data(ticker)
-            insert_after = None
-        else:
-            start_date = latest_feature_date - timedelta(days=LOOKBACK_DAYS)
-            rows = self.market_repository.get_market_data_since(
-                ticker=ticker,
-                start_date=start_date,
-            )
-            insert_after = latest_feature_date
+        rows = self.market_repository.get_market_data(ticker)
 
         if not rows:
             return {
@@ -42,10 +31,12 @@ class FeatureEngineeringService:
 
         dataframe = self.indicator_calculator.calculate(dataframe)
 
-        dataframe = dataframe.replace({np.nan: None})
+        if latest_feature_date is not None:
+            dataframe = dataframe[
+                dataframe["trade_date"] > latest_feature_date
+            ]
 
-        if insert_after is not None:
-            dataframe = dataframe[dataframe["trade_date"] > insert_after]
+        dataframe = dataframe.replace({np.nan: None})
 
         columns = [
             "ticker",
