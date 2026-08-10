@@ -19,7 +19,7 @@ class DirectionFeatureBuilder:
 
     BREADTH_WINDOW = 20
 
-    FEATURE_COLUMNS = [
+    BASE_FEATURE_COLUMNS = [
         "log_return",
         "overnight_gap",
         "intraday_return",
@@ -41,11 +41,47 @@ class DirectionFeatureBuilder:
         "vvix_change",
         "vvix_vix_ratio",
         "realized_volatility_20",
+    ]
+
+    BREADTH_FEATURE_COLUMNS = [
         "rsp_relative_return",
         "sector_positive_participation",
         "sector_return_dispersion",
         "sector_average_correlation_20d",
         "sector_volume_breadth",
+    ]
+
+    CROSS_ASSET_FEATURE_GROUPS = {
+        "equity_rotation": [
+            "qqq_relative_return",
+            "iwm_relative_return",
+            "dia_relative_return",
+        ],
+        "rates_duration": [
+            "tlt_return",
+            "ief_return",
+            "tlt_ief_relative_return",
+        ],
+        "credit_risk": [
+            "hyg_return",
+            "lqd_return",
+            "hyg_lqd_relative_return",
+        ],
+        "safe_haven": [
+            "gld_return",
+        ],
+    }
+
+    CROSS_ASSET_FEATURE_COLUMNS = [
+        feature
+        for group_features in CROSS_ASSET_FEATURE_GROUPS.values()
+        for feature in group_features
+    ]
+
+    FEATURE_COLUMNS = [
+        *BASE_FEATURE_COLUMNS,
+        *BREADTH_FEATURE_COLUMNS,
+        *CROSS_ASSET_FEATURE_COLUMNS,
     ]
 
     REQUIRED_COLUMNS = [
@@ -88,6 +124,14 @@ class DirectionFeatureBuilder:
         "xlv_volume",
         "xly_close",
         "xly_volume",
+        "qqq_close",
+        "iwm_close",
+        "dia_close",
+        "tlt_close",
+        "ief_close",
+        "hyg_close",
+        "lqd_close",
+        "gld_close",
     ]
 
     def build(self, data: pd.DataFrame) -> pd.DataFrame:
@@ -98,7 +142,6 @@ class DirectionFeatureBuilder:
         )
 
         result = data.copy()
-
         result["trade_date"] = pd.to_datetime(
             result["trade_date"]
         )
@@ -133,31 +176,38 @@ class DirectionFeatureBuilder:
         )
 
         result["close_vs_sma_10"] = (
-            result["close"] / result["sma_10"]
+            result["close"]
+            / result["sma_10"]
         ) - 1.0
 
         result["close_vs_sma_20"] = (
-            result["close"] / result["sma_20"]
+            result["close"]
+            / result["sma_20"]
         ) - 1.0
 
         result["close_vs_sma_50"] = (
-            result["close"] / result["sma_50"]
+            result["close"]
+            / result["sma_50"]
         ) - 1.0
 
         result["close_vs_ema_20"] = (
-            result["close"] / result["ema_20"]
+            result["close"]
+            / result["ema_20"]
         ) - 1.0
 
         result["macd_normalized"] = (
-            result["macd"] / result["close"]
+            result["macd"]
+            / result["close"]
         )
 
         result["macd_signal_normalized"] = (
-            result["macd_signal"] / result["close"]
+            result["macd_signal"]
+            / result["close"]
         )
 
         result["macd_histogram_normalized"] = (
-            result["macd_histogram"] / result["close"]
+            result["macd_histogram"]
+            / result["close"]
         )
 
         result["bollinger_width"] = (
@@ -175,14 +225,18 @@ class DirectionFeatureBuilder:
             - result["bollinger_lower"]
         ) / bollinger_range
 
-        result["vix_level"] = result["vix_close"]
+        result["vix_level"] = (
+            result["vix_close"]
+        )
 
         result["vix_change"] = np.log(
             result["vix_close"]
             / result["vix_close"].shift(1)
         )
 
-        result["vvix_level"] = result["vvix_close"]
+        result["vvix_level"] = (
+            result["vvix_close"]
+        )
 
         result["vvix_change"] = np.log(
             result["vvix_close"]
@@ -203,7 +257,13 @@ class DirectionFeatureBuilder:
             .std()
         )
 
-        self._add_breadth_features(result)
+        self._add_breadth_features(
+            result
+        )
+
+        self._add_cross_asset_features(
+            result
+        )
 
         result = result.replace(
             [np.inf, -np.inf],
@@ -215,36 +275,51 @@ class DirectionFeatureBuilder:
         ).reset_index(drop=True)
 
         return result[
-            ["trade_date", *self.FEATURE_COLUMNS]
+            [
+                "trade_date",
+                *self.FEATURE_COLUMNS,
+            ]
         ]
 
     def _add_breadth_features(
         self,
         result: pd.DataFrame,
     ) -> None:
-        rsp_return = np.log(
+        rsp_return = self._log_return(
             result["rsp_close"]
-            / result["rsp_close"].shift(1)
         )
 
         result["rsp_relative_return"] = (
-            rsp_return - result["log_return"]
+            rsp_return
+            - result["log_return"]
         )
 
         sector_return_columns = []
         signed_relative_volume_columns = []
 
         for symbol in self.SECTOR_SYMBOLS:
-            close_column = f"{symbol}_close"
-            volume_column = f"{symbol}_volume"
-            return_column = f"{symbol}_return"
+            close_column = (
+                f"{symbol}_close"
+            )
+
+            volume_column = (
+                f"{symbol}_volume"
+            )
+
+            return_column = (
+                f"{symbol}_return"
+            )
+
             signed_volume_column = (
                 f"{symbol}_signed_relative_volume"
             )
 
-            result[return_column] = np.log(
-                result[close_column]
-                / result[close_column].shift(1)
+            result[return_column] = (
+                self._log_return(
+                    result[
+                        close_column
+                    ]
+                )
             )
 
             sector_return_columns.append(
@@ -252,21 +327,35 @@ class DirectionFeatureBuilder:
             )
 
             rolling_average_volume = (
-                result[volume_column]
+                result[
+                    volume_column
+                ]
                 .rolling(
-                    window=self.BREADTH_WINDOW,
-                    min_periods=self.BREADTH_WINDOW,
+                    window=(
+                        self.BREADTH_WINDOW
+                    ),
+                    min_periods=(
+                        self.BREADTH_WINDOW
+                    ),
                 )
                 .mean()
             )
 
             relative_volume = (
-                result[volume_column]
+                result[
+                    volume_column
+                ]
                 / rolling_average_volume
             )
 
-            result[signed_volume_column] = (
-                np.sign(result[return_column])
+            result[
+                signed_volume_column
+            ] = (
+                np.sign(
+                    result[
+                        return_column
+                    ]
+                )
                 * relative_volume
             )
 
@@ -278,12 +367,20 @@ class DirectionFeatureBuilder:
             sector_return_columns
         ]
 
-        result["sector_positive_participation"] = (
-            sector_returns.gt(0).sum(axis=1)
-            / len(self.SECTOR_SYMBOLS)
+        result[
+            "sector_positive_participation"
+        ] = (
+            sector_returns
+            .gt(0)
+            .sum(axis=1)
+            / len(
+                self.SECTOR_SYMBOLS
+            )
         )
 
-        result["sector_return_dispersion"] = (
+        result[
+            "sector_return_dispersion"
+        ] = (
             sector_returns.std(
                 axis=1,
                 ddof=0,
@@ -293,27 +390,44 @@ class DirectionFeatureBuilder:
         correlation_series = []
 
         for left_index in range(
-            len(sector_return_columns)
+            len(
+                sector_return_columns
+            )
         ):
             for right_index in range(
                 left_index + 1,
-                len(sector_return_columns),
+                len(
+                    sector_return_columns
+                ),
             ):
-                left_column = sector_return_columns[
-                    left_index
-                ]
-                right_column = sector_return_columns[
-                    right_index
-                ]
+                left_column = (
+                    sector_return_columns[
+                        left_index
+                    ]
+                )
+
+                right_column = (
+                    sector_return_columns[
+                        right_index
+                    ]
+                )
 
                 pair_correlation = (
-                    result[left_column]
+                    result[
+                        left_column
+                    ]
                     .rolling(
-                        window=self.BREADTH_WINDOW,
-                        min_periods=self.BREADTH_WINDOW,
+                        window=(
+                            self.BREADTH_WINDOW
+                        ),
+                        min_periods=(
+                            self.BREADTH_WINDOW
+                        ),
                     )
                     .corr(
-                        result[right_column]
+                        result[
+                            right_column
+                        ]
                     )
                 )
 
@@ -321,7 +435,9 @@ class DirectionFeatureBuilder:
                     pair_correlation
                 )
 
-        result["sector_average_correlation_20d"] = (
+        result[
+            "sector_average_correlation_20d"
+        ] = (
             pd.concat(
                 correlation_series,
                 axis=1,
@@ -329,9 +445,111 @@ class DirectionFeatureBuilder:
             .mean(axis=1)
         )
 
-        result["sector_volume_breadth"] = (
+        result[
+            "sector_volume_breadth"
+        ] = (
             result[
                 signed_relative_volume_columns
             ]
             .mean(axis=1)
+        )
+
+    def _add_cross_asset_features(
+        self,
+        result: pd.DataFrame,
+    ) -> None:
+        qqq_return = self._log_return(
+            result["qqq_close"]
+        )
+
+        iwm_return = self._log_return(
+            result["iwm_close"]
+        )
+
+        dia_return = self._log_return(
+            result["dia_close"]
+        )
+
+        tlt_return = self._log_return(
+            result["tlt_close"]
+        )
+
+        ief_return = self._log_return(
+            result["ief_close"]
+        )
+
+        hyg_return = self._log_return(
+            result["hyg_close"]
+        )
+
+        lqd_return = self._log_return(
+            result["lqd_close"]
+        )
+
+        gld_return = self._log_return(
+            result["gld_close"]
+        )
+
+        result[
+            "qqq_relative_return"
+        ] = (
+            qqq_return
+            - result["log_return"]
+        )
+
+        result[
+            "iwm_relative_return"
+        ] = (
+            iwm_return
+            - result["log_return"]
+        )
+
+        result[
+            "dia_relative_return"
+        ] = (
+            dia_return
+            - result["log_return"]
+        )
+
+        result[
+            "tlt_return"
+        ] = tlt_return
+
+        result[
+            "ief_return"
+        ] = ief_return
+
+        result[
+            "tlt_ief_relative_return"
+        ] = (
+            tlt_return
+            - ief_return
+        )
+
+        result[
+            "hyg_return"
+        ] = hyg_return
+
+        result[
+            "lqd_return"
+        ] = lqd_return
+
+        result[
+            "hyg_lqd_relative_return"
+        ] = (
+            hyg_return
+            - lqd_return
+        )
+
+        result[
+            "gld_return"
+        ] = gld_return
+
+    @staticmethod
+    def _log_return(
+        series: pd.Series,
+    ) -> pd.Series:
+        return np.log(
+            series
+            / series.shift(1)
         )

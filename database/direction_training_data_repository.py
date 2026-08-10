@@ -18,12 +18,24 @@ class DirectionTrainingDataRepository:
         "XLY",
     )
 
+    CROSS_ASSET_SYMBOLS = (
+        "QQQ",
+        "IWM",
+        "DIA",
+        "TLT",
+        "IEF",
+        "HYG",
+        "LQD",
+        "GLD",
+    )
+
     def __init__(self):
         connection_string = get_connection_string()
 
         self.market_repository = MarketDataRepository(
             connection_string
         )
+
         self.feature_repository = FeatureRepository(
             connection_string
         )
@@ -33,11 +45,15 @@ class DirectionTrainingDataRepository:
         ticker: str = "SPY",
     ) -> pd.DataFrame:
         market = pd.DataFrame(
-            self.market_repository.get_market_data(ticker)
+            self.market_repository.get_market_data(
+                ticker
+            )
         )
 
         technical = pd.DataFrame(
-            self.feature_repository.get_features(ticker)
+            self.feature_repository.get_features(
+                ticker
+            )
         )
 
         if market.empty:
@@ -53,6 +69,7 @@ class DirectionTrainingDataRepository:
         market["trade_date"] = pd.to_datetime(
             market["trade_date"]
         )
+
         technical["trade_date"] = pd.to_datetime(
             technical["trade_date"]
         )
@@ -91,11 +108,24 @@ class DirectionTrainingDataRepository:
                 symbol=symbol,
             )
 
+        for symbol in self.CROSS_ASSET_SYMBOLS:
+            dataset = self._merge_close_series(
+                dataset=dataset,
+                symbol=symbol,
+                column_name=(
+                    f"{symbol.lower()}_close"
+                ),
+            )
+
         dataset = dataset.sort_values(
             "trade_date"
-        ).reset_index(drop=True)
+        ).reset_index(
+            drop=True
+        )
 
-        if dataset["trade_date"].duplicated().any():
+        if dataset[
+            "trade_date"
+        ].duplicated().any():
             raise ValueError(
                 "Direction training data contains duplicate trade dates."
             )
@@ -109,7 +139,9 @@ class DirectionTrainingDataRepository:
         column_name: str,
     ) -> pd.DataFrame:
         data = pd.DataFrame(
-            self.market_repository.get_market_data(symbol)
+            self.market_repository.get_market_data(
+                symbol
+            )
         )
 
         if data.empty:
@@ -145,7 +177,9 @@ class DirectionTrainingDataRepository:
         symbol: str,
     ) -> pd.DataFrame:
         data = pd.DataFrame(
-            self.market_repository.get_market_data(symbol)
+            self.market_repository.get_market_data(
+                symbol
+            )
         )
 
         if data.empty:
