@@ -1,0 +1,2283 @@
+{
+    "experiment_name": "xlstm_flat_target_trend_search",
+    "model_name": "xlstm_flat_target_trend_search_v1",
+    "timestamp_utc": "20260811_061335_166002",
+    "parameters": {
+        "reference_hierarchical_experiment": "experiments\\xlstm_hierarchical_direction_20260811_045709_694025.json",
+        "cv_splits": 3,
+        "stage1_locked_parameters": {
+            "sequence_length": 40,
+            "embedding_dim": 64,
+            "num_blocks": 1,
+            "num_heads": 4,
+            "conv1d_kernel_size": 4,
+            "qkv_proj_blocksize": 8,
+            "proj_factor": 1.5,
+            "dropout": 0.21842923451032784,
+            "learning_rate": 0.0003122720186934885,
+            "batch_size": 32,
+            "weight_decay": 2.2373192483525125e-05,
+            "gradient_clip": 0.5,
+            "loss_name": "focal",
+            "focal_gamma": 1.2336734687634694,
+            "epochs": 4
+        },
+        "stage2_locked_parameters": {
+            "sequence_length": 60,
+            "embedding_dim": 64,
+            "num_blocks": 1,
+            "num_heads": 4,
+            "conv1d_kernel_size": 2,
+            "qkv_proj_blocksize": 8,
+            "proj_factor": 1.5,
+            "dropout": 0.003830837319199065,
+            "learning_rate": 0.0005062319735789886,
+            "batch_size": 128,
+            "weight_decay": 0.0034006617142094365,
+            "gradient_clip": 0.5,
+            "loss_name": "focal",
+            "focal_gamma": 2.754963789135902,
+            "epochs": 2
+        },
+        "target_candidates": [
+            {
+                "name": "current_20d_k015",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.15,
+                "description": "Current benchmark target, roughly 15% FLAT."
+            },
+            {
+                "name": "flat20_20d_k020",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.2,
+                "description": "Approximately 20% FLAT on the training-period sensitivity study."
+            },
+            {
+                "name": "flat30_20d_k030",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.3,
+                "description": "Intermediate 20-day target around the 30% FLAT region."
+            },
+            {
+                "name": "flat30_40d_k030",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.3,
+                "description": "Approximately 30% FLAT with a slower volatility regime estimate."
+            },
+            {
+                "name": "flat40_20d_k045",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.45,
+                "description": "Approximately 40% FLAT on the training-period sensitivity study."
+            },
+            {
+                "name": "research_20d_k050",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.5,
+                "description": "Research-reference 0.5 x rolling-volatility neutral zone."
+            }
+        ],
+        "feature_scopes": [
+            "base",
+            "base_trend"
+        ],
+        "selection_policy": "Research sweep only. No target or feature scope is promoted automatically. Candidates use common dates and locked model parameters. Any selected winner must be independently retuned using train-only CV before outer-validation evaluation."
+    },
+    "metrics": {
+        "candidates": [
+            {
+                "target_name": "current_20d_k015",
+                "target_description": "Current benchmark target, roughly 15% FLAT.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.15,
+                "feature_scope": "base",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1298,
+                    "flat_count": 529,
+                    "up_count": 1588,
+                    "down_share": 0.3800878477306003,
+                    "flat_share": 0.154904831625183,
+                    "up_share": 0.4650073206442167
+                },
+                "metrics": {
+                    "move_threshold": 0.5053581297397614,
+                    "up_threshold": 0.4966309815645218,
+                    "stage1": {
+                        "accuracy": 0.6959749902305589,
+                        "balanced_accuracy": 0.5614296157059315,
+                        "macro_f1": 0.5403517601861771,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.21758569299552907,
+                                "recall": 0.3659147869674185,
+                                "f1": 0.27289719626168224,
+                                "support": 399
+                            },
+                            "MOVE": {
+                                "precision": 0.8659957627118644,
+                                "recall": 0.7569444444444444,
+                                "f1": 0.807806324110672,
+                                "support": 2160
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                146,
+                                253
+                            ],
+                            [
+                                525,
+                                1635
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.4935185185185185,
+                        "balanced_accuracy": 0.4950396575710421,
+                        "macro_f1": 0.4926764588686297,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.44014401440144013,
+                                "recall": 0.5088449531737773,
+                                "f1": 0.472007722007722,
+                                "support": 961
+                            },
+                            "UP": {
+                                "precision": 0.550047664442326,
+                                "recall": 0.48123436196830693,
+                                "f1": 0.5133451957295374,
+                                "support": 1199
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                489,
+                                472
+                            ],
+                            [
+                                622,
+                                577
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.3669402110199297,
+                        "balanced_accuracy": 0.3670130613008098,
+                        "macro_f1": 0.351518060591081,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.3738219895287958,
+                                "recall": 0.37148803329864727,
+                                "f1": 0.37265135699373697,
+                                "support": 961
+                            },
+                            "FLAT": {
+                                "precision": 0.21758569299552907,
+                                "recall": 0.3659147869674185,
+                                "f1": 0.27289719626168224,
+                                "support": 399
+                            },
+                            "UP": {
+                                "precision": 0.46730975348338694,
+                                "recall": 0.36363636363636365,
+                                "f1": 0.4090056285178236,
+                                "support": 1199
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                357,
+                                234,
+                                370
+                            ],
+                            [
+                                126,
+                                146,
+                                127
+                            ],
+                            [
+                                472,
+                                291,
+                                436
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5502592134660853,
+                            "stage1_flat_f1": 0.25853658536585367,
+                            "stage1_move_f1": 0.7654320987654321,
+                            "stage2_balanced_accuracy": 0.5014707684765289,
+                            "end_to_end_macro_f1": 0.33058808963317304,
+                            "end_to_end_balanced_accuracy": 0.35955946430829006
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.5442941116854161,
+                            "stage1_flat_f1": 0.24054982817869416,
+                            "stage1_move_f1": 0.8438162544169612,
+                            "stage2_balanced_accuracy": 0.5164502164502165,
+                            "end_to_end_macro_f1": 0.36518055222440476,
+                            "end_to_end_balanced_accuracy": 0.3663592446201142
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.59333028875096,
+                            "stage1_flat_f1": 0.3143631436314363,
+                            "stage1_move_f1": 0.8107703814510098,
+                            "stage2_balanced_accuracy": 0.47772673902005586,
+                            "end_to_end_macro_f1": 0.3429756787767924,
+                            "end_to_end_balanced_accuracy": 0.38361071325272594
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.3462481068781234,
+                    "end_to_end_macro_f1_fold_std": 0.014310630228149214,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "current_20d_k015",
+                "target_description": "Current benchmark target, roughly 15% FLAT.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.15,
+                "feature_scope": "base_trend",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "ma_compression",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "adx_14",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1298,
+                    "flat_count": 529,
+                    "up_count": 1588,
+                    "down_share": 0.3800878477306003,
+                    "flat_share": 0.154904831625183,
+                    "up_share": 0.4650073206442167
+                },
+                "metrics": {
+                    "move_threshold": 0.44959554076194763,
+                    "up_threshold": 0.46880248188972473,
+                    "stage1": {
+                        "accuracy": 0.7362250879249707,
+                        "balanced_accuracy": 0.5321463380673908,
+                        "macro_f1": 0.5296039149633789,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.2025862068965517,
+                                "recall": 0.23558897243107768,
+                                "f1": 0.21784472769409038,
+                                "support": 399
+                            },
+                            "MOVE": {
+                                "precision": 0.8544152744630071,
+                                "recall": 0.8287037037037037,
+                                "f1": 0.8413631022326674,
+                                "support": 2160
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                94,
+                                305
+                            ],
+                            [
+                                370,
+                                1790
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5189814814814815,
+                        "balanced_accuracy": 0.5044461261943052,
+                        "macro_f1": 0.5014544909281752,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4508816120906801,
+                                "recall": 0.372528616024974,
+                                "f1": 0.407977207977208,
+                                "support": 961
+                            },
+                            "UP": {
+                                "precision": 0.5585651537335286,
+                                "recall": 0.6363636363636364,
+                                "f1": 0.5949317738791423,
+                                "support": 1199
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                358,
+                                603
+                            ],
+                            [
+                                436,
+                                763
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.39898397811645175,
+                        "balanced_accuracy": 0.35669330234584223,
+                        "macro_f1": 0.3534110575548867,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.3793103448275862,
+                                "recall": 0.3090530697190427,
+                                "f1": 0.34059633027522934,
+                                "support": 961
+                            },
+                            "FLAT": {
+                                "precision": 0.2025862068965517,
+                                "recall": 0.23558897243107768,
+                                "f1": 0.21784472769409038,
+                                "support": 399
+                            },
+                            "UP": {
+                                "precision": 0.4801829268292683,
+                                "recall": 0.5254378648874062,
+                                "f1": 0.5017921146953405,
+                                "support": 1199
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                297,
+                                166,
+                                498
+                            ],
+                            [
+                                121,
+                                94,
+                                184
+                            ],
+                            [
+                                365,
+                                204,
+                                630
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5476887703086701,
+                            "stage1_flat_f1": 0.25,
+                            "stage1_move_f1": 0.799405646359584,
+                            "stage2_balanced_accuracy": 0.48533827674960167,
+                            "end_to_end_macro_f1": 0.34095389333041287,
+                            "end_to_end_balanced_accuracy": 0.3592549843513709
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.5418161548596331,
+                            "stage1_flat_f1": 0.2318840579710145,
+                            "stage1_move_f1": 0.8517482517482518,
+                            "stage2_balanced_accuracy": 0.529004329004329,
+                            "end_to_end_macro_f1": 0.37251292482413767,
+                            "end_to_end_balanced_accuracy": 0.3757073844030366
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.510581653623399,
+                            "stage1_flat_f1": 0.14977973568281938,
+                            "stage1_move_f1": 0.8695064232589588,
+                            "stage2_balanced_accuracy": 0.5018009012439706,
+                            "end_to_end_macro_f1": 0.3380068913284788,
+                            "end_to_end_balanced_accuracy": 0.33868622582694546
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.3504912364943431,
+                    "end_to_end_macro_f1_fold_std": 0.01561809362824218,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat20_20d_k020",
+                "target_description": "Approximately 20% FLAT on the training-period sensitivity study.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.2,
+                "feature_scope": "base",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1212,
+                    "flat_count": 683,
+                    "up_count": 1520,
+                    "down_share": 0.354904831625183,
+                    "flat_share": 0.2,
+                    "up_share": 0.445095168374817
+                },
+                "metrics": {
+                    "move_threshold": 0.4543469101190567,
+                    "up_threshold": 0.4873967915773392,
+                    "stage1": {
+                        "accuracy": 0.6971473231731145,
+                        "balanced_accuracy": 0.5459800673379991,
+                        "macro_f1": 0.5436902139212765,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.26455026455026454,
+                                "recall": 0.2952755905511811,
+                                "f1": 0.27906976744186046,
+                                "support": 508
+                            },
+                            "MOVE": {
+                                "precision": 0.820281124497992,
+                                "recall": 0.7966845441248172,
+                                "f1": 0.8083106604006925,
+                                "support": 2051
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                150,
+                                358
+                            ],
+                            [
+                                417,
+                                1634
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5129205265724037,
+                        "balanced_accuracy": 0.5033290116954325,
+                        "macro_f1": 0.5031233199075481,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4441860465116279,
+                                "recall": 0.4230343300110742,
+                                "f1": 0.43335224049914917,
+                                "support": 903
+                            },
+                            "UP": {
+                                "precision": 0.5625524769101595,
+                                "recall": 0.5836236933797909,
+                                "f1": 0.572894399315947,
+                                "support": 1148
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                382,
+                                521
+                            ],
+                            [
+                                478,
+                                670
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.38452520515826494,
+                        "balanced_accuracy": 0.3630377350023533,
+                        "macro_f1": 0.3610162544014406,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.3527227722772277,
+                                "recall": 0.31561461794019935,
+                                "f1": 0.3331385154880187,
+                                "support": 903
+                            },
+                            "FLAT": {
+                                "precision": 0.26455026455026454,
+                                "recall": 0.2952755905511811,
+                                "f1": 0.27906976744186046,
+                                "support": 508
+                            },
+                            "UP": {
+                                "precision": 0.46368243243243246,
+                                "recall": 0.47822299651567945,
+                                "f1": 0.47084048027444253,
+                                "support": 1148
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                285,
+                                198,
+                                420
+                            ],
+                            [
+                                143,
+                                150,
+                                215
+                            ],
+                            [
+                                380,
+                                219,
+                                549
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5527363800488513,
+                            "stage1_flat_f1": 0.2951653944020356,
+                            "stage1_move_f1": 0.789032749428789,
+                            "stage2_balanced_accuracy": 0.5048982892161036,
+                            "end_to_end_macro_f1": 0.35786489218755363,
+                            "end_to_end_balanced_accuracy": 0.3676918360808427
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.5261115495922126,
+                            "stage1_flat_f1": 0.21232876712328766,
+                            "stage1_move_f1": 0.8373408769448374,
+                            "stage2_balanced_accuracy": 0.5175988428158149,
+                            "end_to_end_macro_f1": 0.358262771349618,
+                            "end_to_end_balanced_accuracy": 0.3603332123740015
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.5668267093447141,
+                            "stage1_flat_f1": 0.3128205128205128,
+                            "stage1_move_f1": 0.7963525835866262,
+                            "stage2_balanced_accuracy": 0.48871702648256543,
+                            "end_to_end_macro_f1": 0.35931474487402987,
+                            "end_to_end_balanced_accuracy": 0.36807330017352563
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.35848080280373384,
+                    "end_to_end_macro_f1_fold_std": 0.0006116488586100654,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat20_20d_k020",
+                "target_description": "Approximately 20% FLAT on the training-period sensitivity study.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.2,
+                "feature_scope": "base_trend",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "ma_compression",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "adx_14",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1212,
+                    "flat_count": 683,
+                    "up_count": 1520,
+                    "down_share": 0.354904831625183,
+                    "flat_share": 0.2,
+                    "up_share": 0.445095168374817
+                },
+                "metrics": {
+                    "move_threshold": 0.4480952173471451,
+                    "up_threshold": 0.48108915984630585,
+                    "stage1": {
+                        "accuracy": 0.6963657678780774,
+                        "balanced_accuracy": 0.5536376532285,
+                        "macro_f1": 0.5498309780136708,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.272419627749577,
+                                "recall": 0.3169291338582677,
+                                "f1": 0.2929936305732484,
+                                "support": 508
+                            },
+                            "MOVE": {
+                                "precision": 0.8236788617886179,
+                                "recall": 0.7903461725987323,
+                                "f1": 0.8066683254540931,
+                                "support": 2051
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                161,
+                                347
+                            ],
+                            [
+                                430,
+                                1621
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5285226718673818,
+                        "balanced_accuracy": 0.518329822002539,
+                        "macro_f1": 0.5180739549550141,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.46217494089834515,
+                                "recall": 0.4330011074197121,
+                                "f1": 0.4471126357918811,
+                                "support": 903
+                            },
+                            "UP": {
+                                "precision": 0.575103734439834,
+                                "recall": 0.6036585365853658,
+                                "f1": 0.589035274118147,
+                                "support": 1148
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                391,
+                                512
+                            ],
+                            [
+                                455,
+                                693
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.40289175459163734,
+                        "balanced_accuracy": 0.38244170131030847,
+                        "macro_f1": 0.3799080731052869,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.3851944792973651,
+                                "recall": 0.3399778516057586,
+                                "f1": 0.3611764705882353,
+                                "support": 903
+                            },
+                            "FLAT": {
+                                "precision": 0.272419627749577,
+                                "recall": 0.3169291338582677,
+                                "f1": 0.2929936305732484,
+                                "support": 508
+                            },
+                            "UP": {
+                                "precision": 0.4807856532877882,
+                                "recall": 0.490418118466899,
+                                "f1": 0.4855541181543769,
+                                "support": 1148
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                307,
+                                193,
+                                403
+                            ],
+                            [
+                                142,
+                                161,
+                                205
+                            ],
+                            [
+                                348,
+                                237,
+                                563
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5309656979008106,
+                            "stage1_flat_f1": 0.27423167848699764,
+                            "stage1_move_f1": 0.7607170693686672,
+                            "stage2_balanced_accuracy": 0.4959656140948166,
+                            "end_to_end_macro_f1": 0.3506855926207842,
+                            "end_to_end_balanced_accuracy": 0.35939325747840845
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.5670095040778742,
+                            "stage1_flat_f1": 0.30952380952380953,
+                            "stage1_move_f1": 0.8306569343065694,
+                            "stage2_balanced_accuracy": 0.5408228865316618,
+                            "end_to_end_macro_f1": 0.40394034556371067,
+                            "end_to_end_balanced_accuracy": 0.4030073883854179
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.5651373699653242,
+                            "stage1_flat_f1": 0.3,
+                            "stage1_move_f1": 0.8257686676427526,
+                            "stage2_balanced_accuracy": 0.5159604361020569,
+                            "end_to_end_macro_f1": 0.3825486503452605,
+                            "end_to_end_balanced_accuracy": 0.3848269541820342
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.3790581961765851,
+                    "end_to_end_macro_f1_fold_std": 0.021880807883938706,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat30_20d_k030",
+                "target_description": "Intermediate 20-day target around the 30% FLAT region.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.3,
+                "feature_scope": "base",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1083,
+                    "flat_count": 956,
+                    "up_count": 1376,
+                    "down_share": 0.3171303074670571,
+                    "flat_share": 0.2799414348462665,
+                    "up_share": 0.40292825768667645
+                },
+                "metrics": {
+                    "move_threshold": 0.46330808103084564,
+                    "up_threshold": 0.48295456171035767,
+                    "stage1": {
+                        "accuracy": 0.6545525595935913,
+                        "balanced_accuracy": 0.5479516906740606,
+                        "macro_f1": 0.5492197376328933,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.35784313725490197,
+                                "recall": 0.3084507042253521,
+                                "f1": 0.3313161875945537,
+                                "support": 710
+                            },
+                            "MOVE": {
+                                "precision": 0.7478171545968156,
+                                "recall": 0.7874526771227691,
+                                "f1": 0.7671232876712328,
+                                "support": 1849
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                219,
+                                491
+                            ],
+                            [
+                                393,
+                                1456
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.515413737155219,
+                        "balanced_accuracy": 0.4952464390011324,
+                        "macro_f1": 0.49174622653086264,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4254992319508449,
+                                "recall": 0.34668335419274093,
+                                "f1": 0.3820689655172414,
+                                "support": 799
+                            },
+                            "UP": {
+                                "precision": 0.5642737896494157,
+                                "recall": 0.6438095238095238,
+                                "f1": 0.6014234875444839,
+                                "support": 1050
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                277,
+                                522
+                            ],
+                            [
+                                374,
+                                676
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.37631887456037516,
+                        "balanced_accuracy": 0.3606483176628957,
+                        "macro_f1": 0.35991061452091505,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.30823863636363635,
+                                "recall": 0.2715894868585732,
+                                "f1": 0.28875582168995345,
+                                "support": 799
+                            },
+                            "FLAT": {
+                                "precision": 0.35784313725490197,
+                                "recall": 0.3084507042253521,
+                                "f1": 0.3313161875945537,
+                                "support": 710
+                            },
+                            "UP": {
+                                "precision": 0.4239742558326629,
+                                "recall": 0.5019047619047619,
+                                "f1": 0.4596598342782381,
+                                "support": 1050
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                217,
+                                167,
+                                415
+                            ],
+                            [
+                                190,
+                                219,
+                                301
+                            ],
+                            [
+                                297,
+                                226,
+                                527
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5459318951635294,
+                            "stage1_flat_f1": 0.3256880733944954,
+                            "stage1_move_f1": 0.768503937007874,
+                            "stage2_balanced_accuracy": 0.511231884057971,
+                            "end_to_end_macro_f1": 0.36600808053657535,
+                            "end_to_end_balanced_accuracy": 0.3689197068132601
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.5416308189170229,
+                            "stage1_flat_f1": 0.26373626373626374,
+                            "stage1_move_f1": 0.8002980625931445,
+                            "stage2_balanced_accuracy": 0.4768181564089664,
+                            "end_to_end_macro_f1": 0.3389617153687891,
+                            "end_to_end_balanced_accuracy": 0.3440103598871513
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.564513518458572,
+                            "stage1_flat_f1": 0.3831417624521073,
+                            "stage1_move_f1": 0.7280405405405406,
+                            "stage2_balanced_accuracy": 0.49317989864864864,
+                            "end_to_end_macro_f1": 0.3650981214629297,
+                            "end_to_end_balanced_accuracy": 0.37341241640869943
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.35668930578943137,
+                    "end_to_end_macro_f1_fold_std": 0.012540802817748243,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat30_20d_k030",
+                "target_description": "Intermediate 20-day target around the 30% FLAT region.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.3,
+                "feature_scope": "base_trend",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "ma_compression",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "adx_14",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1083,
+                    "flat_count": 956,
+                    "up_count": 1376,
+                    "down_share": 0.3171303074670571,
+                    "flat_share": 0.2799414348462665,
+                    "up_share": 0.40292825768667645
+                },
+                "metrics": {
+                    "move_threshold": 0.46973471343517303,
+                    "up_threshold": 0.49542848765850067,
+                    "stage1": {
+                        "accuracy": 0.6330597889800703,
+                        "balanced_accuracy": 0.5512987606547887,
+                        "macro_f1": 0.5502608426134459,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.34753661784287615,
+                                "recall": 0.3676056338028169,
+                                "f1": 0.35728952772073924,
+                                "support": 710
+                            },
+                            "MOVE": {
+                                "precision": 0.7516592920353983,
+                                "recall": 0.7349918875067604,
+                                "f1": 0.7432321575061526,
+                                "support": 1849
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                261,
+                                449
+                            ],
+                            [
+                                490,
+                                1359
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5181179015684153,
+                        "balanced_accuracy": 0.5119881995351332,
+                        "macro_f1": 0.5116986286022199,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4451073985680191,
+                                "recall": 0.4668335419274093,
+                                "f1": 0.45571166768478927,
+                                "support": 799
+                            },
+                            "UP": {
+                                "precision": 0.5786350148367952,
+                                "recall": 0.5571428571428572,
+                                "f1": 0.5676855895196506,
+                                "support": 1050
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                373,
+                                426
+                            ],
+                            [
+                                465,
+                                585
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.381789761625635,
+                        "balanced_accuracy": 0.37626467468417796,
+                        "macro_f1": 0.3756699323194663,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.3388746803069054,
+                                "recall": 0.3316645807259074,
+                                "f1": 0.33523086654016443,
+                                "support": 799
+                            },
+                            "FLAT": {
+                                "precision": 0.34753661784287615,
+                                "recall": 0.3676056338028169,
+                                "f1": 0.35728952772073924,
+                                "support": 710
+                            },
+                            "UP": {
+                                "precision": 0.4395711500974659,
+                                "recall": 0.42952380952380953,
+                                "f1": 0.4344894026974952,
+                                "support": 1050
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                265,
+                                218,
+                                316
+                            ],
+                            [
+                                190,
+                                261,
+                                259
+                            ],
+                            [
+                                327,
+                                272,
+                                451
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5350415070242657,
+                            "stage1_flat_f1": 0.3393213572854291,
+                            "stage1_move_f1": 0.725311203319502,
+                            "stage2_balanced_accuracy": 0.5032608695652174,
+                            "end_to_end_macro_f1": 0.36450694192353733,
+                            "end_to_end_balanced_accuracy": 0.36608778943861403
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.5767991158290426,
+                            "stage1_flat_f1": 0.3783783783783784,
+                            "stage1_move_f1": 0.7812995245641838,
+                            "stage2_balanced_accuracy": 0.5093856559897143,
+                            "end_to_end_macro_f1": 0.3892724509203466,
+                            "end_to_end_balanced_accuracy": 0.38783902532490266
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.5452949289946658,
+                            "stage1_flat_f1": 0.35658914728682173,
+                            "stage1_move_f1": 0.7210084033613445,
+                            "stage2_balanced_accuracy": 0.5238703547297296,
+                            "end_to_end_macro_f1": 0.37310470252293265,
+                            "end_to_end_balanced_accuracy": 0.3770014163392468
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.3756280317889389,
+                    "end_to_end_macro_f1_fold_std": 0.010266710018510414,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat30_40d_k030",
+                "target_description": "Approximately 30% FLAT with a slower volatility regime estimate.",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.3,
+                "feature_scope": "base",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1053,
+                    "flat_count": 1021,
+                    "up_count": 1341,
+                    "down_share": 0.30834553440702783,
+                    "flat_share": 0.29897510980966324,
+                    "up_share": 0.3926793557833089
+                },
+                "metrics": {
+                    "move_threshold": 0.5074043571949005,
+                    "up_threshold": 0.47582362592220306,
+                    "stage1": {
+                        "accuracy": 0.6053145760062525,
+                        "balanced_accuracy": 0.5690707590124229,
+                        "macro_f1": 0.5602733713072416,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.372829417773238,
+                                "recall": 0.47963206307490147,
+                                "f1": 0.41954022988505746,
+                                "support": 761
+                            },
+                            "MOVE": {
+                                "precision": 0.7493670886075949,
+                                "recall": 0.6585094549499444,
+                                "f1": 0.7010065127294257,
+                                "support": 1798
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                365,
+                                396
+                            ],
+                            [
+                                614,
+                                1184
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5283648498331479,
+                        "balanced_accuracy": 0.500601458631751,
+                        "macro_f1": 0.49085906246452016,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.43258426966292135,
+                                "recall": 0.297680412371134,
+                                "f1": 0.3526717557251908,
+                                "support": 776
+                            },
+                            "UP": {
+                                "precision": 0.5688291139240507,
+                                "recall": 0.7035225048923679,
+                                "f1": 0.6290463692038495,
+                                "support": 1022
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                231,
+                                545
+                            ],
+                            [
+                                303,
+                                719
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.3821805392731536,
+                        "balanced_accuracy": 0.37470106099107364,
+                        "macro_f1": 0.36360829578092485,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.301255230125523,
+                                "recall": 0.18556701030927836,
+                                "f1": 0.22966507177033493,
+                                "support": 776
+                            },
+                            "FLAT": {
+                                "precision": 0.372829417773238,
+                                "recall": 0.47963206307490147,
+                                "f1": 0.41954022988505746,
+                                "support": 761
+                            },
+                            "UP": {
+                                "precision": 0.42558983666061706,
+                                "recall": 0.4589041095890411,
+                                "f1": 0.4416195856873823,
+                                "support": 1022
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                144,
+                                260,
+                                372
+                            ],
+                            [
+                                135,
+                                365,
+                                261
+                            ],
+                            [
+                                199,
+                                354,
+                                469
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5618026040612562,
+                            "stage1_flat_f1": 0.42170542635658914,
+                            "stage1_move_f1": 0.648444863336475,
+                            "stage2_balanced_accuracy": 0.49569495694956944,
+                            "end_to_end_macro_f1": 0.34482745415730287,
+                            "end_to_end_balanced_accuracy": 0.3694840663035714
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.559723766793215,
+                            "stage1_flat_f1": 0.3476297968397291,
+                            "stage1_move_f1": 0.7711797307996833,
+                            "stage2_balanced_accuracy": 0.5117500266105284,
+                            "end_to_end_macro_f1": 0.3684627763086665,
+                            "end_to_end_balanced_accuracy": 0.3751264433821495
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.5959782133922781,
+                            "stage1_flat_f1": 0.4662576687116564,
+                            "stage1_move_f1": 0.6698292220113852,
+                            "stage2_balanced_accuracy": 0.49363267723710585,
+                            "end_to_end_macro_f1": 0.3646542975307511,
+                            "end_to_end_balanced_accuracy": 0.3873127258900731
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.3593148426655735,
+                    "end_to_end_macro_f1_fold_std": 0.010361449287065222,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat30_40d_k030",
+                "target_description": "Approximately 30% FLAT with a slower volatility regime estimate.",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.3,
+                "feature_scope": "base_trend",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "ma_compression",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "adx_14",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1053,
+                    "flat_count": 1021,
+                    "up_count": 1341,
+                    "down_share": 0.30834553440702783,
+                    "flat_share": 0.29897510980966324,
+                    "up_share": 0.3926793557833089
+                },
+                "metrics": {
+                    "move_threshold": 0.48128725588321686,
+                    "up_threshold": 0.4933031499385834,
+                    "stage1": {
+                        "accuracy": 0.6275889019148104,
+                        "balanced_accuracy": 0.5697639660946094,
+                        "macro_f1": 0.5671829757327345,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.3859857482185273,
+                                "recall": 0.42706964520367935,
+                                "f1": 0.4054897067997505,
+                                "support": 761
+                            },
+                            "MOVE": {
+                                "precision": 0.7460687245195108,
+                                "recall": 0.7124582869855395,
+                                "f1": 0.7288762446657183,
+                                "support": 1798
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                325,
+                                436
+                            ],
+                            [
+                                517,
+                                1281
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5239154616240267,
+                        "balanced_accuracy": 0.5156089232755664,
+                        "macro_f1": 0.5155695053488896,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4491094147582697,
+                                "recall": 0.45489690721649484,
+                                "f1": 0.4519846350832266,
+                                "support": 776
+                            },
+                            "UP": {
+                                "precision": 0.5820158102766798,
+                                "recall": 0.576320939334638,
+                                "f1": 0.5791543756145526,
+                                "support": 1022
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                353,
+                                423
+                            ],
+                            [
+                                433,
+                                589
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.3903868698710434,
+                        "balanced_accuracy": 0.3866916571093051,
+                        "macro_f1": 0.38509233718405333,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.33905579399141633,
+                                "recall": 0.30541237113402064,
+                                "f1": 0.3213559322033898,
+                                "support": 776
+                            },
+                            "FLAT": {
+                                "precision": 0.3859857482185273,
+                                "recall": 0.42706964520367935,
+                                "f1": 0.4054897067997505,
+                                "support": 761
+                            },
+                            "UP": {
+                                "precision": 0.4292730844793713,
+                                "recall": 0.42759295499021527,
+                                "f1": 0.4284313725490196,
+                                "support": 1022
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                237,
+                                221,
+                                318
+                            ],
+                            [
+                                173,
+                                325,
+                                263
+                            ],
+                            [
+                                289,
+                                296,
+                                437
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.542562234365513,
+                            "stage1_flat_f1": 0.35502958579881655,
+                            "stage1_move_f1": 0.7272727272727273,
+                            "stage2_balanced_accuracy": 0.5234137739607485,
+                            "end_to_end_macro_f1": 0.37820453381552016,
+                            "end_to_end_balanced_accuracy": 0.3784575702197533
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.5726214671933121,
+                            "stage1_flat_f1": 0.3883089770354906,
+                            "stage1_move_f1": 0.7612061939690301,
+                            "stage2_balanced_accuracy": 0.514375598736887,
+                            "end_to_end_macro_f1": 0.3896642777255191,
+                            "end_to_end_balanced_accuracy": 0.3884192752625384
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.5968220142685075,
+                            "stage1_flat_f1": 0.46029173419773095,
+                            "stage1_move_f1": 0.6942148760330579,
+                            "stage2_balanced_accuracy": 0.5050915800984144,
+                            "end_to_end_macro_f1": 0.37839030425177694,
+                            "end_to_end_balanced_accuracy": 0.3931230911358515
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.3820863719309387,
+                    "end_to_end_macro_f1_fold_std": 0.005358925255272597,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat40_20d_k045",
+                "target_description": "Approximately 40% FLAT on the training-period sensitivity study.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.45,
+                "feature_scope": "base",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 903,
+                    "flat_count": 1350,
+                    "up_count": 1162,
+                    "down_share": 0.2644216691068814,
+                    "flat_share": 0.3953147877013177,
+                    "up_share": 0.34026354319180085
+                },
+                "metrics": {
+                    "move_threshold": 0.5017662048339844,
+                    "up_threshold": 0.4814338982105255,
+                    "stage1": {
+                        "accuracy": 0.599452911293474,
+                        "balanced_accuracy": 0.5794814346718753,
+                        "macro_f1": 0.579756839831036,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.4944500504540868,
+                                "recall": 0.4832347140039448,
+                                "f1": 0.48877805486284287,
+                                "support": 1014
+                            },
+                            "MOVE": {
+                                "precision": 0.6658163265306123,
+                                "recall": 0.6757281553398058,
+                                "f1": 0.670735624799229,
+                                "support": 1545
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                490,
+                                524
+                            ],
+                            [
+                                501,
+                                1044
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.517799352750809,
+                        "balanced_accuracy": 0.5034026707755521,
+                        "macro_f1": 0.5030693757935715,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.43134087237479807,
+                                "recall": 0.40454545454545454,
+                                "f1": 0.4175136825645035,
+                                "support": 660
+                            },
+                            "UP": {
+                                "precision": 0.5755939524838013,
+                                "recall": 0.6022598870056497,
+                                "f1": 0.5886250690226394,
+                                "support": 885
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                267,
+                                393
+                            ],
+                            [
+                                352,
+                                533
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.406799531066823,
+                        "balanced_accuracy": 0.3919804807679645,
+                        "macro_f1": 0.3919294716530166,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.28751974723538704,
+                                "recall": 0.27575757575757576,
+                                "f1": 0.2815158546017015,
+                                "support": 660
+                            },
+                            "FLAT": {
+                                "precision": 0.4944500504540868,
+                                "recall": 0.4832347140039448,
+                                "f1": 0.48877805486284287,
+                                "support": 1014
+                            },
+                            "UP": {
+                                "precision": 0.3946524064171123,
+                                "recall": 0.41694915254237286,
+                                "f1": 0.4054945054945055,
+                                "support": 885
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                182,
+                                215,
+                                263
+                            ],
+                            [
+                                221,
+                                490,
+                                303
+                            ],
+                            [
+                                230,
+                                286,
+                                369
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5591950460842716,
+                            "stage1_flat_f1": 0.4510108864696734,
+                            "stage1_move_f1": 0.6679209783631233,
+                            "stage2_balanced_accuracy": 0.506756338899196,
+                            "end_to_end_macro_f1": 0.3821394420663793,
+                            "end_to_end_balanced_accuracy": 0.38240304434994704
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.6066715542521994,
+                            "stage1_flat_f1": 0.5039872408293461,
+                            "stage1_move_f1": 0.7117701575532901,
+                            "stage2_balanced_accuracy": 0.4810971946203263,
+                            "end_to_end_macro_f1": 0.4004877410204543,
+                            "end_to_end_balanced_accuracy": 0.39944469872147526
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.5737744164849492,
+                            "stage1_flat_f1": 0.508843537414966,
+                            "stage1_move_f1": 0.6282183316168898,
+                            "stage2_balanced_accuracy": 0.5113366260225343,
+                            "end_to_end_macro_f1": 0.38475409202526395,
+                            "end_to_end_balanced_accuracy": 0.3907992011038888
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.38912709170403254,
+                    "end_to_end_macro_f1_fold_std": 0.008103800066220381,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat40_20d_k045",
+                "target_description": "Approximately 40% FLAT on the training-period sensitivity study.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.45,
+                "feature_scope": "base_trend",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "ma_compression",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "adx_14",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 903,
+                    "flat_count": 1350,
+                    "up_count": 1162,
+                    "down_share": 0.2644216691068814,
+                    "flat_share": 0.3953147877013177,
+                    "up_share": 0.34026354319180085
+                },
+                "metrics": {
+                    "move_threshold": 0.4953116774559021,
+                    "up_threshold": 0.47239169478416443,
+                    "stage1": {
+                        "accuracy": 0.6045330207112153,
+                        "balanced_accuracy": 0.5750454797878248,
+                        "macro_f1": 0.5755217245923565,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.5011415525114156,
+                                "recall": 0.4329388560157791,
+                                "f1": 0.46455026455026455,
+                                "support": 1014
+                            },
+                            "MOVE": {
+                                "precision": 0.6583481877599525,
+                                "recall": 0.7171521035598706,
+                                "f1": 0.6864931846344485,
+                                "support": 1545
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                439,
+                                575
+                            ],
+                            [
+                                437,
+                                1108
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5307443365695793,
+                        "balanced_accuracy": 0.5123908577298408,
+                        "macro_f1": 0.5110599430361098,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4434782608695652,
+                                "recall": 0.38636363636363635,
+                                "f1": 0.41295546558704455,
+                                "support": 660
+                            },
+                            "UP": {
+                                "precision": 0.5824742268041238,
+                                "recall": 0.6384180790960452,
+                                "f1": 0.6091644204851752,
+                                "support": 885
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                255,
+                                405
+                            ],
+                            [
+                                320,
+                                565
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.40640875341930444,
+                        "balanced_accuracy": 0.3945611971687591,
+                        "macro_f1": 0.3937637442465971,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.30194805194805197,
+                                "recall": 0.2818181818181818,
+                                "f1": 0.29153605015673983,
+                                "support": 660
+                            },
+                            "FLAT": {
+                                "precision": 0.5011415525114156,
+                                "recall": 0.4329388560157791,
+                                "f1": 0.46455026455026455,
+                                "support": 1014
+                            },
+                            "UP": {
+                                "precision": 0.3889409559512652,
+                                "recall": 0.4689265536723164,
+                                "f1": 0.42520491803278687,
+                                "support": 885
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                186,
+                                187,
+                                287
+                            ],
+                            [
+                                210,
+                                439,
+                                365
+                            ],
+                            [
+                                220,
+                                250,
+                                415
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5455419349655085,
+                            "stage1_flat_f1": 0.3902439024390244,
+                            "stage1_move_f1": 0.6908127208480566,
+                            "stage2_balanced_accuracy": 0.48866728509585655,
+                            "end_to_end_macro_f1": 0.3616870340474059,
+                            "end_to_end_balanced_accuracy": 0.36704392671522884
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.5973841871334311,
+                            "stage1_flat_f1": 0.4878836833602585,
+                            "stage1_move_f1": 0.7083716651333947,
+                            "stage2_balanced_accuracy": 0.5304262759778774,
+                            "end_to_end_macro_f1": 0.4118460586039853,
+                            "end_to_end_balanced_accuracy": 0.4200704587571767
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.5833189113103274,
+                            "stage1_flat_f1": 0.5050215208034433,
+                            "stage1_move_f1": 0.6580773042616452,
+                            "stage2_balanced_accuracy": 0.5167927149251428,
+                            "end_to_end_macro_f1": 0.39576313504204075,
+                            "end_to_end_balanced_accuracy": 0.3985123132343124
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.389765409231144,
+                    "end_to_end_macro_f1_fold_std": 0.02091190207025508,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "research_20d_k050",
+                "target_description": "Research-reference 0.5 x rolling-volatility neutral zone.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.5,
+                "feature_scope": "base",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 861,
+                    "flat_count": 1466,
+                    "up_count": 1088,
+                    "down_share": 0.2521229868228404,
+                    "flat_share": 0.4292825768667643,
+                    "up_share": 0.3185944363103953
+                },
+                "metrics": {
+                    "move_threshold": 0.5406687259674072,
+                    "up_threshold": 0.47479207813739777,
+                    "stage1": {
+                        "accuracy": 0.5697538100820633,
+                        "balanced_accuracy": 0.5711661303042875,
+                        "macro_f1": 0.5676619971436889,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.5,
+                                "recall": 0.5812897366030881,
+                                "f1": 0.5375892482150357,
+                                "support": 1101
+                            },
+                            "MOVE": {
+                                "precision": 0.6395621579358874,
+                                "recall": 0.5610425240054869,
+                                "f1": 0.597734746072342,
+                                "support": 1458
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                640,
+                                461
+                            ],
+                            [
+                                640,
+                                818
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.51440329218107,
+                        "balanced_accuracy": 0.4971491059780523,
+                        "macro_f1": 0.4955313159746657,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.42700729927007297,
+                                "recall": 0.37261146496815284,
+                                "f1": 0.3979591836734694,
+                                "support": 628
+                            },
+                            "UP": {
+                                "precision": 0.567032967032967,
+                                "recall": 0.6216867469879518,
+                                "f1": 0.593103448275862,
+                                "support": 830
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                234,
+                                394
+                            ],
+                            [
+                                314,
+                                516
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.41539663931223136,
+                        "balanced_accuracy": 0.38004851399674733,
+                        "macro_f1": 0.3767427978067979,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.2651356993736952,
+                                "recall": 0.20222929936305734,
+                                "f1": 0.22944896115627822,
+                                "support": 628
+                            },
+                            "FLAT": {
+                                "precision": 0.5,
+                                "recall": 0.5812897366030881,
+                                "f1": 0.5375892482150357,
+                                "support": 1101
+                            },
+                            "UP": {
+                                "precision": 0.37,
+                                "recall": 0.3566265060240964,
+                                "f1": 0.36319018404907977,
+                                "support": 830
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                127,
+                                270,
+                                231
+                            ],
+                            [
+                                188,
+                                640,
+                                273
+                            ],
+                            [
+                                164,
+                                370,
+                                296
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5594576423128642,
+                            "stage1_flat_f1": 0.5326757090012331,
+                            "stage1_move_f1": 0.576536312849162,
+                            "stage2_balanced_accuracy": 0.48930379307953675,
+                            "end_to_end_macro_f1": 0.3791238409342393,
+                            "end_to_end_balanced_accuracy": 0.3817234126158611
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.5781523691893106,
+                            "stage1_flat_f1": 0.49189985272459497,
+                            "stage1_move_f1": 0.6640701071080818,
+                            "stage2_balanced_accuracy": 0.48843283582089553,
+                            "end_to_end_macro_f1": 0.3722128019520274,
+                            "end_to_end_balanced_accuracy": 0.3733617095097365
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.5749579784849843,
+                            "stage1_flat_f1": 0.5768799102132436,
+                            "stage1_move_f1": 0.5374233128834356,
+                            "stage2_balanced_accuracy": 0.5108936289840813,
+                            "end_to_end_macro_f1": 0.3702252909074186,
+                            "end_to_end_balanced_accuracy": 0.3840765917863362
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.37385397793122843,
+                    "end_to_end_macro_f1_fold_std": 0.003813672079154804,
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "research_20d_k050",
+                "target_description": "Research-reference 0.5 x rolling-volatility neutral zone.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.5,
+                "feature_scope": "base_trend",
+                "feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "ma_compression",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "adx_14",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 861,
+                    "flat_count": 1466,
+                    "up_count": 1088,
+                    "down_share": 0.2521229868228404,
+                    "flat_share": 0.4292825768667643,
+                    "up_share": 0.3185944363103953
+                },
+                "metrics": {
+                    "move_threshold": 0.49911193549633026,
+                    "up_threshold": 0.4736641198396683,
+                    "stage1": {
+                        "accuracy": 0.5904650254005471,
+                        "balanced_accuracy": 0.5763316550984328,
+                        "macro_f1": 0.5764807992601689,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.526686807653575,
+                                "recall": 0.4750227066303361,
+                                "f1": 0.4995224450811843,
+                                "support": 1101
+                            },
+                            "MOVE": {
+                                "precision": 0.6309067688378033,
+                                "recall": 0.6776406035665294,
+                                "f1": 0.6534391534391535,
+                                "support": 1458
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                523,
+                                578
+                            ],
+                            [
+                                470,
+                                988
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5198902606310014,
+                        "balanced_accuracy": 0.5048749136674086,
+                        "macro_f1": 0.5041211487519945,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4368421052631579,
+                                "recall": 0.3964968152866242,
+                                "f1": 0.41569282136894825,
+                                "support": 628
+                            },
+                            "UP": {
+                                "precision": 0.5731981981981982,
+                                "recall": 0.6132530120481928,
+                                "f1": 0.5925494761350407,
+                                "support": 830
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                249,
+                                379
+                            ],
+                            [
+                                321,
+                                509
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.4099257522469715,
+                        "balanced_accuracy": 0.38999618576471257,
+                        "macro_f1": 0.38881054005558374,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.2851985559566787,
+                                "recall": 0.2515923566878981,
+                                "f1": 0.2673434856175973,
+                                "support": 628
+                            },
+                            "FLAT": {
+                                "precision": 0.526686807653575,
+                                "recall": 0.4750227066303361,
+                                "f1": 0.4995224450811843,
+                                "support": 1101
+                            },
+                            "UP": {
+                                "precision": 0.36363636363636365,
+                                "recall": 0.4433734939759036,
+                                "f1": 0.3995656894679696,
+                                "support": 830
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                158,
+                                206,
+                                264
+                            ],
+                            [
+                                198,
+                                523,
+                                380
+                            ],
+                            [
+                                198,
+                                264,
+                                368
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_balanced_accuracy": 0.5580681308830121,
+                            "stage1_flat_f1": 0.4578313253012048,
+                            "stage1_move_f1": 0.654510556621881,
+                            "stage2_balanced_accuracy": 0.4871454822827821,
+                            "end_to_end_macro_f1": 0.368484165624735,
+                            "end_to_end_balanced_accuracy": 0.37082495434898183
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_balanced_accuracy": 0.6030428924320683,
+                            "stage1_flat_f1": 0.4960254372019078,
+                            "stage1_move_f1": 0.7056638811513464,
+                            "stage2_balanced_accuracy": 0.5169606512890095,
+                            "end_to_end_macro_f1": 0.40022322778994424,
+                            "end_to_end_balanced_accuracy": 0.4143563006883391
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_balanced_accuracy": 0.5673772971761541,
+                            "stage1_flat_f1": 0.5368289637952559,
+                            "stage1_move_f1": 0.5900552486187846,
+                            "stage2_balanced_accuracy": 0.5151456583617388,
+                            "end_to_end_macro_f1": 0.3840259707925126,
+                            "end_to_end_balanced_accuracy": 0.38711263701705034
+                        }
+                    ],
+                    "end_to_end_macro_f1_fold_mean": 0.38424445473573066,
+                    "end_to_end_macro_f1_fold_std": 0.012958338839188633,
+                    "oof_rows": 2559
+                }
+            }
+        ]
+    },
+    "features": [
+        "log_return",
+        "overnight_gap",
+        "intraday_return",
+        "high_low_range",
+        "log_volume_change",
+        "close_vs_sma_10",
+        "close_vs_sma_20",
+        "close_vs_sma_50",
+        "close_vs_ema_20",
+        "rsi_14",
+        "macd_normalized",
+        "macd_signal_normalized",
+        "macd_histogram_normalized",
+        "bollinger_width",
+        "bollinger_position",
+        "vix_level",
+        "vix_change",
+        "vvix_level",
+        "vvix_change",
+        "vvix_vix_ratio",
+        "realized_volatility_20",
+        "sma_10_20_spread",
+        "sma_20_50_spread",
+        "sma_10_50_spread",
+        "ma_alignment_score",
+        "ma_compression",
+        "sma_10_slope_5",
+        "sma_20_slope_5",
+        "sma_50_slope_5",
+        "adx_14",
+        "dmi_spread_14"
+    ]
+}

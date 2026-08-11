@@ -43,6 +43,8 @@ class DirectionTrainingDataRepository:
     def get_training_data(
         self,
         ticker: str = "SPY",
+        include_breadth: bool = True,
+        include_cross_asset: bool = True,
     ) -> pd.DataFrame:
         market = pd.DataFrame(
             self.market_repository.get_market_data(
@@ -96,26 +98,28 @@ class DirectionTrainingDataRepository:
             column_name="vvix_close",
         )
 
-        dataset = self._merge_close_series(
-            dataset=dataset,
-            symbol="RSP",
-            column_name="rsp_close",
-        )
-
-        for symbol in self.SECTOR_SYMBOLS:
-            dataset = self._merge_sector_data(
-                dataset=dataset,
-                symbol=symbol,
-            )
-
-        for symbol in self.CROSS_ASSET_SYMBOLS:
+        if include_breadth:
             dataset = self._merge_close_series(
                 dataset=dataset,
-                symbol=symbol,
-                column_name=(
-                    f"{symbol.lower()}_close"
-                ),
+                symbol="RSP",
+                column_name="rsp_close",
             )
+
+            for symbol in self.SECTOR_SYMBOLS:
+                dataset = self._merge_sector_data(
+                    dataset=dataset,
+                    symbol=symbol,
+                )
+
+        if include_cross_asset:
+            for symbol in self.CROSS_ASSET_SYMBOLS:
+                dataset = self._merge_close_series(
+                    dataset=dataset,
+                    symbol=symbol,
+                    column_name=(
+                        f"{symbol.lower()}_close"
+                    ),
+                )
 
         dataset = dataset.sort_values(
             "trade_date"

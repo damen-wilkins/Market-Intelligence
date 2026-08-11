@@ -1,0 +1,3840 @@
+{
+    "experiment_name": "xlstm_refined_flat_stage_feature_search",
+    "model_name": "xlstm_refined_flat_stage_feature_search_v1",
+    "timestamp_utc": "20260811_151030_840141",
+    "parameters": {
+        "reference_hierarchical_experiment": "experiments\\xlstm_hierarchical_direction_20260811_045709_694025.json",
+        "cv_splits": 3,
+        "stage1_locked_parameters": {
+            "sequence_length": 40,
+            "embedding_dim": 64,
+            "num_blocks": 1,
+            "num_heads": 4,
+            "conv1d_kernel_size": 4,
+            "qkv_proj_blocksize": 8,
+            "proj_factor": 1.5,
+            "dropout": 0.21842923451032784,
+            "learning_rate": 0.0003122720186934885,
+            "batch_size": 32,
+            "weight_decay": 2.2373192483525125e-05,
+            "gradient_clip": 0.5,
+            "loss_name": "focal",
+            "focal_gamma": 1.2336734687634694,
+            "epochs": 4
+        },
+        "stage2_locked_parameters": {
+            "sequence_length": 60,
+            "embedding_dim": 64,
+            "num_blocks": 1,
+            "num_heads": 4,
+            "conv1d_kernel_size": 2,
+            "qkv_proj_blocksize": 8,
+            "proj_factor": 1.5,
+            "dropout": 0.003830837319199065,
+            "learning_rate": 0.0005062319735789886,
+            "batch_size": 128,
+            "weight_decay": 0.0034006617142094365,
+            "gradient_clip": 0.5,
+            "loss_name": "focal",
+            "focal_gamma": 2.754963789135902,
+            "epochs": 2
+        },
+        "target_candidates": [
+            {
+                "name": "flat_20d_k035",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.35,
+                "description": "Refined 20-day candidate below the prior 0.45 optimum."
+            },
+            {
+                "name": "flat_20d_k040",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.4,
+                "description": "Refined 20-day candidate near the prior optimum region."
+            },
+            {
+                "name": "flat_20d_k045",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.45,
+                "description": "Prior strongest end-to-end 20-day candidate."
+            },
+            {
+                "name": "flat_20d_k050",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.5,
+                "description": "Research-reference 0.50 multiplier and upper refined bound."
+            },
+            {
+                "name": "flat_40d_k030",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.3,
+                "description": "Prior strongest 40-day Stage-1 region anchor."
+            },
+            {
+                "name": "flat_40d_k035",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.35,
+                "description": "Refined 40-day candidate above the prior 0.30 anchor."
+            },
+            {
+                "name": "flat_40d_k040",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.4,
+                "description": "Refined 40-day candidate in the wider neutral region."
+            },
+            {
+                "name": "flat_40d_k045",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.45,
+                "description": "Upper 40-day candidate for neutral-zone sensitivity."
+            }
+        ],
+        "feature_profiles": [
+            {
+                "name": "base_only",
+                "stage1_features": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "stage2_features": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "description": "Controlled benchmark: both stages use only the original base feature contract."
+            },
+            {
+                "name": "stage_specific_trend",
+                "stage1_features": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "ma_compression",
+                    "adx_14"
+                ],
+                "stage2_features": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "dmi_spread_14"
+                ],
+                "description": "Stage 1 receives trend-strength/state features; Stage 2 receives directional trend features."
+            }
+        ],
+        "trend_groups": {
+            "trend": [
+                "sma_10_20_spread",
+                "sma_20_50_spread",
+                "sma_10_50_spread",
+                "ma_alignment_score",
+                "ma_compression",
+                "sma_10_slope_5",
+                "sma_20_slope_5",
+                "sma_50_slope_5",
+                "adx_14",
+                "dmi_spread_14"
+            ],
+            "strength": [
+                "ma_compression",
+                "adx_14"
+            ],
+            "directional": [
+                "sma_10_20_spread",
+                "sma_20_50_spread",
+                "sma_10_50_spread",
+                "ma_alignment_score",
+                "sma_10_slope_5",
+                "sma_20_slope_5",
+                "sma_50_slope_5",
+                "dmi_spread_14"
+            ],
+            "unassigned": []
+        },
+        "selection_policy": "Research sweep only. Candidates use common dates and locked model parameters. ROC AUC is reported as a threshold-free discrimination metric. Probability thresholds are calibrated only from training-period OOF predictions for research comparison. Any promoted target/profile must be independently retuned before outer-validation evaluation."
+    },
+    "metrics": {
+        "candidates": [
+            {
+                "target_name": "flat_20d_k035",
+                "target_description": "Refined 20-day candidate below the prior 0.45 optimum.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.35,
+                "feature_profile": "base_only",
+                "feature_profile_description": "Controlled benchmark: both stages use only the original base feature contract.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1027,
+                    "flat_count": 1085,
+                    "up_count": 1303,
+                    "down_share": 0.3007320644216691,
+                    "flat_share": 0.31771595900439237,
+                    "up_share": 0.3815519765739385
+                },
+                "metrics": {
+                    "move_threshold": 0.516727089881897,
+                    "up_threshold": 0.48414769768714905,
+                    "stage1_probability": {
+                        "roc_auc": 0.58922694810886,
+                        "average_precision": 0.7375796832298767,
+                        "brier_score": 0.23329240666285989
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.4778010422482784,
+                        "average_precision": 0.5501436097047544,
+                        "brier_score": 0.25674882678553773
+                    },
+                    "stage1": {
+                        "accuracy": 0.5971082454083626,
+                        "balanced_accuracy": 0.5722924948120169,
+                        "macro_f1": 0.563301689619711,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.39268527430221367,
+                                "recall": 0.504950495049505,
+                                "f1": 0.44179750947482405,
+                                "support": 808
+                            },
+                            "MOVE": {
+                                "precision": 0.7368421052631579,
+                                "recall": 0.6396344945745288,
+                                "f1": 0.684805869764598,
+                                "support": 1751
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                408,
+                                400
+                            ],
+                            [
+                                631,
+                                1120
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.500856653340948,
+                        "balanced_accuracy": 0.4875681316636091,
+                        "macro_f1": 0.4870768244877385,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4166666666666667,
+                                "recall": 0.39021164021164023,
+                                "f1": 0.4030054644808743,
+                                "support": 756
+                            },
+                            "UP": {
+                                "precision": 0.5580057526366251,
+                                "recall": 0.5849246231155779,
+                                "f1": 0.5711481844946026,
+                                "support": 995
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                295,
+                                461
+                            ],
+                            [
+                                413,
+                                582
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.38061742868307935,
+                        "balanced_accuracy": 0.3778424137380636,
+                        "macro_f1": 0.3714612332155273,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.29283489096573206,
+                                "recall": 0.24867724867724866,
+                                "f1": 0.26895565092989987,
+                                "support": 756
+                            },
+                            "FLAT": {
+                                "precision": 0.39268527430221367,
+                                "recall": 0.504950495049505,
+                                "f1": 0.44179750947482405,
+                                "support": 808
+                            },
+                            "UP": {
+                                "precision": 0.4305239179954442,
+                                "recall": 0.3798994974874372,
+                                "f1": 0.403630539241858,
+                                "support": 995
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                188,
+                                276,
+                                292
+                            ],
+                            [
+                                192,
+                                408,
+                                208
+                            ],
+                            [
+                                262,
+                                355,
+                                378
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5779436152570481,
+                            "stage1_balanced_accuracy": 0.5749521622655951,
+                            "stage1_flat_f1": 0.45271317829457364,
+                            "stage2_roc_auc": 0.4950828402366864,
+                            "stage2_balanced_accuracy": 0.5019230769230769,
+                            "end_to_end_macro_f1": 0.365638447939511
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.5972786987801063,
+                            "stage1_balanced_accuracy": 0.563415702220832,
+                            "stage1_flat_f1": 0.41354723707664887,
+                            "stage2_roc_auc": 0.4618558973354232,
+                            "stage2_balanced_accuracy": 0.49391408699059564,
+                            "end_to_end_macro_f1": 0.3785024924944971
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.5973185569806642,
+                            "stage1_balanced_accuracy": 0.5815024347399285,
+                            "stage1_flat_f1": 0.45553822152886114,
+                            "stage2_roc_auc": 0.471474358974359,
+                            "stage2_balanced_accuracy": 0.4740740740740741,
+                            "end_to_end_macro_f1": 0.363679207187715
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.5908469570059395,
+                        "stage1_roc_auc_std": 0.009124054960580908,
+                        "stage1_balanced_accuracy_mean": 0.5732900997421185,
+                        "stage1_flat_f1_mean": 0.4405995456333612,
+                        "stage2_roc_auc_mean": 0.4761376988488229,
+                        "stage2_roc_auc_std": 0.013959882705560839,
+                        "stage2_balanced_accuracy_mean": 0.4899704126625822,
+                        "end_to_end_macro_f1_mean": 0.36927338254057435,
+                        "end_to_end_macro_f1_std": 0.006574800832829894
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_20d_k035",
+                "target_description": "Refined 20-day candidate below the prior 0.45 optimum.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.35,
+                "feature_profile": "stage_specific_trend",
+                "feature_profile_description": "Stage 1 receives trend-strength/state features; Stage 2 receives directional trend features.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "ma_compression",
+                    "adx_14"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1027,
+                    "flat_count": 1085,
+                    "up_count": 1303,
+                    "down_share": 0.3007320644216691,
+                    "flat_share": 0.31771595900439237,
+                    "up_share": 0.3815519765739385
+                },
+                "metrics": {
+                    "move_threshold": 0.4749930202960968,
+                    "up_threshold": 0.465738445520401,
+                    "stage1_probability": {
+                        "roc_auc": 0.5706576440054056,
+                        "average_precision": 0.7306754187051037,
+                        "brier_score": 0.2366701346439288
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.49799127914705804,
+                        "average_precision": 0.5684466697129693,
+                        "brier_score": 0.25793657916772833
+                    },
+                    "stage1": {
+                        "accuracy": 0.6256350136772176,
+                        "balanced_accuracy": 0.5541462163063822,
+                        "macro_f1": 0.5550873665183336,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.3975409836065574,
+                                "recall": 0.36014851485148514,
+                                "f1": 0.37792207792207794,
+                                "support": 808
+                            },
+                            "MOVE": {
+                                "precision": 0.7170224411603722,
+                                "recall": 0.7481439177612793,
+                                "f1": 0.7322526551145891,
+                                "support": 1751
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                291,
+                                517
+                            ],
+                            [
+                                441,
+                                1310
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.528269560251285,
+                        "balanced_accuracy": 0.5107355560873149,
+                        "macro_f1": 0.5089863090339735,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.44598765432098764,
+                                "recall": 0.38227513227513227,
+                                "f1": 0.4116809116809117,
+                                "support": 756
+                            },
+                            "UP": {
+                                "precision": 0.5766092475067996,
+                                "recall": 0.6391959798994975,
+                                "f1": 0.6062917063870352,
+                                "support": 995
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                289,
+                                467
+                            ],
+                            [
+                                359,
+                                636
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.37944509574052365,
+                        "balanced_accuracy": 0.37200239107423544,
+                        "macro_f1": 0.3723105901959955,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.31666666666666665,
+                                "recall": 0.30158730158730157,
+                                "f1": 0.3089430894308943,
+                                "support": 756
+                            },
+                            "FLAT": {
+                                "precision": 0.3975409836065574,
+                                "recall": 0.36014851485148514,
+                                "f1": 0.37792207792207794,
+                                "support": 808
+                            },
+                            "UP": {
+                                "precision": 0.4083107497741644,
+                                "recall": 0.4542713567839196,
+                                "f1": 0.4300666032350143,
+                                "support": 995
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                228,
+                                183,
+                                345
+                            ],
+                            [
+                                207,
+                                291,
+                                310
+                            ],
+                            [
+                                285,
+                                258,
+                                452
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5556958795764766,
+                            "stage1_balanced_accuracy": 0.5316079857124634,
+                            "stage1_flat_f1": 0.31072210065645517,
+                            "stage2_roc_auc": 0.5105680473372781,
+                            "stage2_balanced_accuracy": 0.5369230769230768,
+                            "end_to_end_macro_f1": 0.3708574606844725
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.5916922114482327,
+                            "stage1_balanced_accuracy": 0.557879261807945,
+                            "stage1_flat_f1": 0.3794466403162055,
+                            "stage2_roc_auc": 0.4929956896551724,
+                            "stage2_balanced_accuracy": 0.4871669278996865,
+                            "end_to_end_macro_f1": 0.34084087356945414
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.5760194262538587,
+                            "stage1_balanced_accuracy": 0.5750506968393588,
+                            "stage1_flat_f1": 0.42980935875216636,
+                            "stage2_roc_auc": 0.50570987654321,
+                            "stage2_balanced_accuracy": 0.5134081196581196,
+                            "end_to_end_macro_f1": 0.3834917085015266
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.5744691724261893,
+                        "stage1_roc_auc_std": 0.014736269140074176,
+                        "stage1_balanced_accuracy_mean": 0.5548459814532557,
+                        "stage1_flat_f1_mean": 0.373326033241609,
+                        "stage2_roc_auc_mean": 0.5030912045118868,
+                        "stage2_roc_auc_std": 0.007409004478006961,
+                        "stage2_balanced_accuracy_mean": 0.512499374826961,
+                        "end_to_end_macro_f1_mean": 0.3650633475851511,
+                        "end_to_end_macro_f1_std": 0.017887653843857758
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_20d_k040",
+                "target_description": "Refined 20-day candidate near the prior optimum region.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.4,
+                "feature_profile": "base_only",
+                "feature_profile_description": "Controlled benchmark: both stages use only the original base feature contract.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 963,
+                    "flat_count": 1223,
+                    "up_count": 1229,
+                    "down_share": 0.28199121522694,
+                    "flat_share": 0.3581259150805271,
+                    "up_share": 0.35988286969253297
+                },
+                "metrics": {
+                    "move_threshold": 0.5047494471073151,
+                    "up_threshold": 0.45776230096817017,
+                    "stage1_probability": {
+                        "roc_auc": 0.6001604902246863,
+                        "average_precision": 0.7072856093146338,
+                        "brier_score": 0.2356256929039044
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.4774299379422111,
+                        "average_precision": 0.5528185474816196,
+                        "brier_score": 0.25775460479013956
+                    },
+                    "stage1": {
+                        "accuracy": 0.6033606877686596,
+                        "balanced_accuracy": 0.5775900602169934,
+                        "macro_f1": 0.5760050512726044,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.45197168857431747,
+                                "recall": 0.48586956521739133,
+                                "f1": 0.4683080146673651,
+                                "support": 920
+                            },
+                            "MOVE": {
+                                "precision": 0.6987261146496815,
+                                "recall": 0.6693105552165954,
+                                "f1": 0.6837020878778436,
+                                "support": 1639
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                447,
+                                473
+                            ],
+                            [
+                                542,
+                                1097
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5399633923123855,
+                        "balanced_accuracy": 0.5061920963735265,
+                        "macro_f1": 0.4917089486430282,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4398148148148148,
+                                "recall": 0.2706552706552707,
+                                "f1": 0.3350970017636684,
+                                "support": 702
+                            },
+                            "UP": {
+                                "precision": 0.575807787903894,
+                                "recall": 0.7417289220917823,
+                                "f1": 0.648320895522388,
+                                "support": 937
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                190,
+                                512
+                            ],
+                            [
+                                242,
+                                695
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.4091441969519343,
+                        "balanced_accuracy": 0.39136155548425666,
+                        "macro_f1": 0.38470390833140744,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.29515418502202645,
+                                "recall": 0.1908831908831909,
+                                "f1": 0.23183391003460208,
+                                "support": 702
+                            },
+                            "FLAT": {
+                                "precision": 0.45197168857431747,
+                                "recall": 0.48586956521739133,
+                                "f1": 0.4683080146673651,
+                                "support": 920
+                            },
+                            "UP": {
+                                "precision": 0.4175627240143369,
+                                "recall": 0.4973319103521878,
+                                "f1": 0.45396980029225525,
+                                "support": 937
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                134,
+                                230,
+                                338
+                            ],
+                            [
+                                161,
+                                447,
+                                312
+                            ],
+                            [
+                                159,
+                                312,
+                                466
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5861075160579043,
+                            "stage1_balanced_accuracy": 0.5752864059054741,
+                            "stage1_flat_f1": 0.46275752773375595,
+                            "stage2_roc_auc": 0.4885787486515642,
+                            "stage2_balanced_accuracy": 0.5052791262135923,
+                            "end_to_end_macro_f1": 0.3856905702449425
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.6347141086918038,
+                            "stage1_balanced_accuracy": 0.5974154717649142,
+                            "stage1_flat_f1": 0.47635135135135137,
+                            "stage2_roc_auc": 0.4592081751172661,
+                            "stage2_balanced_accuracy": 0.498241009604646,
+                            "end_to_end_macro_f1": 0.3944577035986727
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.5816782223506187,
+                            "stage1_balanced_accuracy": 0.561976383070923,
+                            "stage1_flat_f1": 0.46647230320699706,
+                            "stage2_roc_auc": 0.46718236582694406,
+                            "stage2_balanced_accuracy": 0.5089266155531216,
+                            "end_to_end_macro_f1": 0.3706392643230112
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.6008332823667756,
+                        "stage1_roc_auc_std": 0.02402550665489202,
+                        "stage1_balanced_accuracy_mean": 0.5782260869137704,
+                        "stage1_flat_f1_mean": 0.4685270607640348,
+                        "stage2_roc_auc_mean": 0.47165642986525813,
+                        "stage2_roc_auc_std": 0.012400822128595737,
+                        "stage2_balanced_accuracy_mean": 0.5041489171237866,
+                        "end_to_end_macro_f1_mean": 0.38359584605554214,
+                        "end_to_end_macro_f1_std": 0.009836002387634863
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_20d_k040",
+                "target_description": "Refined 20-day candidate near the prior optimum region.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.4,
+                "feature_profile": "stage_specific_trend",
+                "feature_profile_description": "Stage 1 receives trend-strength/state features; Stage 2 receives directional trend features.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "ma_compression",
+                    "adx_14"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 963,
+                    "flat_count": 1223,
+                    "up_count": 1229,
+                    "down_share": 0.28199121522694,
+                    "flat_share": 0.3581259150805271,
+                    "up_share": 0.35988286969253297
+                },
+                "metrics": {
+                    "move_threshold": 0.5057966411113739,
+                    "up_threshold": 0.46495988965034485,
+                    "stage1_probability": {
+                        "roc_auc": 0.5702851022627796,
+                        "average_precision": 0.6876757793128078,
+                        "brier_score": 0.24076856525918292
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.5065022332898533,
+                        "average_precision": 0.5790189331321083,
+                        "brier_score": 0.26043160832626877
+                    },
+                    "stage1": {
+                        "accuracy": 0.5853849159828057,
+                        "balanced_accuracy": 0.5599809003368968,
+                        "macro_f1": 0.5582708929029004,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.4298507462686567,
+                                "recall": 0.46956521739130436,
+                                "f1": 0.44883116883116886,
+                                "support": 920
+                            },
+                            "MOVE": {
+                                "precision": 0.685971685971686,
+                                "recall": 0.6503965832824893,
+                                "f1": 0.667710616974632,
+                                "support": 1639
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                432,
+                                488
+                            ],
+                            [
+                                573,
+                                1066
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5228798047589994,
+                        "balanced_accuracy": 0.515366220008696,
+                        "macro_f1": 0.5151459898194496,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4452054794520548,
+                                "recall": 0.46296296296296297,
+                                "f1": 0.45391061452513964,
+                                "support": 702
+                            },
+                            "UP": {
+                                "precision": 0.5852585258525853,
+                                "recall": 0.567769477054429,
+                                "f1": 0.5763813651137595,
+                                "support": 937
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                325,
+                                377
+                            ],
+                            [
+                                405,
+                                532
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.3892145369284877,
+                        "balanced_accuracy": 0.38395699804915157,
+                        "macro_f1": 0.38272656810927863,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.3155680224403927,
+                                "recall": 0.32051282051282054,
+                                "f1": 0.31802120141342755,
+                                "support": 702
+                            },
+                            "FLAT": {
+                                "precision": 0.4298507462686567,
+                                "recall": 0.46956521739130436,
+                                "f1": 0.44883116883116886,
+                                "support": 920
+                            },
+                            "UP": {
+                                "precision": 0.40309155766944116,
+                                "recall": 0.3617929562433298,
+                                "f1": 0.3813273340832396,
+                                "support": 937
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                225,
+                                245,
+                                232
+                            ],
+                            [
+                                218,
+                                432,
+                                270
+                            ],
+                            [
+                                270,
+                                328,
+                                339
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5631590930879111,
+                            "stage1_balanced_accuracy": 0.5428680136132682,
+                            "stage1_flat_f1": 0.39372822299651566,
+                            "stage2_roc_auc": 0.48898327939590075,
+                            "stage2_balanced_accuracy": 0.5110639158576051,
+                            "end_to_end_macro_f1": 0.36513017905963935
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.6021596742786335,
+                            "stage1_balanced_accuracy": 0.5832772762140792,
+                            "stage1_flat_f1": 0.4772370486656201,
+                            "stage2_roc_auc": 0.511112352021443,
+                            "stage2_balanced_accuracy": 0.5196420594147867,
+                            "end_to_end_macro_f1": 0.3839282986684485
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.5531742019355771,
+                            "stage1_balanced_accuracy": 0.5545825509172324,
+                            "stage1_flat_f1": 0.4677871148459384,
+                            "stage2_roc_auc": 0.5305585980284776,
+                            "stage2_balanced_accuracy": 0.5171412924424973,
+                            "end_to_end_macro_f1": 0.3808137229892689
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.5728309897673739,
+                        "stage1_roc_auc_std": 0.02113533083412288,
+                        "stage1_balanced_accuracy_mean": 0.5602426135815266,
+                        "stage1_flat_f1_mean": 0.44625079550269137,
+                        "stage2_roc_auc_mean": 0.5102180764819404,
+                        "stage2_roc_auc_std": 0.016984828061252927,
+                        "stage2_balanced_accuracy_mean": 0.5159490892382964,
+                        "end_to_end_macro_f1_mean": 0.3766240669057856,
+                        "end_to_end_macro_f1_std": 0.008226268444447763
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_20d_k045",
+                "target_description": "Prior strongest end-to-end 20-day candidate.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.45,
+                "feature_profile": "base_only",
+                "feature_profile_description": "Controlled benchmark: both stages use only the original base feature contract.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 903,
+                    "flat_count": 1350,
+                    "up_count": 1162,
+                    "down_share": 0.2644216691068814,
+                    "flat_share": 0.3953147877013177,
+                    "up_share": 0.34026354319180085
+                },
+                "metrics": {
+                    "move_threshold": 0.5017662048339844,
+                    "up_threshold": 0.4814338982105255,
+                    "stage1_probability": {
+                        "roc_auc": 0.6034462508697012,
+                        "average_precision": 0.683551575251097,
+                        "brier_score": 0.23728553835247765
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.48650744735490503,
+                        "average_precision": 0.5584286382322514,
+                        "brier_score": 0.258302736987351
+                    },
+                    "stage1": {
+                        "accuracy": 0.599452911293474,
+                        "balanced_accuracy": 0.5794814346718753,
+                        "macro_f1": 0.579756839831036,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.4944500504540868,
+                                "recall": 0.4832347140039448,
+                                "f1": 0.48877805486284287,
+                                "support": 1014
+                            },
+                            "MOVE": {
+                                "precision": 0.6658163265306123,
+                                "recall": 0.6757281553398058,
+                                "f1": 0.670735624799229,
+                                "support": 1545
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                490,
+                                524
+                            ],
+                            [
+                                501,
+                                1044
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.517799352750809,
+                        "balanced_accuracy": 0.5034026707755521,
+                        "macro_f1": 0.5030693757935715,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.43134087237479807,
+                                "recall": 0.40454545454545454,
+                                "f1": 0.4175136825645035,
+                                "support": 660
+                            },
+                            "UP": {
+                                "precision": 0.5755939524838013,
+                                "recall": 0.6022598870056497,
+                                "f1": 0.5886250690226394,
+                                "support": 885
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                267,
+                                393
+                            ],
+                            [
+                                352,
+                                533
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.406799531066823,
+                        "balanced_accuracy": 0.3919804807679645,
+                        "macro_f1": 0.3919294716530166,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.28751974723538704,
+                                "recall": 0.27575757575757576,
+                                "f1": 0.2815158546017015,
+                                "support": 660
+                            },
+                            "FLAT": {
+                                "precision": 0.4944500504540868,
+                                "recall": 0.4832347140039448,
+                                "f1": 0.48877805486284287,
+                                "support": 1014
+                            },
+                            "UP": {
+                                "precision": 0.3946524064171123,
+                                "recall": 0.41694915254237286,
+                                "f1": 0.4054945054945055,
+                                "support": 885
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                182,
+                                215,
+                                263
+                            ],
+                            [
+                                221,
+                                490,
+                                303
+                            ],
+                            [
+                                230,
+                                286,
+                                369
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5932646947419167,
+                            "stage1_balanced_accuracy": 0.5591950460842716,
+                            "stage1_flat_f1": 0.4510108864696734,
+                            "stage2_roc_auc": 0.4963512677798392,
+                            "stage2_balanced_accuracy": 0.506756338899196,
+                            "end_to_end_macro_f1": 0.3821394420663793
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.6299028592375366,
+                            "stage1_balanced_accuracy": 0.6066715542521994,
+                            "stage1_flat_f1": 0.5039872408293461,
+                            "stage2_roc_auc": 0.44989293031997657,
+                            "stage2_balanced_accuracy": 0.4810971946203263,
+                            "end_to_end_macro_f1": 0.4004877410204543
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.5894107738280664,
+                            "stage1_balanced_accuracy": 0.5737744164849492,
+                            "stage1_flat_f1": 0.508843537414966,
+                            "stage2_roc_auc": 0.4940268559962957,
+                            "stage2_balanced_accuracy": 0.5113366260225343,
+                            "end_to_end_macro_f1": 0.38475409202526395
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.6041927759358399,
+                        "stage1_roc_auc_std": 0.018247729797387438,
+                        "stage1_balanced_accuracy_mean": 0.5798803389404734,
+                        "stage1_flat_f1_mean": 0.4879472215713285,
+                        "stage2_roc_auc_mean": 0.4800903513653705,
+                        "stage2_roc_auc_std": 0.02137387659238053,
+                        "stage2_balanced_accuracy_mean": 0.4997300531806855,
+                        "end_to_end_macro_f1_mean": 0.38912709170403254,
+                        "end_to_end_macro_f1_std": 0.008103800066220381
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_20d_k045",
+                "target_description": "Prior strongest end-to-end 20-day candidate.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.45,
+                "feature_profile": "stage_specific_trend",
+                "feature_profile_description": "Stage 1 receives trend-strength/state features; Stage 2 receives directional trend features.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "ma_compression",
+                    "adx_14"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 903,
+                    "flat_count": 1350,
+                    "up_count": 1162,
+                    "down_share": 0.2644216691068814,
+                    "flat_share": 0.3953147877013177,
+                    "up_share": 0.34026354319180085
+                },
+                "metrics": {
+                    "move_threshold": 0.5004507601261139,
+                    "up_threshold": 0.48927997052669525,
+                    "stage1_probability": {
+                        "roc_auc": 0.5743624850794381,
+                        "average_precision": 0.661508754030004,
+                        "brier_score": 0.24241132274592211
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.49801746276322545,
+                        "average_precision": 0.5722831682599456,
+                        "brier_score": 0.2579293223248681
+                    },
+                    "stage1": {
+                        "accuracy": 0.5818679171551387,
+                        "balanced_accuracy": 0.5593257501771318,
+                        "macro_f1": 0.5596343820120633,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.4711340206185567,
+                                "recall": 0.45069033530571995,
+                                "f1": 0.46068548387096775,
+                                "support": 1014
+                            },
+                            "MOVE": {
+                                "precision": 0.6494650723725613,
+                                "recall": 0.6679611650485436,
+                                "f1": 0.6585832801531589,
+                                "support": 1545
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                457,
+                                557
+                            ],
+                            [
+                                513,
+                                1032
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5145631067961165,
+                        "balanced_accuracy": 0.5086671802773498,
+                        "macro_f1": 0.5081071581392506,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4364406779661017,
+                                "recall": 0.4681818181818182,
+                                "f1": 0.4517543859649123,
+                                "support": 660
+                            },
+                            "UP": {
+                                "precision": 0.5806451612903226,
+                                "recall": 0.5491525423728814,
+                                "f1": 0.5644599303135889,
+                                "support": 885
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                309,
+                                351
+                            ],
+                            [
+                                399,
+                                486
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.3872606486908949,
+                        "balanced_accuracy": 0.37909503215891743,
+                        "macro_f1": 0.3786740892267688,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.29110512129380056,
+                                "recall": 0.32727272727272727,
+                                "f1": 0.30813124108416545,
+                                "support": 660
+                            },
+                            "FLAT": {
+                                "precision": 0.4711340206185567,
+                                "recall": 0.45069033530571995,
+                                "f1": 0.46068548387096775,
+                                "support": 1014
+                            },
+                            "UP": {
+                                "precision": 0.3754427390791027,
+                                "recall": 0.3593220338983051,
+                                "f1": 0.3672055427251732,
+                                "support": 885
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                216,
+                                208,
+                                236
+                            ],
+                            [
+                                264,
+                                457,
+                                293
+                            ],
+                            [
+                                262,
+                                305,
+                                318
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5754565384571239,
+                            "stage1_balanced_accuracy": 0.5416508843818509,
+                            "stage1_flat_f1": 0.3875432525951557,
+                            "stage2_roc_auc": 0.485760667903525,
+                            "stage2_balanced_accuracy": 0.5045454545454545,
+                            "end_to_end_macro_f1": 0.3560532499500077
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.593446435117302,
+                            "stage1_balanced_accuracy": 0.578826635813783,
+                            "stage1_flat_f1": 0.4707740916271722,
+                            "stage2_roc_auc": 0.5031812789819907,
+                            "stage2_balanced_accuracy": 0.5029655990510083,
+                            "end_to_end_macro_f1": 0.3831774441964273
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.5687988185478754,
+                            "stage1_balanced_accuracy": 0.55930912740992,
+                            "stage1_flat_f1": 0.5071151358344114,
+                            "stage2_roc_auc": 0.5221330452230282,
+                            "stage2_balanced_accuracy": 0.5290168235838864,
+                            "end_to_end_macro_f1": 0.3857027371952308
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.5792339307074338,
+                        "stage1_roc_auc_std": 0.010410820326240518,
+                        "stage1_balanced_accuracy_mean": 0.5599288825351846,
+                        "stage1_flat_f1_mean": 0.45514416001891317,
+                        "stage2_roc_auc_mean": 0.5036916640361814,
+                        "stage2_roc_auc_std": 0.014853345922624812,
+                        "stage2_balanced_accuracy_mean": 0.5121759590601164,
+                        "end_to_end_macro_f1_mean": 0.37497781044722195,
+                        "end_to_end_macro_f1_std": 0.013421339195276365
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_20d_k050",
+                "target_description": "Research-reference 0.50 multiplier and upper refined bound.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.5,
+                "feature_profile": "base_only",
+                "feature_profile_description": "Controlled benchmark: both stages use only the original base feature contract.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 861,
+                    "flat_count": 1466,
+                    "up_count": 1088,
+                    "down_share": 0.2521229868228404,
+                    "flat_share": 0.4292825768667643,
+                    "up_share": 0.3185944363103953
+                },
+                "metrics": {
+                    "move_threshold": 0.5406687259674072,
+                    "up_threshold": 0.47479207813739777,
+                    "stage1_probability": {
+                        "roc_auc": 0.5925433793197106,
+                        "average_precision": 0.6465051516113207,
+                        "brier_score": 0.24083282515013593
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.48178861944593665,
+                        "average_precision": 0.5475411395257018,
+                        "brier_score": 0.25916166570688615
+                    },
+                    "stage1": {
+                        "accuracy": 0.5697538100820633,
+                        "balanced_accuracy": 0.5711661303042875,
+                        "macro_f1": 0.5676619971436889,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.5,
+                                "recall": 0.5812897366030881,
+                                "f1": 0.5375892482150357,
+                                "support": 1101
+                            },
+                            "MOVE": {
+                                "precision": 0.6395621579358874,
+                                "recall": 0.5610425240054869,
+                                "f1": 0.597734746072342,
+                                "support": 1458
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                640,
+                                461
+                            ],
+                            [
+                                640,
+                                818
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.51440329218107,
+                        "balanced_accuracy": 0.4971491059780523,
+                        "macro_f1": 0.4955313159746657,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.42700729927007297,
+                                "recall": 0.37261146496815284,
+                                "f1": 0.3979591836734694,
+                                "support": 628
+                            },
+                            "UP": {
+                                "precision": 0.567032967032967,
+                                "recall": 0.6216867469879518,
+                                "f1": 0.593103448275862,
+                                "support": 830
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                234,
+                                394
+                            ],
+                            [
+                                314,
+                                516
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.41539663931223136,
+                        "balanced_accuracy": 0.38004851399674733,
+                        "macro_f1": 0.3767427978067979,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.2651356993736952,
+                                "recall": 0.20222929936305734,
+                                "f1": 0.22944896115627822,
+                                "support": 628
+                            },
+                            "FLAT": {
+                                "precision": 0.5,
+                                "recall": 0.5812897366030881,
+                                "f1": 0.5375892482150357,
+                                "support": 1101
+                            },
+                            "UP": {
+                                "precision": 0.37,
+                                "recall": 0.3566265060240964,
+                                "f1": 0.36319018404907977,
+                                "support": 830
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                127,
+                                270,
+                                231
+                            ],
+                            [
+                                188,
+                                640,
+                                273
+                            ],
+                            [
+                                164,
+                                370,
+                                296
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5850963693411027,
+                            "stage1_balanced_accuracy": 0.5594576423128642,
+                            "stage1_flat_f1": 0.5326757090012331,
+                            "stage2_roc_auc": 0.4809652589972956,
+                            "stage2_balanced_accuracy": 0.48930379307953675,
+                            "end_to_end_macro_f1": 0.3791238409342393
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.6061756119470021,
+                            "stage1_balanced_accuracy": 0.5781523691893106,
+                            "stage1_flat_f1": 0.49189985272459497,
+                            "stage2_roc_auc": 0.46192333785617373,
+                            "stage2_balanced_accuracy": 0.48843283582089553,
+                            "end_to_end_macro_f1": 0.3722128019520274
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.5885477364410578,
+                            "stage1_balanced_accuracy": 0.5749579784849843,
+                            "stage1_flat_f1": 0.5768799102132436,
+                            "stage2_roc_auc": 0.5005095407105458,
+                            "stage2_balanced_accuracy": 0.5108936289840813,
+                            "end_to_end_macro_f1": 0.3702252909074186
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.5932732392430542,
+                        "stage1_roc_auc_std": 0.00923151846514061,
+                        "stage1_balanced_accuracy_mean": 0.5708559966623864,
+                        "stage1_flat_f1_mean": 0.5338184906463572,
+                        "stage2_roc_auc_mean": 0.4811327125213383,
+                        "stage2_roc_auc_std": 0.01575319635696669,
+                        "stage2_balanced_accuracy_mean": 0.49621008596150457,
+                        "end_to_end_macro_f1_mean": 0.37385397793122843,
+                        "end_to_end_macro_f1_std": 0.003813672079154804
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_20d_k050",
+                "target_description": "Research-reference 0.50 multiplier and upper refined bound.",
+                "volatility_window": 20,
+                "threshold_multiplier": 0.5,
+                "feature_profile": "stage_specific_trend",
+                "feature_profile_description": "Stage 1 receives trend-strength/state features; Stage 2 receives directional trend features.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "ma_compression",
+                    "adx_14"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 861,
+                    "flat_count": 1466,
+                    "up_count": 1088,
+                    "down_share": 0.2521229868228404,
+                    "flat_share": 0.4292825768667643,
+                    "up_share": 0.3185944363103953
+                },
+                "metrics": {
+                    "move_threshold": 0.5278432071208954,
+                    "up_threshold": 0.4762562960386276,
+                    "stage1_probability": {
+                        "roc_auc": 0.5833392513851356,
+                        "average_precision": 0.6385496884597308,
+                        "brier_score": 0.2435531402042313
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.4901043665106285,
+                        "average_precision": 0.5622658335861198,
+                        "brier_score": 0.2585339752153041
+                    },
+                    "stage1": {
+                        "accuracy": 0.570926143024619,
+                        "balanced_accuracy": 0.5694150099236385,
+                        "macro_f1": 0.5674010641835716,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.5012224938875306,
+                                "recall": 0.55858310626703,
+                                "f1": 0.5283505154639175,
+                                "support": 1101
+                            },
+                            "MOVE": {
+                                "precision": 0.6351351351351351,
+                                "recall": 0.5802469135802469,
+                                "f1": 0.6064516129032258,
+                                "support": 1458
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                615,
+                                486
+                            ],
+                            [
+                                612,
+                                846
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5150891632373114,
+                        "balanced_accuracy": 0.5012393523137135,
+                        "macro_f1": 0.5007611072500127,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4322469982847341,
+                                "recall": 0.4012738853503185,
+                                "f1": 0.4161849710982659,
+                                "support": 628
+                            },
+                            "UP": {
+                                "precision": 0.5702857142857143,
+                                "recall": 0.6012048192771084,
+                                "f1": 0.5853372434017595,
+                                "support": 830
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                252,
+                                376
+                            ],
+                            [
+                                331,
+                                499
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.41305197342711997,
+                        "balanced_accuracy": 0.38359799600352157,
+                        "macro_f1": 0.38244763596316983,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.29333333333333333,
+                                "recall": 0.24522292993630573,
+                                "f1": 0.26712922810060713,
+                                "support": 628
+                            },
+                            "FLAT": {
+                                "precision": 0.5012224938875306,
+                                "recall": 0.55858310626703,
+                                "f1": 0.5283505154639175,
+                                "support": 1101
+                            },
+                            "UP": {
+                                "precision": 0.35687732342007433,
+                                "recall": 0.3469879518072289,
+                                "f1": 0.3518631643249847,
+                                "support": 830
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                154,
+                                251,
+                                223
+                            ],
+                            [
+                                190,
+                                615,
+                                296
+                            ],
+                            [
+                                181,
+                                361,
+                                288
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5921335723890632,
+                            "stage1_balanced_accuracy": 0.5625140071716719,
+                            "stage1_flat_f1": 0.4908835904628331,
+                            "stage2_roc_auc": 0.5058248387767839,
+                            "stage2_balanced_accuracy": 0.5254663338187365,
+                            "end_to_end_macro_f1": 0.3933534790449425
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.5833202335504155,
+                            "stage1_balanced_accuracy": 0.5744105097686952,
+                            "stage1_flat_f1": 0.49421965317919075,
+                            "stage2_roc_auc": 0.47247286295793756,
+                            "stage2_balanced_accuracy": 0.4698100407055631,
+                            "end_to_end_macro_f1": 0.3484167739523061
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.589864410578216,
+                            "stage1_balanced_accuracy": 0.5706437696100404,
+                            "stage1_flat_f1": 0.5828819068255688,
+                            "stage2_roc_auc": 0.5138630214007098,
+                            "stage2_balanced_accuracy": 0.5205924728537794,
+                            "end_to_end_macro_f1": 0.387404463760131
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.5884394055058982,
+                        "stage1_roc_auc_std": 0.0037364613351228803,
+                        "stage1_balanced_accuracy_mean": 0.5691894288501358,
+                        "stage1_flat_f1_mean": 0.5226617168225309,
+                        "stage2_roc_auc_mean": 0.49738690771181043,
+                        "stage2_roc_auc_std": 0.017919920283907164,
+                        "stage2_balanced_accuracy_mean": 0.505289615792693,
+                        "end_to_end_macro_f1_mean": 0.37639157225245984,
+                        "end_to_end_macro_f1_std": 0.019929704809077416
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_40d_k030",
+                "target_description": "Prior strongest 40-day Stage-1 region anchor.",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.3,
+                "feature_profile": "base_only",
+                "feature_profile_description": "Controlled benchmark: both stages use only the original base feature contract.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1053,
+                    "flat_count": 1021,
+                    "up_count": 1341,
+                    "down_share": 0.30834553440702783,
+                    "flat_share": 0.29897510980966324,
+                    "up_share": 0.3926793557833089
+                },
+                "metrics": {
+                    "move_threshold": 0.5074043571949005,
+                    "up_threshold": 0.47582362592220306,
+                    "stage1_probability": {
+                        "roc_auc": 0.5838543044615202,
+                        "average_precision": 0.7525693120060337,
+                        "brier_score": 0.2327167730848731
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.48157292150019165,
+                        "average_precision": 0.5512493461227319,
+                        "brier_score": 0.2554124551788139
+                    },
+                    "stage1": {
+                        "accuracy": 0.6053145760062525,
+                        "balanced_accuracy": 0.5690707590124229,
+                        "macro_f1": 0.5602733713072416,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.372829417773238,
+                                "recall": 0.47963206307490147,
+                                "f1": 0.41954022988505746,
+                                "support": 761
+                            },
+                            "MOVE": {
+                                "precision": 0.7493670886075949,
+                                "recall": 0.6585094549499444,
+                                "f1": 0.7010065127294257,
+                                "support": 1798
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                365,
+                                396
+                            ],
+                            [
+                                614,
+                                1184
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5283648498331479,
+                        "balanced_accuracy": 0.500601458631751,
+                        "macro_f1": 0.49085906246452016,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.43258426966292135,
+                                "recall": 0.297680412371134,
+                                "f1": 0.3526717557251908,
+                                "support": 776
+                            },
+                            "UP": {
+                                "precision": 0.5688291139240507,
+                                "recall": 0.7035225048923679,
+                                "f1": 0.6290463692038495,
+                                "support": 1022
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                231,
+                                545
+                            ],
+                            [
+                                303,
+                                719
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.3821805392731536,
+                        "balanced_accuracy": 0.37470106099107364,
+                        "macro_f1": 0.36360829578092485,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.301255230125523,
+                                "recall": 0.18556701030927836,
+                                "f1": 0.22966507177033493,
+                                "support": 776
+                            },
+                            "FLAT": {
+                                "precision": 0.372829417773238,
+                                "recall": 0.47963206307490147,
+                                "f1": 0.41954022988505746,
+                                "support": 761
+                            },
+                            "UP": {
+                                "precision": 0.42558983666061706,
+                                "recall": 0.4589041095890411,
+                                "f1": 0.4416195856873823,
+                                "support": 1022
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                144,
+                                260,
+                                372
+                            ],
+                            [
+                                135,
+                                365,
+                                261
+                            ],
+                            [
+                                199,
+                                354,
+                                469
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5566484517304189,
+                            "stage1_balanced_accuracy": 0.5618026040612562,
+                            "stage1_flat_f1": 0.42170542635658914,
+                            "stage2_roc_auc": 0.4964677965363724,
+                            "stage2_balanced_accuracy": 0.49569495694956944,
+                            "end_to_end_macro_f1": 0.34482745415730287
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.6012322480857971,
+                            "stage1_balanced_accuracy": 0.559723766793215,
+                            "stage1_flat_f1": 0.3476297968397291,
+                            "stage2_roc_auc": 0.45844618168486034,
+                            "stage2_balanced_accuracy": 0.5117500266105284,
+                            "end_to_end_macro_f1": 0.3684627763086665
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.6165834998874932,
+                            "stage1_balanced_accuracy": 0.5959782133922781,
+                            "stage1_flat_f1": 0.4662576687116564,
+                            "stage2_roc_auc": 0.48150173136504465,
+                            "stage2_balanced_accuracy": 0.49363267723710585,
+                            "end_to_end_macro_f1": 0.3646542975307511
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.5914880665679031,
+                        "stage1_roc_auc_std": 0.0254199961249401,
+                        "stage1_balanced_accuracy_mean": 0.5725015280822497,
+                        "stage1_flat_f1_mean": 0.4118642973026582,
+                        "stage2_roc_auc_mean": 0.47880523652875917,
+                        "stage2_roc_auc_std": 0.015638928187501993,
+                        "stage2_balanced_accuracy_mean": 0.5003592202657345,
+                        "end_to_end_macro_f1_mean": 0.3593148426655735,
+                        "end_to_end_macro_f1_std": 0.010361449287065222
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_40d_k030",
+                "target_description": "Prior strongest 40-day Stage-1 region anchor.",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.3,
+                "feature_profile": "stage_specific_trend",
+                "feature_profile_description": "Stage 1 receives trend-strength/state features; Stage 2 receives directional trend features.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "ma_compression",
+                    "adx_14"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1053,
+                    "flat_count": 1021,
+                    "up_count": 1341,
+                    "down_share": 0.30834553440702783,
+                    "flat_share": 0.29897510980966324,
+                    "up_share": 0.3926793557833089
+                },
+                "metrics": {
+                    "move_threshold": 0.4790131002664566,
+                    "up_threshold": 0.47507771849632263,
+                    "stage1_probability": {
+                        "roc_auc": 0.5772927723752045,
+                        "average_precision": 0.7459602511752217,
+                        "brier_score": 0.23476605267035028
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.49859785744547785,
+                        "average_precision": 0.5711121295151773,
+                        "brier_score": 0.2570509027665513
+                    },
+                    "stage1": {
+                        "accuracy": 0.6232903477921062,
+                        "balanced_accuracy": 0.5610208597960356,
+                        "macro_f1": 0.5593177102090514,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.37667071688942894,
+                                "recall": 0.4073587385019711,
+                                "f1": 0.39141414141414144,
+                                "support": 761
+                            },
+                            "MOVE": {
+                                "precision": 0.7402073732718893,
+                                "recall": 0.7146829810901001,
+                                "f1": 0.7272212790039615,
+                                "support": 1798
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                310,
+                                451
+                            ],
+                            [
+                                513,
+                                1285
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5255839822024472,
+                        "balanced_accuracy": 0.5063752093126476,
+                        "macro_f1": 0.5037673000234577,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.44031007751937984,
+                                "recall": 0.36597938144329895,
+                                "f1": 0.39971850809289233,
+                                "support": 776
+                            },
+                            "UP": {
+                                "precision": 0.5732870771899393,
+                                "recall": 0.6467710371819961,
+                                "f1": 0.607816091954023,
+                                "support": 1022
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                284,
+                                492
+                            ],
+                            [
+                                361,
+                                661
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.38061742868307935,
+                        "balanced_accuracy": 0.3746884727831501,
+                        "macro_f1": 0.3731225189400094,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.3302752293577982,
+                                "recall": 0.27835051546391754,
+                                "f1": 0.3020979020979021,
+                                "support": 776
+                            },
+                            "FLAT": {
+                                "precision": 0.37667071688942894,
+                                "recall": 0.4073587385019711,
+                                "f1": 0.39141414141414144,
+                                "support": 761
+                            },
+                            "UP": {
+                                "precision": 0.41404805914972276,
+                                "recall": 0.4383561643835616,
+                                "f1": 0.42585551330798477,
+                                "support": 1022
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                216,
+                                209,
+                                351
+                            ],
+                            [
+                                168,
+                                310,
+                                283
+                            ],
+                            [
+                                270,
+                                304,
+                                448
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5439519665384875,
+                            "stage1_balanced_accuracy": 0.53705727585509,
+                            "stage1_flat_f1": 0.31363636363636366,
+                            "stage2_roc_auc": 0.4952595543654552,
+                            "stage2_balanced_accuracy": 0.5130892901849373,
+                            "end_to_end_macro_f1": 0.36239343677870317
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.5841801843259067,
+                            "stage1_balanced_accuracy": 0.5736185143996626,
+                            "stage1_flat_f1": 0.3983903420523139,
+                            "stage2_roc_auc": 0.48854564592622385,
+                            "stage2_balanced_accuracy": 0.4980130805530259,
+                            "end_to_end_macro_f1": 0.3754308820203409
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.6098661831080991,
+                            "stage1_balanced_accuracy": 0.5719050707469127,
+                            "stage1_flat_f1": 0.43894899536321486,
+                            "stage2_roc_auc": 0.5069596318571168,
+                            "stage2_balanced_accuracy": 0.5015035538545654,
+                            "end_to_end_macro_f1": 0.3578675809565423
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.5793327779908312,
+                        "stage1_roc_auc_std": 0.027126788698374812,
+                        "stage1_balanced_accuracy_mean": 0.5608602870005551,
+                        "stage1_flat_f1_mean": 0.38365856701729745,
+                        "stage2_roc_auc_mean": 0.4969216107162653,
+                        "stage2_roc_auc_std": 0.007608790659525855,
+                        "stage2_balanced_accuracy_mean": 0.5042019748641762,
+                        "end_to_end_macro_f1_mean": 0.36523063325186217,
+                        "end_to_end_macro_f1_std": 0.00744556462756571
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_40d_k035",
+                "target_description": "Refined 40-day candidate above the prior 0.30 anchor.",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.35,
+                "feature_profile": "base_only",
+                "feature_profile_description": "Controlled benchmark: both stages use only the original base feature contract.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1006,
+                    "flat_count": 1145,
+                    "up_count": 1264,
+                    "down_share": 0.29458272327964863,
+                    "flat_share": 0.33528550512445093,
+                    "up_share": 0.37013177159590044
+                },
+                "metrics": {
+                    "move_threshold": 0.49790848791599274,
+                    "up_threshold": 0.47465355694293976,
+                    "stage1_probability": {
+                        "roc_auc": 0.5919836698308876,
+                        "average_precision": 0.7248281513657915,
+                        "brier_score": 0.2367079615614181
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.4978035781400567,
+                        "average_precision": 0.5562101481417665,
+                        "brier_score": 0.2549800455821528
+                    },
+                    "stage1": {
+                        "accuracy": 0.6025791324736225,
+                        "balanced_accuracy": 0.5690655134555727,
+                        "macro_f1": 0.5665267061714034,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.4191866527632951,
+                                "recall": 0.46635730858468677,
+                                "f1": 0.4415156507413509,
+                                "support": 862
+                            },
+                            "MOVE": {
+                                "precision": 0.7125,
+                                "recall": 0.6717737183264585,
+                                "f1": 0.6915377616014559,
+                                "support": 1697
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                402,
+                                460
+                            ],
+                            [
+                                557,
+                                1140
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5344725987035945,
+                        "balanced_accuracy": 0.5151997479307431,
+                        "macro_f1": 0.5118918627648017,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4562289562289562,
+                                "recall": 0.36720867208672087,
+                                "f1": 0.4069069069069069,
+                                "support": 738
+                            },
+                            "UP": {
+                                "precision": 0.5766092475067996,
+                                "recall": 0.6631908237747653,
+                                "f1": 0.6168768186226964,
+                                "support": 959
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                271,
+                                467
+                            ],
+                            [
+                                323,
+                                636
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.39273153575615477,
+                        "balanced_accuracy": 0.3845100117897687,
+                        "macro_f1": 0.3819036826198232,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.3142857142857143,
+                                "recall": 0.25338753387533874,
+                                "f1": 0.2805701425356339,
+                                "support": 738
+                            },
+                            "FLAT": {
+                                "precision": 0.4191866527632951,
+                                "recall": 0.46635730858468677,
+                                "f1": 0.4415156507413509,
+                                "support": 862
+                            },
+                            "UP": {
+                                "precision": 0.41393034825870645,
+                                "recall": 0.4337851929092805,
+                                "f1": 0.42362525458248473,
+                                "support": 959
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                187,
+                                237,
+                                314
+                            ],
+                            [
+                                185,
+                                402,
+                                275
+                            ],
+                            [
+                                223,
+                                320,
+                                416
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5562199157641395,
+                            "stage1_balanced_accuracy": 0.5456277577216205,
+                            "stage1_flat_f1": 0.4195583596214511,
+                            "stage2_roc_auc": 0.5070673752366991,
+                            "stage2_balanced_accuracy": 0.5150448964632581,
+                            "end_to_end_macro_f1": 0.3638075237863602
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.6206726371033752,
+                            "stage1_balanced_accuracy": 0.5830775434541866,
+                            "stage1_flat_f1": 0.39148936170212767,
+                            "stage2_roc_auc": 0.497554574734582,
+                            "stage2_balanced_accuracy": 0.5180722891566265,
+                            "end_to_end_macro_f1": 0.3877638525543792
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.6127441273298844,
+                            "stage1_balanced_accuracy": 0.5866636550409663,
+                            "stage1_flat_f1": 0.49372384937238495,
+                            "stage2_roc_auc": 0.4817578772802653,
+                            "stage2_balanced_accuracy": 0.5101543564230131,
+                            "end_to_end_macro_f1": 0.38331026843175
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.5965455600657997,
+                        "stage1_roc_auc_std": 0.028697659696278334,
+                        "stage1_balanced_accuracy_mean": 0.5717896520722577,
+                        "stage1_flat_f1_mean": 0.4349238568986546,
+                        "stage2_roc_auc_mean": 0.4954599424171821,
+                        "stage2_roc_auc_std": 0.010438176249086918,
+                        "stage2_balanced_accuracy_mean": 0.5144238473476326,
+                        "end_to_end_macro_f1_mean": 0.37829388159082983,
+                        "end_to_end_macro_f1_std": 0.010403509815239312
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_40d_k035",
+                "target_description": "Refined 40-day candidate above the prior 0.30 anchor.",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.35,
+                "feature_profile": "stage_specific_trend",
+                "feature_profile_description": "Stage 1 receives trend-strength/state features; Stage 2 receives directional trend features.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "ma_compression",
+                    "adx_14"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 1006,
+                    "flat_count": 1145,
+                    "up_count": 1264,
+                    "down_share": 0.29458272327964863,
+                    "flat_share": 0.33528550512445093,
+                    "up_share": 0.37013177159590044
+                },
+                "metrics": {
+                    "move_threshold": 0.48745056986808777,
+                    "up_threshold": 0.4810597598552704,
+                    "stage1_probability": {
+                        "roc_auc": 0.5866391762725814,
+                        "average_precision": 0.723781540619973,
+                        "brier_score": 0.23789483546721862
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.5055147214662971,
+                        "average_precision": 0.5650975245251102,
+                        "brier_score": 0.25714795685635716
+                    },
+                    "stage1": {
+                        "accuracy": 0.605705353653771,
+                        "balanced_accuracy": 0.5685685261420795,
+                        "macro_f1": 0.5668986744608314,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.42105263157894735,
+                                "recall": 0.4547563805104408,
+                                "f1": 0.4372559955382041,
+                                "support": 862
+                            },
+                            "MOVE": {
+                                "precision": 0.7113022113022113,
+                                "recall": 0.6823806717737183,
+                                "f1": 0.6965413533834587,
+                                "support": 1697
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                392,
+                                470
+                            ],
+                            [
+                                539,
+                                1158
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5226870948733058,
+                        "balanced_accuracy": 0.5124226059778847,
+                        "macro_f1": 0.5123563218390805,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.449438202247191,
+                                "recall": 0.43360433604336046,
+                                "f1": 0.4413793103448276,
+                                "support": 738
+                            },
+                            "UP": {
+                                "precision": 0.5756345177664974,
+                                "recall": 0.5912408759124088,
+                                "f1": 0.5833333333333334,
+                                "support": 959
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                320,
+                                418
+                            ],
+                            [
+                                392,
+                                567
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.39234075810863617,
+                        "balanced_accuracy": 0.3888715521829614,
+                        "macro_f1": 0.38792722167772026,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.3167785234899329,
+                                "recall": 0.31978319783197834,
+                                "f1": 0.31827376938637897,
+                                "support": 738
+                            },
+                            "FLAT": {
+                                "precision": 0.42105263157894735,
+                                "recall": 0.4547563805104408,
+                                "f1": 0.4372559955382041,
+                                "support": 862
+                            },
+                            "UP": {
+                                "precision": 0.4258210645526614,
+                                "recall": 0.3920750782064651,
+                                "f1": 0.40825190010857765,
+                                "support": 959
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                236,
+                                234,
+                                268
+                            ],
+                            [
+                                231,
+                                392,
+                                239
+                            ],
+                            [
+                                278,
+                                305,
+                                376
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5597485459286,
+                            "stage1_balanced_accuracy": 0.529435544524669,
+                            "stage1_flat_f1": 0.3405088062622309,
+                            "stage2_roc_auc": 0.5070062916132185,
+                            "stage2_balanced_accuracy": 0.5194612424409016,
+                            "end_to_end_macro_f1": 0.35784990251186627
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.6039891183976118,
+                            "stage1_balanced_accuracy": 0.5812779864220714,
+                            "stage1_flat_f1": 0.42962962962962964,
+                            "stage2_roc_auc": 0.482046999880711,
+                            "stage2_balanced_accuracy": 0.4910930852121357,
+                            "end_to_end_macro_f1": 0.3876406936239079
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.617849451719102,
+                            "stage1_balanced_accuracy": 0.5963668655164731,
+                            "stage1_flat_f1": 0.5094339622641509,
+                            "stage2_roc_auc": 0.5254114045158821,
+                            "stage2_balanced_accuracy": 0.5212782242632988,
+                            "end_to_end_macro_f1": 0.39862560115901796
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.5938623720151046,
+                        "stage1_roc_auc_std": 0.024776898617339956,
+                        "stage1_balanced_accuracy_mean": 0.5690267988210712,
+                        "stage1_flat_f1_mean": 0.42652413271867057,
+                        "stage2_roc_auc_mean": 0.5048215653366038,
+                        "stage2_roc_auc_std": 0.017770718781533294,
+                        "stage2_balanced_accuracy_mean": 0.5106108506387788,
+                        "end_to_end_macro_f1_mean": 0.3813720657649307,
+                        "end_to_end_macro_f1_std": 0.017226649344675066
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_40d_k040",
+                "target_description": "Refined 40-day candidate in the wider neutral region.",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.4,
+                "feature_profile": "base_only",
+                "feature_profile_description": "Controlled benchmark: both stages use only the original base feature contract.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 941,
+                    "flat_count": 1286,
+                    "up_count": 1188,
+                    "down_share": 0.2755490483162518,
+                    "flat_share": 0.3765739385065886,
+                    "up_share": 0.3478770131771596
+                },
+                "metrics": {
+                    "move_threshold": 0.4984729439020157,
+                    "up_threshold": 0.4716830998659134,
+                    "stage1_probability": {
+                        "roc_auc": 0.6041365696112413,
+                        "average_precision": 0.69960087676012,
+                        "brier_score": 0.23759669762392838
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.4885366281869768,
+                        "average_precision": 0.5559027162553472,
+                        "brier_score": 0.2570338436122519
+                    },
+                    "stage1": {
+                        "accuracy": 0.5943728018757327,
+                        "balanced_accuracy": 0.5777764208841518,
+                        "macro_f1": 0.5758330544136171,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.4664143803216651,
+                                "recall": 0.5098241985522234,
+                                "f1": 0.4871541501976285,
+                                "support": 967
+                            },
+                            "MOVE": {
+                                "precision": 0.6844207723035952,
+                                "recall": 0.6457286432160804,
+                                "f1": 0.6645119586296057,
+                                "support": 1592
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                493,
+                                474
+                            ],
+                            [
+                                564,
+                                1028
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5295226130653267,
+                        "balanced_accuracy": 0.505012507107226,
+                        "macro_f1": 0.49964899294754866,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.43653846153846154,
+                                "recall": 0.3323572474377745,
+                                "f1": 0.3773898586866168,
+                                "support": 683
+                            },
+                            "UP": {
+                                "precision": 0.5746268656716418,
+                                "recall": 0.6776677667766776,
+                                "f1": 0.6219081272084805,
+                                "support": 909
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                227,
+                                456
+                            ],
+                            [
+                                293,
+                                616
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.4048456428292302,
+                        "balanced_accuracy": 0.3873835927362416,
+                        "macro_f1": 0.3844108475168038,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.27706422018348625,
+                                "recall": 0.22108345534407028,
+                                "f1": 0.24592833876221498,
+                                "support": 683
+                            },
+                            "FLAT": {
+                                "precision": 0.4664143803216651,
+                                "recall": 0.5098241985522234,
+                                "f1": 0.4871541501976285,
+                                "support": 967
+                            },
+                            "UP": {
+                                "precision": 0.4096133751306165,
+                                "recall": 0.4312431243124312,
+                                "f1": 0.42015005359056806,
+                                "support": 909
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                151,
+                                250,
+                                282
+                            ],
+                            [
+                                191,
+                                493,
+                                283
+                            ],
+                            [
+                                203,
+                                314,
+                                392
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5698729797620741,
+                            "stage1_balanced_accuracy": 0.5572213138063415,
+                            "stage1_flat_f1": 0.4822888283378747,
+                            "stage2_roc_auc": 0.4924488944513976,
+                            "stage2_balanced_accuracy": 0.5117855652899458,
+                            "end_to_end_macro_f1": 0.3791166558117591
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.6331089173381704,
+                            "stage1_balanced_accuracy": 0.5839670468948035,
+                            "stage1_flat_f1": 0.4168260038240918,
+                            "stage2_roc_auc": 0.47490030494956603,
+                            "stage2_balanced_accuracy": 0.49350516068496364,
+                            "end_to_end_macro_f1": 0.3746095884256803
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.6200813008130082,
+                            "stage1_balanced_accuracy": 0.594596399535424,
+                            "stage1_flat_f1": 0.5397653194263363,
+                            "stage2_roc_auc": 0.49322785568740257,
+                            "stage2_balanced_accuracy": 0.5031463502337289,
+                            "end_to_end_macro_f1": 0.38650700593388354
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.6076877326377509,
+                        "stage1_roc_auc_std": 0.027262872792720032,
+                        "stage1_balanced_accuracy_mean": 0.5785949200788564,
+                        "stage1_flat_f1_mean": 0.4796267171961009,
+                        "stage2_roc_auc_mean": 0.4868590183627887,
+                        "stage2_roc_auc_std": 0.008462064957857276,
+                        "stage2_balanced_accuracy_mean": 0.5028123587362128,
+                        "end_to_end_macro_f1_mean": 0.3800777500571077,
+                        "end_to_end_macro_f1_std": 0.004904413825148169
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_40d_k040",
+                "target_description": "Refined 40-day candidate in the wider neutral region.",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.4,
+                "feature_profile": "stage_specific_trend",
+                "feature_profile_description": "Stage 1 receives trend-strength/state features; Stage 2 receives directional trend features.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "ma_compression",
+                    "adx_14"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 941,
+                    "flat_count": 1286,
+                    "up_count": 1188,
+                    "down_share": 0.2755490483162518,
+                    "flat_share": 0.3765739385065886,
+                    "up_share": 0.3478770131771596
+                },
+                "metrics": {
+                    "move_threshold": 0.49399901926517487,
+                    "up_threshold": 0.46758684515953064,
+                    "stage1_probability": {
+                        "roc_auc": 0.5960399203878752,
+                        "average_precision": 0.6948020521512372,
+                        "brier_score": 0.2389357804863192
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.4964314879511377,
+                        "average_precision": 0.5685074198085033,
+                        "brier_score": 0.2588964732078547
+                    },
+                    "stage1": {
+                        "accuracy": 0.5943728018757327,
+                        "balanced_accuracy": 0.5710776607962252,
+                        "macro_f1": 0.5706930993910087,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.46417759838546924,
+                                "recall": 0.4756980351602896,
+                                "f1": 0.4698672114402451,
+                                "support": 967
+                            },
+                            "MOVE": {
+                                "precision": 0.6766581632653061,
+                                "recall": 0.6664572864321608,
+                                "f1": 0.6715189873417722,
+                                "support": 1592
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                460,
+                                507
+                            ],
+                            [
+                                531,
+                                1061
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5301507537688442,
+                        "balanced_accuracy": 0.511568872846289,
+                        "macro_f1": 0.5098489887581252,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.4444444444444444,
+                                "recall": 0.3806734992679356,
+                                "f1": 0.41009463722397477,
+                                "support": 683
+                            },
+                            "UP": {
+                                "precision": 0.579940417080437,
+                                "recall": 0.6424642464246425,
+                                "f1": 0.6096033402922756,
+                                "support": 909
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                260,
+                                423
+                            ],
+                            [
+                                325,
+                                584
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.40289175459163734,
+                        "balanced_accuracy": 0.38979474708753276,
+                        "macro_f1": 0.3890421259240831,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.29605263157894735,
+                                "recall": 0.2635431918008785,
+                                "f1": 0.278853601859024,
+                                "support": 683
+                            },
+                            "FLAT": {
+                                "precision": 0.46417759838546924,
+                                "recall": 0.4756980351602896,
+                                "f1": 0.4698672114402451,
+                                "support": 967
+                            },
+                            "UP": {
+                                "precision": 0.40729166666666666,
+                                "recall": 0.43014301430143015,
+                                "f1": 0.4184055644729802,
+                                "support": 909
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                180,
+                                235,
+                                268
+                            ],
+                            [
+                                206,
+                                460,
+                                301
+                            ],
+                            [
+                                222,
+                                296,
+                                391
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5729477700364947,
+                            "stage1_balanced_accuracy": 0.5317402483530025,
+                            "stage1_flat_f1": 0.3946932006633499,
+                            "stage2_roc_auc": 0.49662077596996246,
+                            "stage2_balanced_accuracy": 0.5252676957307746,
+                            "end_to_end_macro_f1": 0.368286813235323
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.6181672306135975,
+                            "stage1_balanced_accuracy": 0.5849147102940664,
+                            "stage1_flat_f1": 0.4536082474226804,
+                            "stage2_roc_auc": 0.4813951442646024,
+                            "stage2_balanced_accuracy": 0.49529380717804367,
+                            "end_to_end_macro_f1": 0.3746159383366854
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.6097502903600465,
+                            "stage1_balanced_accuracy": 0.593835656213705,
+                            "stage1_flat_f1": 0.5407503234152652,
+                            "stage2_roc_auc": 0.5229383914658996,
+                            "stage2_balanced_accuracy": 0.5145855807263574,
+                            "end_to_end_macro_f1": 0.40464419571759874
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.6002884303367129,
+                        "stage1_roc_auc_std": 0.01963576668644759,
+                        "stage1_balanced_accuracy_mean": 0.5701635382869247,
+                        "stage1_flat_f1_mean": 0.4630172571670985,
+                        "stage2_roc_auc_mean": 0.5003181039001549,
+                        "stage2_roc_auc_std": 0.01716028403755908,
+                        "stage2_balanced_accuracy_mean": 0.5117156945450585,
+                        "end_to_end_macro_f1_mean": 0.38251564909653574,
+                        "end_to_end_macro_f1_std": 0.01585914852291035
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_40d_k045",
+                "target_description": "Upper 40-day candidate for neutral-zone sensitivity.",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.45,
+                "feature_profile": "base_only",
+                "feature_profile_description": "Controlled benchmark: both stages use only the original base feature contract.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 880,
+                    "flat_count": 1417,
+                    "up_count": 1118,
+                    "down_share": 0.25768667642752563,
+                    "flat_share": 0.4149341142020498,
+                    "up_share": 0.3273792093704246
+                },
+                "metrics": {
+                    "move_threshold": 0.5081000626087189,
+                    "up_threshold": 0.46445977687835693,
+                    "stage1_probability": {
+                        "roc_auc": 0.6193082339228881,
+                        "average_precision": 0.6779074474992495,
+                        "brier_score": 0.23685307486864157
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.4791836772224062,
+                        "average_precision": 0.5519005164014936,
+                        "brier_score": 0.26076372417691857
+                    },
+                    "stage1": {
+                        "accuracy": 0.5971082454083626,
+                        "balanced_accuracy": 0.5914353160159458,
+                        "macro_f1": 0.5899546441947973,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.5160450997398092,
+                                "recall": 0.5571161048689138,
+                                "f1": 0.5357946870778928,
+                                "support": 1068
+                            },
+                            "MOVE": {
+                                "precision": 0.6635846372688478,
+                                "recall": 0.6257545271629779,
+                                "f1": 0.6441146013117017,
+                                "support": 1491
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                595,
+                                473
+                            ],
+                            [
+                                558,
+                                933
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5271629778672032,
+                        "balanced_accuracy": 0.5051583360918018,
+                        "macro_f1": 0.5021820721990031,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.43378119001919385,
+                                "recall": 0.3553459119496855,
+                                "f1": 0.39066551426101986,
+                                "support": 636
+                            },
+                            "UP": {
+                                "precision": 0.5773195876288659,
+                                "recall": 0.6549707602339181,
+                                "f1": 0.6136986301369863,
+                                "support": 855
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                226,
+                                410
+                            ],
+                            [
+                                295,
+                                560
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.4271199687377882,
+                        "balanced_accuracy": 0.3979805531070273,
+                        "macro_f1": 0.39512624850027844,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.2806652806652807,
+                                "recall": 0.21226415094339623,
+                                "f1": 0.24171888988361684,
+                                "support": 636
+                            },
+                            "FLAT": {
+                                "precision": 0.5160450997398092,
+                                "recall": 0.5571161048689138,
+                                "f1": 0.5357946870778928,
+                                "support": 1068
+                            },
+                            "UP": {
+                                "precision": 0.3924324324324324,
+                                "recall": 0.4245614035087719,
+                                "f1": 0.40786516853932586,
+                                "support": 855
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                135,
+                                241,
+                                260
+                            ],
+                            [
+                                171,
+                                595,
+                                302
+                            ],
+                            [
+                                175,
+                                317,
+                                363
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.5931345795242644,
+                            "stage1_balanced_accuracy": 0.5797374584982035,
+                            "stage1_flat_f1": 0.5431789737171464,
+                            "stage2_roc_auc": 0.4954373541482257,
+                            "stage2_balanced_accuracy": 0.5060835278023659,
+                            "end_to_end_macro_f1": 0.39203024759970945
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.6429885446645223,
+                            "stage1_balanced_accuracy": 0.6021894926922859,
+                            "stage1_flat_f1": 0.4911147011308562,
+                            "stage2_roc_auc": 0.4553786702777687,
+                            "stage2_balanced_accuracy": 0.4823133071308254,
+                            "end_to_end_macro_f1": 0.38828121204342764
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.6252955881359367,
+                            "stage1_balanced_accuracy": 0.5935071954597663,
+                            "stage1_flat_f1": 0.5628891656288917,
+                            "stage2_roc_auc": 0.4795462328767124,
+                            "stage2_balanced_accuracy": 0.5231849315068493,
+                            "end_to_end_macro_f1": 0.3977916522954624
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.6204729041082411,
+                        "stage1_roc_auc_std": 0.02063650763371803,
+                        "stage1_balanced_accuracy_mean": 0.5918113822167519,
+                        "stage1_flat_f1_mean": 0.5323942801589648,
+                        "stage2_roc_auc_mean": 0.4767874191009023,
+                        "stage2_roc_auc_std": 0.016469827532906007,
+                        "stage2_balanced_accuracy_mean": 0.5038605888133468,
+                        "end_to_end_macro_f1_mean": 0.3927010373128665,
+                        "end_to_end_macro_f1_std": 0.0039114862969071495
+                    },
+                    "oof_rows": 2559
+                }
+            },
+            {
+                "target_name": "flat_40d_k045",
+                "target_description": "Upper 40-day candidate for neutral-zone sensitivity.",
+                "volatility_window": 40,
+                "threshold_multiplier": 0.45,
+                "feature_profile": "stage_specific_trend",
+                "feature_profile_description": "Stage 1 receives trend-strength/state features; Stage 2 receives directional trend features.",
+                "stage1_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "ma_compression",
+                    "adx_14"
+                ],
+                "stage2_feature_columns": [
+                    "log_return",
+                    "overnight_gap",
+                    "intraday_return",
+                    "high_low_range",
+                    "log_volume_change",
+                    "close_vs_sma_10",
+                    "close_vs_sma_20",
+                    "close_vs_sma_50",
+                    "close_vs_ema_20",
+                    "rsi_14",
+                    "macd_normalized",
+                    "macd_signal_normalized",
+                    "macd_histogram_normalized",
+                    "bollinger_width",
+                    "bollinger_position",
+                    "vix_level",
+                    "vix_change",
+                    "vvix_level",
+                    "vvix_change",
+                    "vvix_vix_ratio",
+                    "realized_volatility_20",
+                    "sma_10_20_spread",
+                    "sma_20_50_spread",
+                    "sma_10_50_spread",
+                    "ma_alignment_score",
+                    "sma_10_slope_5",
+                    "sma_20_slope_5",
+                    "sma_50_slope_5",
+                    "dmi_spread_14"
+                ],
+                "training_target_distribution": {
+                    "rows": 3415,
+                    "down_count": 880,
+                    "flat_count": 1417,
+                    "up_count": 1118,
+                    "down_share": 0.25768667642752563,
+                    "flat_share": 0.4149341142020498,
+                    "up_share": 0.3273792093704246
+                },
+                "metrics": {
+                    "move_threshold": 0.5309835374355316,
+                    "up_threshold": 0.4756929874420166,
+                    "stage1_probability": {
+                        "roc_auc": 0.6185238773464758,
+                        "average_precision": 0.6750972088605326,
+                        "brier_score": 0.23626028183271489
+                    },
+                    "stage2_probability_oracle_move_rows": {
+                        "roc_auc": 0.4993057854279304,
+                        "average_precision": 0.5760596510620904,
+                        "brier_score": 0.2570952009994306
+                    },
+                    "stage1": {
+                        "accuracy": 0.5892926924579914,
+                        "balanced_accuracy": 0.5904396415948877,
+                        "macro_f1": 0.5858889853613516,
+                        "per_class": {
+                            "FLAT": {
+                                "precision": 0.5067513899920572,
+                                "recall": 0.5973782771535581,
+                                "f1": 0.548345509239364,
+                                "support": 1068
+                            },
+                            "MOVE": {
+                                "precision": 0.6692307692307692,
+                                "recall": 0.5835010060362174,
+                                "f1": 0.6234324614833393,
+                                "support": 1491
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                638,
+                                430
+                            ],
+                            [
+                                621,
+                                870
+                            ]
+                        ]
+                    },
+                    "stage2_oracle_move_rows": {
+                        "accuracy": 0.5211267605633803,
+                        "balanced_accuracy": 0.5075471698113208,
+                        "macro_f1": 0.5073879726803265,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.43564356435643564,
+                                "recall": 0.41509433962264153,
+                                "f1": 0.4251207729468599,
+                                "support": 636
+                            },
+                            "UP": {
+                                "precision": 0.5796610169491525,
+                                "recall": 0.6,
+                                "f1": 0.5896551724137931,
+                                "support": 855
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                264,
+                                372
+                            ],
+                            [
+                                342,
+                                513
+                            ]
+                        ]
+                    },
+                    "end_to_end": {
+                        "accuracy": 0.4318093005080109,
+                        "balanced_accuracy": 0.40347711669582176,
+                        "macro_f1": 0.4011236019402938,
+                        "per_class": {
+                            "DOWN": {
+                                "precision": 0.304029304029304,
+                                "recall": 0.2610062893081761,
+                                "f1": 0.2808798646362098,
+                                "support": 636
+                            },
+                            "FLAT": {
+                                "precision": 0.5067513899920572,
+                                "recall": 0.5973782771535581,
+                                "f1": 0.548345509239364,
+                                "support": 1068
+                            },
+                            "UP": {
+                                "precision": 0.39920424403183025,
+                                "recall": 0.352046783625731,
+                                "f1": 0.37414543194530764,
+                                "support": 855
+                            }
+                        },
+                        "confusion_matrix": [
+                            [
+                                166,
+                                263,
+                                207
+                            ],
+                            [
+                                184,
+                                638,
+                                246
+                            ],
+                            [
+                                196,
+                                358,
+                                301
+                            ]
+                        ]
+                    },
+                    "fold_metrics": [
+                        {
+                            "fold": 1,
+                            "stage1_roc_auc": 0.6009232728430436,
+                            "stage1_balanced_accuracy": 0.5728015418201664,
+                            "stage1_flat_f1": 0.5135135135135135,
+                            "stage2_roc_auc": 0.5133499637885249,
+                            "stage2_balanced_accuracy": 0.5327432204071779,
+                            "end_to_end_macro_f1": 0.39064809811697776
+                        },
+                        {
+                            "fold": 2,
+                            "stage1_roc_auc": 0.625094520625247,
+                            "stage1_balanced_accuracy": 0.6019637717961741,
+                            "stage1_flat_f1": 0.5333333333333333,
+                            "stage2_roc_auc": 0.47658288469795557,
+                            "stage2_balanced_accuracy": 0.4777141064174126,
+                            "end_to_end_macro_f1": 0.3909649063569242
+                        },
+                        {
+                            "fold": 3,
+                            "stage1_roc_auc": 0.6384422223723623,
+                            "stage1_balanced_accuracy": 0.5948669008850753,
+                            "stage1_flat_f1": 0.5895691609977324,
+                            "stage2_roc_auc": 0.5181849315068494,
+                            "stage2_balanced_accuracy": 0.5134931506849315,
+                            "end_to_end_macro_f1": 0.4087227945210887
+                        }
+                    ],
+                    "fold_summary": {
+                        "stage1_roc_auc_mean": 0.6214866719468842,
+                        "stage1_roc_auc_std": 0.01552804607820664,
+                        "stage1_balanced_accuracy_mean": 0.5898774048338052,
+                        "stage1_flat_f1_mean": 0.5454720026148597,
+                        "stage2_roc_auc_mean": 0.5027059266644432,
+                        "stage2_roc_auc_std": 0.018576943045909886,
+                        "stage2_balanced_accuracy_mean": 0.507983492503174,
+                        "end_to_end_macro_f1_mean": 0.3967785996649969,
+                        "end_to_end_macro_f1_std": 0.008446811427414162
+                    },
+                    "oof_rows": 2559
+                }
+            }
+        ]
+    },
+    "features": [
+        "log_return",
+        "overnight_gap",
+        "intraday_return",
+        "high_low_range",
+        "log_volume_change",
+        "close_vs_sma_10",
+        "close_vs_sma_20",
+        "close_vs_sma_50",
+        "close_vs_ema_20",
+        "rsi_14",
+        "macd_normalized",
+        "macd_signal_normalized",
+        "macd_histogram_normalized",
+        "bollinger_width",
+        "bollinger_position",
+        "vix_level",
+        "vix_change",
+        "vvix_level",
+        "vvix_change",
+        "vvix_vix_ratio",
+        "realized_volatility_20",
+        "sma_10_20_spread",
+        "sma_20_50_spread",
+        "sma_10_50_spread",
+        "ma_alignment_score",
+        "ma_compression",
+        "sma_10_slope_5",
+        "sma_20_slope_5",
+        "sma_50_slope_5",
+        "adx_14",
+        "dmi_spread_14"
+    ]
+}

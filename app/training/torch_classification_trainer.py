@@ -25,6 +25,7 @@ class TorchClassificationTrainer:
         gradient_clip: float = 1.0,
         seed: int = 42,
         deterministic: bool = True,
+        num_classes: int = 3,
         device: str | None = None,
     ):
         if learning_rate <= 0:
@@ -57,6 +58,11 @@ class TorchClassificationTrainer:
                 "Gradient clip must be greater than zero."
             )
 
+        if num_classes <= 1:
+            raise ValueError(
+                "Number of classes must be greater than one."
+            )
+
         if loss_name not in {
             "focal",
             "weighted_cross_entropy",
@@ -76,6 +82,7 @@ class TorchClassificationTrainer:
         self.gradient_clip = gradient_clip
         self.seed = seed
         self.deterministic = deterministic
+        self.num_classes = num_classes
 
         if device is None:
             self.device = torch.device(
@@ -193,6 +200,11 @@ class TorchClassificationTrainer:
             validation_macro_f1 = f1_score(
                 y_validation,
                 predictions,
+                labels=list(
+                    range(
+                        self.num_classes
+                    )
+                ),
                 average="macro",
                 zero_division=0,
             )
@@ -467,21 +479,26 @@ class TorchClassificationTrainer:
             weight=class_weights
         )
 
-    @staticmethod
     def _calculate_class_weights(
+        self,
         y_train: torch.Tensor,
     ) -> torch.Tensor:
         class_counts = torch.bincount(
             y_train,
-            minlength=3,
+            minlength=self.num_classes,
         ).float()
+
+        if len(class_counts) != self.num_classes:
+            raise ValueError(
+                "Training labels contain a class index outside "
+                "the configured class range."
+            )
 
         if (
             class_counts == 0
         ).any():
             raise ValueError(
-                "Training data must contain "
-                "all three classes."
+                "Training data must contain every configured class."
             )
 
         total_rows = class_counts.sum()
@@ -494,8 +511,8 @@ class TorchClassificationTrainer:
             )
         )
 
-    @staticmethod
     def _validate_arrays(
+        self,
         X: np.ndarray,
         y: np.ndarray,
     ) -> None:
@@ -519,4 +536,17 @@ class TorchClassificationTrainer:
         if len(X) == 0:
             raise ValueError(
                 "Training arrays cannot be empty."
+            )
+        if not np.issubdtype(
+            y.dtype,
+            np.integer,
+        ):
+            raise ValueError(
+                "Classification labels must be integers."
+            )
+
+        if y.min() < 0 or y.max() >= self.num_classes:
+            raise ValueError(
+                "Classification labels contain a class index outside "
+                "the configured class range."
             )

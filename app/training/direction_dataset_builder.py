@@ -72,11 +72,17 @@ class DirectionDatasetBuilder:
                 "Direction dataset contains missing values."
             )
 
+        feature_columns = getattr(
+            self.feature_builder,
+            "feature_columns",
+            self.feature_builder.FEATURE_COLUMNS,
+        )
+
         return dataset[
             [
                 "feature_date",
                 "target_date",
-                *self.feature_builder.FEATURE_COLUMNS,
+                *feature_columns,
                 "future_log_return",
                 "rolling_volatility",
                 "threshold",
