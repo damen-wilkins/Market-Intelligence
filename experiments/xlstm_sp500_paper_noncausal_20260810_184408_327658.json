@@ -1,0 +1,585 @@
+{
+    "experiment_name": "xlstm_sp500_paper_noncausal",
+    "model_name": "xlstm_sp500_paper_noncausal_v1",
+    "timestamp_utc": "20260810_184408_327658",
+    "parameters": {
+        "preprocessor": {
+            "mode": "paper_noncausal",
+            "sequence_length": 150,
+            "train_end_date": "2021-01-01",
+            "validation_end_date": "2022-07-01",
+            "wavelet": "db4",
+            "level": 1,
+            "pad_width": 100,
+            "scaler": {
+                "feature_range": [
+                    0,
+                    1
+                ],
+                "scale_": [
+                    0.00024235752482619572
+                ],
+                "min_": [
+                    -0.16388135278856558
+                ],
+                "data_min_": [
+                    676.196676402317
+                ],
+                "data_max_": [
+                    4802.332230547541
+                ],
+                "data_range_": [
+                    4126.135554145224
+                ],
+                "n_features_in_": 1
+            }
+        },
+        "model": {
+            "sequence_length": 150,
+            "input_size": 1,
+            "embedding_dim": 64,
+            "output_size": 1,
+            "num_blocks": 4,
+            "mlstm_conv1d_kernel_size": 4,
+            "mlstm_qkv_proj_blocksize": 2,
+            "mlstm_num_heads": 2,
+            "slstm_conv1d_kernel_size": 2,
+            "slstm_num_heads": 2,
+            "slstm_feedforward_proj_factor": 1.1,
+            "slstm_backend": "vanilla"
+        },
+        "trainer": {
+            "learning_rate": 0.0001,
+            "batch_size": 16,
+            "max_epochs": 200,
+            "patience": 40,
+            "scheduler_patience": 10,
+            "scheduler_factor": 0.5,
+            "gradient_clip": 1.0,
+            "optimizer": "Adam",
+            "loss": "MSE",
+            "seed": 42,
+            "device": "cuda"
+        },
+        "metadata": {
+            "created_at_utc": "2026-08-10T18:44:08.317688+00:00",
+            "ticker": "^GSPC",
+            "forecast_horizon": "next_trading_day_close",
+            "paper": "An Evaluation of Deep Learning Models for Stock Market Trend Prediction",
+            "paper_arxiv": "2408.12408",
+            "replication_mode": "paper_noncausal",
+            "data_period": {
+                "start": "2000-01-03",
+                "end": "2023-12-29",
+                "expected_rows": 6037
+            },
+            "split_boundaries": {
+                "train_before": "2021-01-01",
+                "validation_before": "2022-07-01",
+                "test_from": "2022-07-01"
+            },
+            "runtime_versions": {
+                "torch": "2.8.0+cu129",
+                "xlstm": "2.0.5",
+                "PyWavelets": "1.8.0"
+            },
+            "evaluation": {
+                "paper_direction": "Direction of consecutive predicted target closes versus consecutive actual target closes.",
+                "production_direction": "Predicted next close versus the actual current close available at forecast time."
+            },
+            "checkpoint_variants": {
+                "authors_backbone_checkpoint": "Reproduces the authors' source-code checkpoint behavior: best-validation xLSTM backbone combined with final-epoch input/output projection layers.",
+                "best_full_checkpoint": "Corrected checkpoint behavior: restore the complete model from the best validation epoch."
+            },
+            "known_replication_differences": [
+                "The project keeps its current torch/xlstm environment instead of downgrading the full application environment to the authors' historical package versions.",
+                "The authors pinned PyWavelets 1.6.0; this project uses PyWavelets 1.8.0 for the current Python environment, and the exact runtime version is recorded above.",
+                "The published paper reports early-stopping patience 30, while the official source code uses 40. This replication follows the source implementation at 40 epochs.",
+                "This replication fixes random seed 42 for repeatability; the authors' source does not document an equivalent fixed seed."
+            ],
+            "production_valid_preprocessing": false
+        }
+    },
+    "metrics": {
+        "training": {
+            "best_epoch": 106,
+            "best_validation_loss": 3.54955553423982e-05,
+            "epochs_trained": 146
+        },
+        "checkpoints": {
+            "authors_backbone_checkpoint": {
+                "train": {
+                    "price": {
+                        "mae": 8.349421795683119,
+                        "mse": 167.1624565801706,
+                        "rmse": 12.929132089207327,
+                        "rmsse": 0.6218599748471815,
+                        "mape": 0.5443599850629516,
+                        "mase": 0.6628938025579639,
+                        "r2": 0.999641715380516
+                    },
+                    "naive_previous_close_price": {
+                        "mae": 12.596152959094699,
+                        "mse": 432.23657234840425,
+                        "rmse": 20.790299958115185,
+                        "rmsse": 0.9999631313080283,
+                        "mape": 0.8095437573757023,
+                        "mase": 1.0000586791498747,
+                        "r2": 0.9990735735821362
+                    },
+                    "paper_direction": {
+                        "accuracy": 0.6721215663354764,
+                        "recall_up": 0.6859833393697935,
+                        "precision_up": 0.6988929889298893,
+                        "precision_down": 0.6421791167973586,
+                        "f1_up": 0.6923779930542863,
+                        "actual_up_rate": 0.5378920709136957,
+                        "predicted_up_rate": 0.5279563608026495,
+                        "confusion_matrix": [
+                            [
+                                1556,
+                                816
+                            ],
+                            [
+                                867,
+                                1894
+                            ]
+                        ]
+                    },
+                    "production_direction": {
+                        "accuracy": 0.7499026100506427,
+                        "recall_up": 0.6926140477914554,
+                        "precision_up": 0.8147359454855196,
+                        "precision_down": 0.6952620244077531,
+                        "f1_up": 0.7487279843444227,
+                        "actual_up_rate": 0.5379820802493183,
+                        "predicted_up_rate": 0.45734320218153485,
+                        "confusion_matrix": [
+                            [
+                                1937,
+                                435
+                            ],
+                            [
+                                849,
+                                1913
+                            ]
+                        ]
+                    },
+                    "momentum_direction_baseline": {
+                        "accuracy": 0.4709777950915465,
+                        "recall_up": 0.5083272990586531,
+                        "precision_up": 0.5083272990586531,
+                        "precision_down": 0.4274873524451939,
+                        "f1_up": 0.5083272990586531,
+                        "actual_up_rate": 0.5379820802493183,
+                        "predicted_up_rate": 0.5379820802493183,
+                        "confusion_matrix": [
+                            [
+                                1014,
+                                1358
+                            ],
+                            [
+                                1358,
+                                1404
+                            ]
+                        ]
+                    }
+                },
+                "validation": {
+                    "price": {
+                        "mae": 23.148300127549675,
+                        "mse": 922.8953430934514,
+                        "rmse": 30.379192601078973,
+                        "rmsse": 0.6351938568171586,
+                        "mape": 0.5425280095249012,
+                        "mase": 0.6517961511373174,
+                        "r2": 0.9884127684662816
+                    },
+                    "naive_previous_close_price": {
+                        "mae": 35.567571761760306,
+                        "mse": 2289.4733225213404,
+                        "rmse": 47.84844117127893,
+                        "rmsse": 1.0004556832492684,
+                        "mape": 0.8396096753863775,
+                        "mase": 1.001490660302307,
+                        "r2": 0.971254966582229
+                    },
+                    "paper_direction": {
+                        "accuracy": 0.6906666666666667,
+                        "recall_up": 0.7360406091370558,
+                        "precision_up": 0.69377990430622,
+                        "precision_down": 0.6867469879518072,
+                        "f1_up": 0.7142857142857143,
+                        "actual_up_rate": 0.5253333333333333,
+                        "predicted_up_rate": 0.5573333333333333,
+                        "confusion_matrix": [
+                            [
+                                114,
+                                64
+                            ],
+                            [
+                                52,
+                                145
+                            ]
+                        ]
+                    },
+                    "production_direction": {
+                        "accuracy": 0.7819148936170213,
+                        "recall_up": 0.7969543147208121,
+                        "precision_up": 0.7889447236180904,
+                        "precision_down": 0.7740112994350282,
+                        "f1_up": 0.7929292929292929,
+                        "actual_up_rate": 0.523936170212766,
+                        "predicted_up_rate": 0.5292553191489362,
+                        "confusion_matrix": [
+                            [
+                                137,
+                                42
+                            ],
+                            [
+                                40,
+                                157
+                            ]
+                        ]
+                    },
+                    "momentum_direction_baseline": {
+                        "accuracy": 0.4920212765957447,
+                        "recall_up": 0.5177664974619289,
+                        "precision_up": 0.5151515151515151,
+                        "precision_down": 0.46629213483146065,
+                        "f1_up": 0.5164556962025316,
+                        "actual_up_rate": 0.523936170212766,
+                        "predicted_up_rate": 0.526595744680851,
+                        "confusion_matrix": [
+                            [
+                                83,
+                                96
+                            ],
+                            [
+                                95,
+                                102
+                            ]
+                        ]
+                    }
+                },
+                "test": {
+                    "price": {
+                        "mae": 21.70884360215702,
+                        "mse": 773.5927017859917,
+                        "rmse": 27.813534507250093,
+                        "rmsse": 0.6419669249971042,
+                        "mape": 0.5281124162296914,
+                        "mase": 0.6586439441414312,
+                        "r2": 0.9896362467491018
+                    },
+                    "naive_previous_close_price": {
+                        "mae": 32.9784495710378,
+                        "mse": 1876.3529063194437,
+                        "rmse": 43.31688938877587,
+                        "rmsse": 0.9998013835351808,
+                        "mape": 0.8092320309300772,
+                        "mase": 1.0005625585224351,
+                        "r2": 0.9748626654726635
+                    },
+                    "paper_direction": {
+                        "accuracy": 0.7021276595744681,
+                        "recall_up": 0.7631578947368421,
+                        "precision_up": 0.6839622641509434,
+                        "precision_down": 0.725609756097561,
+                        "f1_up": 0.7213930348258707,
+                        "actual_up_rate": 0.5053191489361702,
+                        "predicted_up_rate": 0.5638297872340425,
+                        "confusion_matrix": [
+                            [
+                                119,
+                                67
+                            ],
+                            [
+                                45,
+                                145
+                            ]
+                        ]
+                    },
+                    "production_direction": {
+                        "accuracy": 0.7771883289124668,
+                        "recall_up": 0.8115183246073299,
+                        "precision_up": 0.7635467980295566,
+                        "precision_down": 0.7931034482758621,
+                        "f1_up": 0.7868020304568528,
+                        "actual_up_rate": 0.506631299734748,
+                        "predicted_up_rate": 0.5384615384615384,
+                        "confusion_matrix": [
+                            [
+                                138,
+                                48
+                            ],
+                            [
+                                36,
+                                155
+                            ]
+                        ]
+                    },
+                    "momentum_direction_baseline": {
+                        "accuracy": 0.4907161803713528,
+                        "recall_up": 0.4973821989528796,
+                        "precision_up": 0.4973821989528796,
+                        "precision_down": 0.4838709677419355,
+                        "f1_up": 0.4973821989528796,
+                        "actual_up_rate": 0.506631299734748,
+                        "predicted_up_rate": 0.506631299734748,
+                        "confusion_matrix": [
+                            [
+                                90,
+                                96
+                            ],
+                            [
+                                96,
+                                95
+                            ]
+                        ]
+                    }
+                }
+            },
+            "best_full_checkpoint": {
+                "train": {
+                    "price": {
+                        "mae": 8.15765440729874,
+                        "mse": 164.28837191983024,
+                        "rmse": 12.81750256172513,
+                        "rmsse": 0.6164908646336483,
+                        "mape": 0.5267384500857942,
+                        "mase": 0.6476686269226335,
+                        "r2": 0.9996478754977455
+                    },
+                    "naive_previous_close_price": {
+                        "mae": 12.596152959094699,
+                        "mse": 432.23657234840425,
+                        "rmse": 20.790299958115185,
+                        "rmsse": 0.9999631313080283,
+                        "mape": 0.8095437573757023,
+                        "mase": 1.0000586791498747,
+                        "r2": 0.9990735735821362
+                    },
+                    "paper_direction": {
+                        "accuracy": 0.671731930644847,
+                        "recall_up": 0.6859833393697935,
+                        "precision_up": 0.698377581120944,
+                        "precision_down": 0.6418835192069393,
+                        "f1_up": 0.6921249771606066,
+                        "actual_up_rate": 0.5378920709136957,
+                        "predicted_up_rate": 0.5283459964932787,
+                        "confusion_matrix": [
+                            [
+                                1554,
+                                818
+                            ],
+                            [
+                                867,
+                                1894
+                            ]
+                        ]
+                    },
+                    "production_direction": {
+                        "accuracy": 0.7600311647837943,
+                        "recall_up": 0.7371469949312093,
+                        "precision_up": 0.8009441384736428,
+                        "precision_down": 0.7199074074074074,
+                        "f1_up": 0.7677224736048266,
+                        "actual_up_rate": 0.5379820802493183,
+                        "predicted_up_rate": 0.4951305025321387,
+                        "confusion_matrix": [
+                            [
+                                1866,
+                                506
+                            ],
+                            [
+                                726,
+                                2036
+                            ]
+                        ]
+                    },
+                    "momentum_direction_baseline": {
+                        "accuracy": 0.4709777950915465,
+                        "recall_up": 0.5083272990586531,
+                        "precision_up": 0.5083272990586531,
+                        "precision_down": 0.4274873524451939,
+                        "f1_up": 0.5083272990586531,
+                        "actual_up_rate": 0.5379820802493183,
+                        "predicted_up_rate": 0.5379820802493183,
+                        "confusion_matrix": [
+                            [
+                                1014,
+                                1358
+                            ],
+                            [
+                                1358,
+                                1404
+                            ]
+                        ]
+                    }
+                },
+                "validation": {
+                    "price": {
+                        "mae": 23.161483258110376,
+                        "mse": 923.5167033527049,
+                        "rmse": 30.389417621150702,
+                        "rmsse": 0.6354076501862149,
+                        "mape": 0.5428117382034623,
+                        "mase": 0.652167353934588,
+                        "r2": 0.9884049670993729
+                    },
+                    "naive_previous_close_price": {
+                        "mae": 35.567571761760306,
+                        "mse": 2289.4733225213404,
+                        "rmse": 47.84844117127893,
+                        "rmsse": 1.0004556832492684,
+                        "mape": 0.8396096753863775,
+                        "mase": 1.001490660302307,
+                        "r2": 0.971254966582229
+                    },
+                    "paper_direction": {
+                        "accuracy": 0.6906666666666667,
+                        "recall_up": 0.7360406091370558,
+                        "precision_up": 0.69377990430622,
+                        "precision_down": 0.6867469879518072,
+                        "f1_up": 0.7142857142857143,
+                        "actual_up_rate": 0.5253333333333333,
+                        "predicted_up_rate": 0.5573333333333333,
+                        "confusion_matrix": [
+                            [
+                                114,
+                                64
+                            ],
+                            [
+                                52,
+                                145
+                            ]
+                        ]
+                    },
+                    "production_direction": {
+                        "accuracy": 0.7819148936170213,
+                        "recall_up": 0.7969543147208121,
+                        "precision_up": 0.7889447236180904,
+                        "precision_down": 0.7740112994350282,
+                        "f1_up": 0.7929292929292929,
+                        "actual_up_rate": 0.523936170212766,
+                        "predicted_up_rate": 0.5292553191489362,
+                        "confusion_matrix": [
+                            [
+                                137,
+                                42
+                            ],
+                            [
+                                40,
+                                157
+                            ]
+                        ]
+                    },
+                    "momentum_direction_baseline": {
+                        "accuracy": 0.4920212765957447,
+                        "recall_up": 0.5177664974619289,
+                        "precision_up": 0.5151515151515151,
+                        "precision_down": 0.46629213483146065,
+                        "f1_up": 0.5164556962025316,
+                        "actual_up_rate": 0.523936170212766,
+                        "predicted_up_rate": 0.526595744680851,
+                        "confusion_matrix": [
+                            [
+                                83,
+                                96
+                            ],
+                            [
+                                95,
+                                102
+                            ]
+                        ]
+                    }
+                },
+                "test": {
+                    "price": {
+                        "mae": 21.719281240098656,
+                        "mse": 774.4568519587677,
+                        "rmse": 27.829064877547857,
+                        "rmsse": 0.642325383001121,
+                        "mape": 0.5283470353950085,
+                        "mase": 0.6589606209367219,
+                        "r2": 0.9896246698053927
+                    },
+                    "naive_previous_close_price": {
+                        "mae": 32.9784495710378,
+                        "mse": 1876.3529063194437,
+                        "rmse": 43.31688938877587,
+                        "rmsse": 0.9998013835351808,
+                        "mape": 0.8092320309300772,
+                        "mase": 1.0005625585224351,
+                        "r2": 0.9748626654726635
+                    },
+                    "paper_direction": {
+                        "accuracy": 0.7021276595744681,
+                        "recall_up": 0.7631578947368421,
+                        "precision_up": 0.6839622641509434,
+                        "precision_down": 0.725609756097561,
+                        "f1_up": 0.7213930348258707,
+                        "actual_up_rate": 0.5053191489361702,
+                        "predicted_up_rate": 0.5638297872340425,
+                        "confusion_matrix": [
+                            [
+                                119,
+                                67
+                            ],
+                            [
+                                45,
+                                145
+                            ]
+                        ]
+                    },
+                    "production_direction": {
+                        "accuracy": 0.7745358090185677,
+                        "recall_up": 0.8115183246073299,
+                        "precision_up": 0.7598039215686274,
+                        "precision_down": 0.791907514450867,
+                        "f1_up": 0.7848101265822784,
+                        "actual_up_rate": 0.506631299734748,
+                        "predicted_up_rate": 0.5411140583554377,
+                        "confusion_matrix": [
+                            [
+                                137,
+                                49
+                            ],
+                            [
+                                36,
+                                155
+                            ]
+                        ]
+                    },
+                    "momentum_direction_baseline": {
+                        "accuracy": 0.4907161803713528,
+                        "recall_up": 0.4973821989528796,
+                        "precision_up": 0.4973821989528796,
+                        "precision_down": 0.4838709677419355,
+                        "f1_up": 0.4973821989528796,
+                        "actual_up_rate": 0.506631299734748,
+                        "predicted_up_rate": 0.506631299734748,
+                        "confusion_matrix": [
+                            [
+                                90,
+                                96
+                            ],
+                            [
+                                96,
+                                95
+                            ]
+                        ]
+                    }
+                }
+            }
+        },
+        "paper_reported_sp500_daily": {
+            "test_accuracy": 0.7128,
+            "f1_up": 0.73
+        }
+    },
+    "features": [
+        "^GSPC Close"
+    ]
+}
