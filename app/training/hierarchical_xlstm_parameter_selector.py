@@ -8,6 +8,7 @@ from optuna.trial import TrialState
 from sklearn.metrics import (
     balanced_accuracy_score,
     f1_score,
+    roc_auc_score,
 )
 from sklearn.model_selection import TimeSeriesSplit
 
@@ -37,6 +38,9 @@ class HierarchicalXLSTMParameterSelector:
         patience: int = 8,
         random_state: int = 42,
         device: str | None = None,
+        objective_metric: str = "macro_f1",
+        study_name: str | None = None,
+        storage_url: str | None = None,
     ):
         if not feature_columns:
             raise ValueError(
@@ -49,6 +53,14 @@ class HierarchicalXLSTMParameterSelector:
         }:
             raise ValueError(
                 "Task must be 'move' or 'direction'."
+            )
+
+        if objective_metric not in {
+            "macro_f1",
+            "roc_auc",
+        }:
+            raise ValueError(
+                "Objective metric must be 'macro_f1' or 'roc_auc'."
             )
 
         if n_splits < 2:
@@ -79,6 +91,9 @@ class HierarchicalXLSTMParameterSelector:
         self.patience = int(patience)
         self.random_state = int(random_state)
         self.device = device
+        self.objective_metric = objective_metric
+        self.study_name = study_name
+        self.storage_url = storage_url
 
     def select_best_parameters(
         self,
@@ -111,6 +126,12 @@ class HierarchicalXLSTMParameterSelector:
             direction="maximize",
             sampler=sampler,
             pruner=pruner,
+            study_name=self.study_name,
+            storage=self.storage_url,
+            load_if_exists=(
+                self.study_name is not None
+                and self.storage_url is not None
+            ),
         )
 
         def objective(
@@ -233,7 +254,7 @@ class HierarchicalXLSTMParameterSelector:
                 fold_scores.append(
                     float(
                         result[
-                            "best_validation_macro_f1"
+                            "best_validation_score"
                         ]
                     )
                 )
@@ -276,11 +297,27 @@ class HierarchicalXLSTMParameterSelector:
                 )
             )
 
-        study.optimize(
-            objective,
-            n_trials=self.n_trials,
-            gc_after_trial=True,
+        existing_trials = len(
+            study.trials
         )
+
+        remaining_trials = max(
+            0,
+            self.n_trials
+            - existing_trials,
+        )
+
+        if remaining_trials > 0:
+            study.optimize(
+                objective,
+                n_trials=remaining_trials,
+                gc_after_trial=True,
+            )
+
+        if not study.trials:
+            raise RuntimeError(
+                "Optuna study did not contain any trials."
+            )
 
         best_trial = study.best_trial
 
@@ -341,20 +378,27 @@ class HierarchicalXLSTMParameterSelector:
             ]
         )
 
-        return {
+        selection_result = {
             "task": self.task,
+            "objective_metric": (
+                self.objective_metric
+            ),
             "parameters": parameters,
-            "cv_macro_f1": float(
+            "cv_objective_score": float(
                 best_trial.value
             ),
-            "cv_macro_f1_std": float(
+            "cv_objective_score_std": float(
                 np.std(
                     fold_scores,
                     ddof=0,
                 )
             ),
-            "fold_macro_f1": fold_scores,
-            "fold_best_epochs": fold_best_epochs,
+            "fold_objective_scores": (
+                fold_scores
+            ),
+            "fold_best_epochs": (
+                fold_best_epochs
+            ),
             "decision_threshold": float(
                 threshold_selection[
                     "threshold"
@@ -370,6 +414,21 @@ class HierarchicalXLSTMParameterSelector:
                     "balanced_accuracy"
                 ]
             ),
+            "threshold_oof_roc_auc": float(
+                threshold_selection[
+                    "roc_auc"
+                ]
+            ),
+            "threshold_oof_roc_auc_fold_mean": float(
+                threshold_selection[
+                    "roc_auc_fold_mean"
+                ]
+            ),
+            "threshold_oof_roc_auc_fold_std": float(
+                threshold_selection[
+                    "roc_auc_fold_std"
+                ]
+            ),
             "threshold_oof_rows": int(
                 threshold_selection[
                     "rows"
@@ -381,7 +440,46 @@ class HierarchicalXLSTMParameterSelector:
             "completed_trials": int(
                 completed_trials
             ),
+            "study_name": self.study_name,
+            "storage_url": self.storage_url,
         }
+
+        if self.objective_metric == "macro_f1":
+            selection_result.update(
+                {
+                    "cv_macro_f1": float(
+                        best_trial.value
+                    ),
+                    "cv_macro_f1_std": float(
+                        np.std(
+                            fold_scores,
+                            ddof=0,
+                        )
+                    ),
+                    "fold_macro_f1": (
+                        fold_scores
+                    ),
+                }
+            )
+        else:
+            selection_result.update(
+                {
+                    "cv_roc_auc": float(
+                        best_trial.value
+                    ),
+                    "cv_roc_auc_std": float(
+                        np.std(
+                            fold_scores,
+                            ddof=0,
+                        )
+                    ),
+                    "fold_roc_auc": (
+                        fold_scores
+                    ),
+                }
+            )
+
+        return selection_result
 
     def _select_oof_threshold(
         self,
@@ -394,6 +492,7 @@ class HierarchicalXLSTMParameterSelector:
 
         actual_batches = []
         probability_batches = []
+        fold_roc_auc = []
 
         for fold_number, (
             train_indices,
@@ -532,7 +631,13 @@ class HierarchicalXLSTMParameterSelector:
                 ]
             )
 
-            probability_batches.append(
+            fold_actual = (
+                validation_sequences[
+                    "y"
+                ]
+            )
+
+            fold_probabilities = (
                 prediction_result[
                     "probabilities"
                 ][
@@ -540,6 +645,28 @@ class HierarchicalXLSTMParameterSelector:
                     1,
                 ]
             )
+
+            probability_batches.append(
+                fold_probabilities
+            )
+
+            if len(
+                np.unique(
+                    fold_actual
+                )
+            ) < 2:
+                fold_roc_auc.append(
+                    0.5
+                )
+            else:
+                fold_roc_auc.append(
+                    float(
+                        roc_auc_score(
+                            fold_actual,
+                            fold_probabilities,
+                        )
+                    )
+                )
 
             self._cleanup_cuda()
 
@@ -555,10 +682,44 @@ class HierarchicalXLSTMParameterSelector:
             np.float64
         )
 
-        return self.select_probability_threshold(
-            actual=actual,
-            positive_probabilities=probabilities,
+        threshold_result = (
+            self.select_probability_threshold(
+                actual=actual,
+                positive_probabilities=probabilities,
+            )
         )
+
+        if len(
+            np.unique(
+                actual
+            )
+        ) < 2:
+            overall_roc_auc = 0.5
+        else:
+            overall_roc_auc = float(
+                roc_auc_score(
+                    actual,
+                    probabilities,
+                )
+            )
+
+        return {
+            **threshold_result,
+            "roc_auc": (
+                overall_roc_auc
+            ),
+            "roc_auc_fold_mean": float(
+                np.mean(
+                    fold_roc_auc
+                )
+            ),
+            "roc_auc_fold_std": float(
+                np.std(
+                    fold_roc_auc,
+                    ddof=0,
+                )
+            ),
+        }
 
     @staticmethod
     def select_probability_threshold(
@@ -966,6 +1127,9 @@ class HierarchicalXLSTMParameterSelector:
             deterministic=True,
             num_classes=2,
             device=self.device,
+            selection_metric=(
+                self.objective_metric
+            ),
         )
 
     def _cleanup_cuda(self) -> None:

@@ -1,0 +1,501 @@
+[
+  {
+    "candidate_name": "breadth+equity_rotation+flat_regime_state+macro_cross_asset+trend_direction+volatility_options_core",
+    "groups": [
+      "breadth",
+      "equity_rotation",
+      "flat_regime_state",
+      "macro_cross_asset",
+      "trend_direction",
+      "volatility_options_core"
+    ],
+    "feature_count": 119,
+    "training_rows": 2875,
+    "training_start": "2008-04-10",
+    "training_end": "2020-10-26",
+    "candidate_oof_roc_auc": 0.612607880990234,
+    "candidate_oof_roc_auc_fold_std": 0.004945073330340649,
+    "candidate_oof_balanced_accuracy": 0.5876249148307973,
+    "candidate_oof_macro_f1": 0.5876388963756672,
+    "candidate_decision_threshold": 0.5059996545314789,
+    "matched_base_oof_roc_auc": 0.5987865162957074,
+    "delta_oof_roc_auc_vs_tuned_base": 0.01382136469452655,
+    "candidate_selection": {
+      "task": "move",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 64,
+        "num_blocks": 1,
+        "num_heads": 4,
+        "conv1d_kernel_size": 4,
+        "qkv_proj_blocksize": 4,
+        "proj_factor": 1.5,
+        "dropout": 0.20339182240940862,
+        "learning_rate": 0.0029749549050504323,
+        "batch_size": 32,
+        "weight_decay": 2.1890794382720755e-05,
+        "gradient_clip": 0.5,
+        "loss_name": "weighted_cross_entropy",
+        "focal_gamma": 2.0,
+        "epochs": 3
+      },
+      "cv_objective_score": 0.6387544721900137,
+      "cv_objective_score_std": 0.017124317205457897,
+      "fold_objective_scores": [
+        0.6184421929306839,
+        0.6603308501314636,
+        0.6374903735078936
+      ],
+      "fold_best_epochs": [
+        3,
+        3,
+        2
+      ],
+      "decision_threshold": 0.5059996545314789,
+      "threshold_oof_macro_f1": 0.5876388963756672,
+      "threshold_oof_balanced_accuracy": 0.5876249148307973,
+      "threshold_oof_roc_auc": 0.612607880990234,
+      "threshold_oof_roc_auc_fold_mean": 0.6195950697489727,
+      "threshold_oof_roc_auc_fold_std": 0.004945073330340649,
+      "threshold_oof_rows": 2154,
+      "best_trial": 12,
+      "completed_trials": 19,
+      "study_name": "stage1_candidate_breadth+equity_rotation+flat_regime_state+macro_cross_asset+trend_direction+volatility_options_core_d4e7119ec4fb_82df247f5e",
+      "storage_url": "sqlite:///experiments/optuna_stage1_long_history_optimization.db",
+      "cv_roc_auc": 0.6387544721900137,
+      "cv_roc_auc_std": 0.017124317205457897,
+      "fold_roc_auc": [
+        0.6184421929306839,
+        0.6603308501314636,
+        0.6374903735078936
+      ]
+    },
+    "matched_base_selection": {
+      "task": "move",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 64,
+        "num_blocks": 1,
+        "num_heads": 4,
+        "conv1d_kernel_size": 4,
+        "qkv_proj_blocksize": 4,
+        "proj_factor": 1.5,
+        "dropout": 0.20448463925855925,
+        "learning_rate": 0.002989777800314584,
+        "batch_size": 32,
+        "weight_decay": 2.268403218166233e-05,
+        "gradient_clip": 0.5,
+        "loss_name": "weighted_cross_entropy",
+        "focal_gamma": 2.0,
+        "epochs": 2
+      },
+      "cv_objective_score": 0.6344460759603302,
+      "cv_objective_score_std": 0.008116625265216861,
+      "fold_objective_scores": [
+        0.6449603252672307,
+        0.6331773506948791,
+        0.6252005519188808
+      ],
+      "fold_best_epochs": [
+        2,
+        2,
+        1
+      ],
+      "decision_threshold": 0.539198487997055,
+      "threshold_oof_macro_f1": 0.5766608906232878,
+      "threshold_oof_balanced_accuracy": 0.5779573231319555,
+      "threshold_oof_roc_auc": 0.5987865162957074,
+      "threshold_oof_roc_auc_fold_mean": 0.612939796019004,
+      "threshold_oof_roc_auc_fold_std": 0.005499937506146998,
+      "threshold_oof_rows": 2154,
+      "best_trial": 11,
+      "completed_trials": 22,
+      "study_name": "stage1_matched_base_d4e7119ec4fb_d4e7119ec4fb_7a8c27e83c",
+      "storage_url": "sqlite:///experiments/optuna_stage1_long_history_optimization.db",
+      "cv_roc_auc": 0.6344460759603302,
+      "cv_roc_auc_std": 0.008116625265216861,
+      "fold_roc_auc": [
+        0.6449603252672307,
+        0.6331773506948791,
+        0.6252005519188808
+      ]
+    }
+  },
+  {
+    "candidate_name": "equity_rotation+flat_regime_state+futures_core+trend_direction+volatility_options_core",
+    "groups": [
+      "equity_rotation",
+      "flat_regime_state",
+      "futures_core",
+      "trend_direction",
+      "volatility_options_core"
+    ],
+    "feature_count": 106,
+    "training_rows": 2881,
+    "training_start": "2008-04-10",
+    "training_end": "2020-10-26",
+    "candidate_oof_roc_auc": 0.616620311380458,
+    "candidate_oof_roc_auc_fold_std": 0.006587071582355051,
+    "candidate_oof_balanced_accuracy": 0.596489292987763,
+    "candidate_oof_macro_f1": 0.5964737106433831,
+    "candidate_decision_threshold": 0.48883140087127686,
+    "matched_base_oof_roc_auc": 0.5502446006092073,
+    "delta_oof_roc_auc_vs_tuned_base": 0.0663757107712507,
+    "candidate_selection": {
+      "task": "move",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 64,
+        "num_blocks": 1,
+        "num_heads": 8,
+        "conv1d_kernel_size": 4,
+        "qkv_proj_blocksize": 8,
+        "proj_factor": 1.5,
+        "dropout": 0.22901145880255064,
+        "learning_rate": 0.00208906607312931,
+        "batch_size": 32,
+        "weight_decay": 0.00010328202407062661,
+        "gradient_clip": 2.0,
+        "loss_name": "focal",
+        "focal_gamma": 1.4075392631952899,
+        "epochs": 3
+      },
+      "cv_objective_score": 0.636062644113338,
+      "cv_objective_score_std": 0.00847303054330408,
+      "fold_objective_scores": [
+        0.631043671716472,
+        0.6291489776046739,
+        0.6479952830188679
+      ],
+      "fold_best_epochs": [
+        3,
+        1,
+        4
+      ],
+      "decision_threshold": 0.48883140087127686,
+      "threshold_oof_macro_f1": 0.5964737106433831,
+      "threshold_oof_balanced_accuracy": 0.596489292987763,
+      "threshold_oof_roc_auc": 0.616620311380458,
+      "threshold_oof_roc_auc_fold_mean": 0.6179072965880722,
+      "threshold_oof_roc_auc_fold_std": 0.006587071582355051,
+      "threshold_oof_rows": 2160,
+      "best_trial": 23,
+      "completed_trials": 23,
+      "study_name": "stage1_candidate_equity_rotation+flat_regime_state+futures_core+trend_direction+volatility_options_core_3eabea0996fe_fb509ee7b2",
+      "storage_url": "sqlite:///experiments/optuna_stage1_long_history_optimization.db",
+      "cv_roc_auc": 0.636062644113338,
+      "cv_roc_auc_std": 0.00847303054330408,
+      "fold_roc_auc": [
+        0.631043671716472,
+        0.6291489776046739,
+        0.6479952830188679
+      ]
+    },
+    "matched_base_selection": {
+      "task": "move",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 64,
+        "num_blocks": 1,
+        "num_heads": 8,
+        "conv1d_kernel_size": 4,
+        "qkv_proj_blocksize": 8,
+        "proj_factor": 1.5,
+        "dropout": 0.1887879499107685,
+        "learning_rate": 0.002828437645367312,
+        "batch_size": 32,
+        "weight_decay": 1.0598268574077336e-07,
+        "gradient_clip": 2.0,
+        "loss_name": "focal",
+        "focal_gamma": 1.4874819479974541,
+        "epochs": 4
+      },
+      "cv_objective_score": 0.6331429275205949,
+      "cv_objective_score_std": 0.004502975054287927,
+      "fold_objective_scores": [
+        0.6336351264352829,
+        0.6383953261927945,
+        0.6273983299337074
+      ],
+      "fold_best_epochs": [
+        7,
+        2,
+        4
+      ],
+      "decision_threshold": 0.4935544580221176,
+      "threshold_oof_macro_f1": 0.5406845820404562,
+      "threshold_oof_balanced_accuracy": 0.5451866976800003,
+      "threshold_oof_roc_auc": 0.5502446006092073,
+      "threshold_oof_roc_auc_fold_mean": 0.5999787244020758,
+      "threshold_oof_roc_auc_fold_std": 0.03510295816427997,
+      "threshold_oof_rows": 2160,
+      "best_trial": 13,
+      "completed_trials": 21,
+      "study_name": "stage1_matched_base_3eabea0996fe_3eabea0996fe_7a8c27e83c",
+      "storage_url": "sqlite:///experiments/optuna_stage1_long_history_optimization.db",
+      "cv_roc_auc": 0.6331429275205949,
+      "cv_roc_auc_std": 0.004502975054287927,
+      "fold_roc_auc": [
+        0.6336351264352829,
+        0.6383953261927945,
+        0.6273983299337074
+      ]
+    }
+  },
+  {
+    "candidate_name": "equity_rotation+flat_regime_state+macro_cross_asset+trend_direction+volatility_options_core",
+    "groups": [
+      "equity_rotation",
+      "flat_regime_state",
+      "macro_cross_asset",
+      "trend_direction",
+      "volatility_options_core"
+    ],
+    "feature_count": 104,
+    "training_rows": 2875,
+    "training_start": "2008-04-10",
+    "training_end": "2020-10-26",
+    "candidate_oof_roc_auc": 0.6009574437883262,
+    "candidate_oof_roc_auc_fold_std": 0.01563574049377478,
+    "candidate_oof_balanced_accuracy": 0.5830763470928912,
+    "candidate_oof_macro_f1": 0.5832666197002689,
+    "candidate_decision_threshold": 0.484613299369812,
+    "matched_base_oof_roc_auc": 0.5987865162957074,
+    "delta_oof_roc_auc_vs_tuned_base": 0.0021709274926187128,
+    "candidate_selection": {
+      "task": "move",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 64,
+        "num_blocks": 1,
+        "num_heads": 4,
+        "conv1d_kernel_size": 4,
+        "qkv_proj_blocksize": 4,
+        "proj_factor": 1.5,
+        "dropout": 0.17464408518686605,
+        "learning_rate": 0.002176053177507386,
+        "batch_size": 32,
+        "weight_decay": 4.9569445623675975e-06,
+        "gradient_clip": 0.5,
+        "loss_name": "weighted_cross_entropy",
+        "focal_gamma": 2.0,
+        "epochs": 2
+      },
+      "cv_objective_score": 0.6497372171316622,
+      "cv_objective_score_std": 0.01889976728543779,
+      "fold_objective_scores": [
+        0.625647583448095,
+        0.6718104419681983,
+        0.6517536259786934
+      ],
+      "fold_best_epochs": [
+        2,
+        1,
+        3
+      ],
+      "decision_threshold": 0.484613299369812,
+      "threshold_oof_macro_f1": 0.5832666197002689,
+      "threshold_oof_balanced_accuracy": 0.5830763470928912,
+      "threshold_oof_roc_auc": 0.6009574437883262,
+      "threshold_oof_roc_auc_fold_mean": 0.6162931560016071,
+      "threshold_oof_roc_auc_fold_std": 0.01563574049377478,
+      "threshold_oof_rows": 2154,
+      "best_trial": 24,
+      "completed_trials": 24,
+      "study_name": "stage1_candidate_equity_rotation+flat_regime_state+macro_cross_asset+trend_direction+volatility_options_core_d4e7119ec4fb_6f103b87c2",
+      "storage_url": "sqlite:///experiments/optuna_stage1_long_history_optimization.db",
+      "cv_roc_auc": 0.6497372171316622,
+      "cv_roc_auc_std": 0.01889976728543779,
+      "fold_roc_auc": [
+        0.625647583448095,
+        0.6718104419681983,
+        0.6517536259786934
+      ]
+    },
+    "matched_base_selection": {
+      "task": "move",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 64,
+        "num_blocks": 1,
+        "num_heads": 4,
+        "conv1d_kernel_size": 4,
+        "qkv_proj_blocksize": 4,
+        "proj_factor": 1.5,
+        "dropout": 0.20448463925855925,
+        "learning_rate": 0.002989777800314584,
+        "batch_size": 32,
+        "weight_decay": 2.268403218166233e-05,
+        "gradient_clip": 0.5,
+        "loss_name": "weighted_cross_entropy",
+        "focal_gamma": 2.0,
+        "epochs": 2
+      },
+      "cv_objective_score": 0.6344460759603302,
+      "cv_objective_score_std": 0.008116625265216861,
+      "fold_objective_scores": [
+        0.6449603252672307,
+        0.6331773506948791,
+        0.6252005519188808
+      ],
+      "fold_best_epochs": [
+        2,
+        2,
+        1
+      ],
+      "decision_threshold": 0.539198487997055,
+      "threshold_oof_macro_f1": 0.5766608906232878,
+      "threshold_oof_balanced_accuracy": 0.5779573231319555,
+      "threshold_oof_roc_auc": 0.5987865162957074,
+      "threshold_oof_roc_auc_fold_mean": 0.612939796019004,
+      "threshold_oof_roc_auc_fold_std": 0.005499937506146998,
+      "threshold_oof_rows": 2154,
+      "best_trial": 11,
+      "completed_trials": 22,
+      "study_name": "stage1_matched_base_d4e7119ec4fb_d4e7119ec4fb_7a8c27e83c",
+      "storage_url": "sqlite:///experiments/optuna_stage1_long_history_optimization.db",
+      "cv_roc_auc": 0.6344460759603302,
+      "cv_roc_auc_std": 0.008116625265216861,
+      "fold_roc_auc": [
+        0.6449603252672307,
+        0.6331773506948791,
+        0.6252005519188808
+      ]
+    }
+  },
+  {
+    "candidate_name": "breadth+calendar+equity_rotation+flat_regime_state+futures_core+interaction_consensus+macro_cross_asset+rates_credit+technical_dynamics+trend_direction+volatility_options_core",
+    "groups": [
+      "breadth",
+      "calendar",
+      "equity_rotation",
+      "flat_regime_state",
+      "futures_core",
+      "interaction_consensus",
+      "macro_cross_asset",
+      "rates_credit",
+      "technical_dynamics",
+      "trend_direction",
+      "volatility_options_core"
+    ],
+    "feature_count": 187,
+    "training_rows": 2875,
+    "training_start": "2008-04-10",
+    "training_end": "2020-10-26",
+    "candidate_oof_roc_auc": 0.5625780717692482,
+    "candidate_oof_roc_auc_fold_std": 0.0331808593622996,
+    "candidate_oof_balanced_accuracy": 0.5668214498637293,
+    "candidate_oof_macro_f1": 0.5661954727990068,
+    "candidate_decision_threshold": 0.46211645007133484,
+    "matched_base_oof_roc_auc": 0.5987865162957074,
+    "delta_oof_roc_auc_vs_tuned_base": -0.036208444526459216,
+    "candidate_selection": {
+      "task": "move",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 10,
+        "embedding_dim": 64,
+        "num_blocks": 1,
+        "num_heads": 8,
+        "conv1d_kernel_size": 4,
+        "qkv_proj_blocksize": 8,
+        "proj_factor": 1.5,
+        "dropout": 0.15407986615755306,
+        "learning_rate": 0.0020555541734875015,
+        "batch_size": 64,
+        "weight_decay": 7.244847865176519e-05,
+        "gradient_clip": 1.0,
+        "loss_name": "weighted_cross_entropy",
+        "focal_gamma": 2.0,
+        "epochs": 2
+      },
+      "cv_objective_score": 0.6292814223751323,
+      "cv_objective_score_std": 0.012345132205301005,
+      "fold_objective_scores": [
+        0.6327464096006294,
+        0.6127300613496932,
+        0.6423677961750739
+      ],
+      "fold_best_epochs": [
+        4,
+        1,
+        2
+      ],
+      "decision_threshold": 0.46211645007133484,
+      "threshold_oof_macro_f1": 0.5661954727990068,
+      "threshold_oof_balanced_accuracy": 0.5668214498637293,
+      "threshold_oof_roc_auc": 0.5625780717692482,
+      "threshold_oof_roc_auc_fold_mean": 0.5794353180233852,
+      "threshold_oof_roc_auc_fold_std": 0.0331808593622996,
+      "threshold_oof_rows": 2154,
+      "best_trial": 18,
+      "completed_trials": 20,
+      "study_name": "stage1_candidate_breadth+calendar+equity_rotation+flat_regime_state+futures_core+interaction_consensus+macro_cross_asset+rates_credit+technical_dynamics+trend_direction+volatility_options_core_d4e7119ec4fb_3656796362",
+      "storage_url": "sqlite:///experiments/optuna_stage1_long_history_optimization.db",
+      "cv_roc_auc": 0.6292814223751323,
+      "cv_roc_auc_std": 0.012345132205301005,
+      "fold_roc_auc": [
+        0.6327464096006294,
+        0.6127300613496932,
+        0.6423677961750739
+      ]
+    },
+    "matched_base_selection": {
+      "task": "move",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 64,
+        "num_blocks": 1,
+        "num_heads": 4,
+        "conv1d_kernel_size": 4,
+        "qkv_proj_blocksize": 4,
+        "proj_factor": 1.5,
+        "dropout": 0.20448463925855925,
+        "learning_rate": 0.002989777800314584,
+        "batch_size": 32,
+        "weight_decay": 2.268403218166233e-05,
+        "gradient_clip": 0.5,
+        "loss_name": "weighted_cross_entropy",
+        "focal_gamma": 2.0,
+        "epochs": 2
+      },
+      "cv_objective_score": 0.6344460759603302,
+      "cv_objective_score_std": 0.008116625265216861,
+      "fold_objective_scores": [
+        0.6449603252672307,
+        0.6331773506948791,
+        0.6252005519188808
+      ],
+      "fold_best_epochs": [
+        2,
+        2,
+        1
+      ],
+      "decision_threshold": 0.539198487997055,
+      "threshold_oof_macro_f1": 0.5766608906232878,
+      "threshold_oof_balanced_accuracy": 0.5779573231319555,
+      "threshold_oof_roc_auc": 0.5987865162957074,
+      "threshold_oof_roc_auc_fold_mean": 0.612939796019004,
+      "threshold_oof_roc_auc_fold_std": 0.005499937506146998,
+      "threshold_oof_rows": 2154,
+      "best_trial": 11,
+      "completed_trials": 22,
+      "study_name": "stage1_matched_base_d4e7119ec4fb_d4e7119ec4fb_7a8c27e83c",
+      "storage_url": "sqlite:///experiments/optuna_stage1_long_history_optimization.db",
+      "cv_roc_auc": 0.6344460759603302,
+      "cv_roc_auc_std": 0.008116625265216861,
+      "fold_roc_auc": [
+        0.6449603252672307,
+        0.6331773506948791,
+        0.6252005519188808
+      ]
+    }
+  }
+]

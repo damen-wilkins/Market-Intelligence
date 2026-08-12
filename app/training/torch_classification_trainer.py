@@ -2,7 +2,7 @@ import copy
 
 import numpy as np
 import torch
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, roc_auc_score
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 
@@ -27,6 +27,7 @@ class TorchClassificationTrainer:
         deterministic: bool = True,
         num_classes: int = 3,
         device: str | None = None,
+        selection_metric: str = "macro_f1",
     ):
         if learning_rate <= 0:
             raise ValueError(
@@ -72,6 +73,22 @@ class TorchClassificationTrainer:
                 "'weighted_cross_entropy'."
             )
 
+        if selection_metric not in {
+            "macro_f1",
+            "roc_auc",
+        }:
+            raise ValueError(
+                "Selection metric must be 'macro_f1' or 'roc_auc'."
+            )
+
+        if (
+            selection_metric == "roc_auc"
+            and num_classes != 2
+        ):
+            raise ValueError(
+                "ROC AUC model selection requires exactly two classes."
+            )
+
         self.learning_rate = learning_rate
         self.batch_size = batch_size
         self.max_epochs = max_epochs
@@ -83,6 +100,7 @@ class TorchClassificationTrainer:
         self.seed = seed
         self.deterministic = deterministic
         self.num_classes = num_classes
+        self.selection_metric = selection_metric
 
         if device is None:
             self.device = torch.device(
@@ -162,7 +180,9 @@ class TorchClassificationTrainer:
         )
 
         best_state = None
+        best_selection_score = -np.inf
         best_macro_f1 = -np.inf
+        best_roc_auc = None
         best_epoch = 0
         epochs_without_improvement = 0
         history = []
@@ -190,6 +210,15 @@ class TorchClassificationTrainer:
                     y_validation_tensor,
                 ).item()
 
+                validation_probabilities = (
+                    torch.softmax(
+                        validation_logits,
+                        dim=1,
+                    )
+                    .cpu()
+                    .numpy()
+                )
+
                 predictions = (
                     validation_logits
                     .argmax(dim=1)
@@ -209,27 +238,86 @@ class TorchClassificationTrainer:
                 zero_division=0,
             )
 
+            validation_roc_auc = None
+
+            if self.num_classes == 2:
+                if len(
+                    np.unique(
+                        y_validation
+                    )
+                ) < 2:
+                    validation_roc_auc = 0.5
+                else:
+                    validation_roc_auc = float(
+                        roc_auc_score(
+                            y_validation,
+                            validation_probabilities[
+                                :,
+                                1,
+                            ],
+                        )
+                    )
+
+            selection_score = (
+                float(
+                    validation_macro_f1
+                )
+                if self.selection_metric
+                == "macro_f1"
+                else float(
+                    validation_roc_auc
+                )
+            )
+
+            history_row = {
+                "epoch": epoch,
+                "train_loss": float(
+                    train_loss
+                ),
+                "validation_loss": float(
+                    validation_loss
+                ),
+                "validation_macro_f1": float(
+                    validation_macro_f1
+                ),
+                "selection_metric": (
+                    self.selection_metric
+                ),
+                "selection_score": float(
+                    selection_score
+                ),
+            }
+
+            if validation_roc_auc is not None:
+                history_row[
+                    "validation_roc_auc"
+                ] = float(
+                    validation_roc_auc
+                )
+
             history.append(
-                {
-                    "epoch": epoch,
-                    "train_loss": float(
-                        train_loss
-                    ),
-                    "validation_loss": float(
-                        validation_loss
-                    ),
-                    "validation_macro_f1": float(
-                        validation_macro_f1
-                    ),
-                }
+                history_row
             )
 
             if (
-                validation_macro_f1
-                > best_macro_f1
+                selection_score
+                > best_selection_score
             ):
-                best_macro_f1 = (
+                best_selection_score = (
+                    selection_score
+                )
+
+                best_macro_f1 = float(
                     validation_macro_f1
+                )
+
+                best_roc_auc = (
+                    None
+                    if validation_roc_auc
+                    is None
+                    else float(
+                        validation_roc_auc
+                    )
                 )
 
                 best_epoch = epoch
@@ -265,8 +353,21 @@ class TorchClassificationTrainer:
             "best_epoch": int(
                 best_epoch
             ),
+            "best_validation_score": float(
+                best_selection_score
+            ),
             "best_validation_macro_f1": float(
                 best_macro_f1
+            ),
+            "best_validation_roc_auc": (
+                None
+                if best_roc_auc is None
+                else float(
+                    best_roc_auc
+                )
+            ),
+            "selection_metric": (
+                self.selection_metric
             ),
             "history": history,
             "class_weights": (

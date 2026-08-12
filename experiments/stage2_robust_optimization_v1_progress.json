@@ -1,0 +1,361 @@
+[
+  {
+    "candidate_name": "breadth_calendar",
+    "groups": [
+      "breadth",
+      "calendar"
+    ],
+    "feature_count": 45,
+    "training_rows": 3368,
+    "training_start": "2007-06-08",
+    "training_end": "2020-10-26",
+    "candidate_oof_roc_auc": 0.5258207313873584,
+    "candidate_oof_roc_auc_fold_std": 0.029802577067490333,
+    "candidate_oof_balanced_accuracy": 0.5183209686332959,
+    "candidate_oof_macro_f1": 0.518122046695466,
+    "matched_base_oof_roc_auc": 0.5095019323914204,
+    "delta_oof_roc_auc_vs_tuned_base": 0.016318798995938022,
+    "candidate_selection": {
+      "task": "direction",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 32,
+        "num_blocks": 1,
+        "num_heads": 4,
+        "conv1d_kernel_size": 2,
+        "qkv_proj_blocksize": 4,
+        "proj_factor": 1.5,
+        "dropout": 0.32364276639749695,
+        "learning_rate": 0.0019766810849469302,
+        "batch_size": 128,
+        "weight_decay": 5.970408652384323e-05,
+        "gradient_clip": 0.5,
+        "loss_name": "weighted_cross_entropy",
+        "focal_gamma": 2.0,
+        "epochs": 40
+      },
+      "cv_objective_score": 0.5596724622655227,
+      "cv_objective_score_std": 0.02605914688354424,
+      "fold_objective_scores": [
+        0.5229355631141345,
+        0.575507359986064,
+        0.5805744636963697
+      ],
+      "fold_best_epochs": [
+        40,
+        2,
+        51
+      ],
+      "decision_threshold": 0.08834700286388397,
+      "threshold_oof_macro_f1": 0.518122046695466,
+      "threshold_oof_balanced_accuracy": 0.5183209686332959,
+      "threshold_oof_roc_auc": 0.5258207313873584,
+      "threshold_oof_roc_auc_fold_mean": 0.5250938155811458,
+      "threshold_oof_roc_auc_fold_std": 0.029802577067490333,
+      "threshold_oof_rows": 1482,
+      "best_trial": 6,
+      "completed_trials": 24,
+      "study_name": "stage2_breadth_calendar_9e5d24616ff5_374118bc64",
+      "storage_url": "sqlite:///experiments/optuna_stage2_robust_optimization.db",
+      "cv_roc_auc": 0.5596724622655227,
+      "cv_roc_auc_std": 0.02605914688354424,
+      "fold_roc_auc": [
+        0.5229355631141345,
+        0.575507359986064,
+        0.5805744636963697
+      ]
+    },
+    "matched_base_selection": {
+      "task": "direction",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 64,
+        "num_blocks": 2,
+        "num_heads": 8,
+        "conv1d_kernel_size": 4,
+        "qkv_proj_blocksize": 4,
+        "proj_factor": 1.5,
+        "dropout": 0.12940857602146688,
+        "learning_rate": 0.00047529383656990526,
+        "batch_size": 64,
+        "weight_decay": 0.0007405489543453967,
+        "gradient_clip": 2.0,
+        "loss_name": "focal",
+        "focal_gamma": 2.439504046398454,
+        "epochs": 8
+      },
+      "cv_objective_score": 0.5568888217926905,
+      "cv_objective_score_std": 0.007793147134674378,
+      "fold_objective_scores": [
+        0.5528155706727136,
+        0.5500566152774149,
+        0.5677942794279428
+      ],
+      "fold_best_epochs": [
+        27,
+        1,
+        8
+      ],
+      "decision_threshold": 0.4825296103954315,
+      "threshold_oof_macro_f1": 0.514725694184567,
+      "threshold_oof_balanced_accuracy": 0.5148013553720854,
+      "threshold_oof_roc_auc": 0.5095019323914204,
+      "threshold_oof_roc_auc_fold_mean": 0.5117803929703518,
+      "threshold_oof_roc_auc_fold_std": 0.01367014811638944,
+      "threshold_oof_rows": 1482,
+      "best_trial": 15,
+      "completed_trials": 13,
+      "study_name": "stage2_matched_base_9e5d24616ff5_9e5d24616ff5_7a8c27e83c",
+      "storage_url": "sqlite:///experiments/optuna_stage2_robust_optimization.db",
+      "cv_roc_auc": 0.5568888217926905,
+      "cv_roc_auc_std": 0.007793147134674378,
+      "fold_roc_auc": [
+        0.5528155706727136,
+        0.5500566152774149,
+        0.5677942794279428
+      ]
+    }
+  },
+  {
+    "candidate_name": "futures_core",
+    "groups": [
+      "futures_core"
+    ],
+    "feature_count": 31,
+    "training_rows": 3362,
+    "training_start": "2007-06-08",
+    "training_end": "2020-10-26",
+    "candidate_oof_roc_auc": 0.5236387916330011,
+    "candidate_oof_roc_auc_fold_std": 0.022636469795657137,
+    "candidate_oof_balanced_accuracy": 0.5309703893227997,
+    "candidate_oof_macro_f1": 0.5288874701719636,
+    "matched_base_oof_roc_auc": 0.5175228925397253,
+    "delta_oof_roc_auc_vs_tuned_base": 0.006115899093275812,
+    "candidate_selection": {
+      "task": "direction",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 128,
+        "num_blocks": 2,
+        "num_heads": 8,
+        "conv1d_kernel_size": 2,
+        "qkv_proj_blocksize": 8,
+        "proj_factor": 1.5,
+        "dropout": 0.1584688247550449,
+        "learning_rate": 0.0016736681733138014,
+        "batch_size": 64,
+        "weight_decay": 7.734357161150972e-06,
+        "gradient_clip": 2.0,
+        "loss_name": "weighted_cross_entropy",
+        "focal_gamma": 2.0,
+        "epochs": 5
+      },
+      "cv_objective_score": 0.5655477606444834,
+      "cv_objective_score_std": 0.020732808601807644,
+      "fold_objective_scores": [
+        0.5504185692541858,
+        0.5948633265406507,
+        0.5513613861386139
+      ],
+      "fold_best_epochs": [
+        5,
+        7,
+        2
+      ],
+      "decision_threshold": 0.5231388211250305,
+      "threshold_oof_macro_f1": 0.5288874701719636,
+      "threshold_oof_balanced_accuracy": 0.5309703893227997,
+      "threshold_oof_roc_auc": 0.5236387916330011,
+      "threshold_oof_roc_auc_fold_mean": 0.5296305287257658,
+      "threshold_oof_roc_auc_fold_std": 0.022636469795657137,
+      "threshold_oof_rows": 1478,
+      "best_trial": 34,
+      "completed_trials": 21,
+      "study_name": "stage2_futures_core_59fe7ddd6953_affcaf1ece",
+      "storage_url": "sqlite:///experiments/optuna_stage2_robust_optimization.db",
+      "cv_roc_auc": 0.5655477606444834,
+      "cv_roc_auc_std": 0.020732808601807644,
+      "fold_roc_auc": [
+        0.5504185692541858,
+        0.5948633265406507,
+        0.5513613861386139
+      ]
+    },
+    "matched_base_selection": {
+      "task": "direction",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 10,
+        "embedding_dim": 128,
+        "num_blocks": 3,
+        "num_heads": 8,
+        "conv1d_kernel_size": 2,
+        "qkv_proj_blocksize": 4,
+        "proj_factor": 2.0,
+        "dropout": 0.1937365875401522,
+        "learning_rate": 0.0013906845620299288,
+        "batch_size": 32,
+        "weight_decay": 0.009850025500289827,
+        "gradient_clip": 0.5,
+        "loss_name": "focal",
+        "focal_gamma": 2.8564305941978225,
+        "epochs": 15
+      },
+      "cv_objective_score": 0.569081007195582,
+      "cv_objective_score_std": 0.0100729298728835,
+      "fold_objective_scores": [
+        0.5738362506341959,
+        0.5783325135268077,
+        0.5550742574257426
+      ],
+      "fold_best_epochs": [
+        15,
+        5,
+        15
+      ],
+      "decision_threshold": 0.5935794711112976,
+      "threshold_oof_macro_f1": 0.5113011674301758,
+      "threshold_oof_balanced_accuracy": 0.5127928898464853,
+      "threshold_oof_roc_auc": 0.5175228925397253,
+      "threshold_oof_roc_auc_fold_mean": 0.5178393684070272,
+      "threshold_oof_roc_auc_fold_std": 0.029081498805375198,
+      "threshold_oof_rows": 1478,
+      "best_trial": 45,
+      "completed_trials": 17,
+      "study_name": "stage2_matched_base_59fe7ddd6953_59fe7ddd6953_7a8c27e83c",
+      "storage_url": "sqlite:///experiments/optuna_stage2_robust_optimization.db",
+      "cv_roc_auc": 0.569081007195582,
+      "cv_roc_auc_std": 0.0100729298728835,
+      "fold_roc_auc": [
+        0.5738362506341959,
+        0.5783325135268077,
+        0.5550742574257426
+      ]
+    }
+  },
+  {
+    "candidate_name": "broad_risk_directional",
+    "groups": [
+      "breadth",
+      "futures_core",
+      "interaction_consensus",
+      "rates_credit",
+      "trend_direction"
+    ],
+    "feature_count": 92,
+    "training_rows": 3151,
+    "training_start": "2008-04-10",
+    "training_end": "2020-10-26",
+    "candidate_oof_roc_auc": 0.48998083363171085,
+    "candidate_oof_roc_auc_fold_std": 0.005833805070076202,
+    "candidate_oof_balanced_accuracy": 0.5057530697782178,
+    "candidate_oof_macro_f1": 0.49349183802308805,
+    "matched_base_oof_roc_auc": 0.5094378567366625,
+    "delta_oof_roc_auc_vs_tuned_base": -0.019457023104951676,
+    "candidate_selection": {
+      "task": "direction",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 60,
+        "embedding_dim": 128,
+        "num_blocks": 3,
+        "num_heads": 8,
+        "conv1d_kernel_size": 2,
+        "qkv_proj_blocksize": 8,
+        "proj_factor": 1.5,
+        "dropout": 0.13463375690460938,
+        "learning_rate": 0.0012178345294334163,
+        "batch_size": 32,
+        "weight_decay": 0.00010611313530246455,
+        "gradient_clip": 0.5,
+        "loss_name": "weighted_cross_entropy",
+        "focal_gamma": 2.0,
+        "epochs": 4
+      },
+      "cv_objective_score": 0.5623608352810873,
+      "cv_objective_score_std": 0.017296633669363203,
+      "fold_objective_scores": [
+        0.5746604779095754,
+        0.5378998316498317,
+        0.5745221962838544
+      ],
+      "fold_best_epochs": [
+        4,
+        8,
+        2
+      ],
+      "decision_threshold": 0.30333875119686127,
+      "threshold_oof_macro_f1": 0.49349183802308805,
+      "threshold_oof_balanced_accuracy": 0.5057530697782178,
+      "threshold_oof_roc_auc": 0.48998083363171085,
+      "threshold_oof_roc_auc_fold_mean": 0.48930012008377544,
+      "threshold_oof_roc_auc_fold_std": 0.005833805070076202,
+      "threshold_oof_rows": 1391,
+      "best_trial": 31,
+      "completed_trials": 14,
+      "study_name": "stage2_broad_risk_directional_7426be1cc87c_91e5043529",
+      "storage_url": "sqlite:///experiments/optuna_stage2_robust_optimization.db",
+      "cv_roc_auc": 0.5623608352810873,
+      "cv_roc_auc_std": 0.017296633669363203,
+      "fold_roc_auc": [
+        0.5746604779095754,
+        0.5378998316498317,
+        0.5745221962838544
+      ]
+    },
+    "matched_base_selection": {
+      "task": "direction",
+      "objective_metric": "roc_auc",
+      "parameters": {
+        "sequence_length": 10,
+        "embedding_dim": 128,
+        "num_blocks": 2,
+        "num_heads": 8,
+        "conv1d_kernel_size": 4,
+        "qkv_proj_blocksize": 8,
+        "proj_factor": 1.5,
+        "dropout": 0.15385943976997488,
+        "learning_rate": 0.0017078478906115068,
+        "batch_size": 64,
+        "weight_decay": 1.4648370024051041e-05,
+        "gradient_clip": 2.0,
+        "loss_name": "focal",
+        "focal_gamma": 1.223849999940007,
+        "epochs": 13
+      },
+      "cv_objective_score": 0.5740227415706971,
+      "cv_objective_score_std": 0.024524992605070933,
+      "fold_objective_scores": [
+        0.5979714629534124,
+        0.5837752525252525,
+        0.5403215092334264
+      ],
+      "fold_best_epochs": [
+        13,
+        1,
+        26
+      ],
+      "decision_threshold": 0.4557798057794571,
+      "threshold_oof_macro_f1": 0.5193585313632798,
+      "threshold_oof_balanced_accuracy": 0.5194707133680153,
+      "threshold_oof_roc_auc": 0.5094378567366625,
+      "threshold_oof_roc_auc_fold_mean": 0.5068824361734926,
+      "threshold_oof_roc_auc_fold_std": 0.02211870801130312,
+      "threshold_oof_rows": 1391,
+      "best_trial": 43,
+      "completed_trials": 25,
+      "study_name": "stage2_matched_base_7426be1cc87c_7426be1cc87c_7a8c27e83c",
+      "storage_url": "sqlite:///experiments/optuna_stage2_robust_optimization.db",
+      "cv_roc_auc": 0.5740227415706971,
+      "cv_roc_auc_std": 0.024524992605070933,
+      "fold_roc_auc": [
+        0.5979714629534124,
+        0.5837752525252525,
+        0.5403215092334264
+      ]
+    }
+  }
+]

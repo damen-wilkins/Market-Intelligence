@@ -1,0 +1,4 @@
+candidate_name,groups,feature_count,training_rows,training_start,training_end,candidate_oof_roc_auc,candidate_oof_roc_auc_fold_std,candidate_oof_balanced_accuracy,candidate_oof_macro_f1,matched_base_oof_roc_auc,delta_oof_roc_auc_vs_tuned_base
+breadth_calendar,"['breadth', 'calendar']",45,3368,2007-06-08,2020-10-26,0.5258207313873584,0.029802577067490333,0.5183209686332959,0.518122046695466,0.5095019323914204,0.016318798995938022
+futures_core,['futures_core'],31,3362,2007-06-08,2020-10-26,0.5236387916330011,0.022636469795657137,0.5309703893227997,0.5288874701719636,0.5175228925397253,0.006115899093275812
+broad_risk_directional,"['breadth', 'futures_core', 'interaction_consensus', 'rates_credit', 'trend_direction']",92,3151,2008-04-10,2020-10-26,0.48998083363171085,0.005833805070076202,0.5057530697782178,0.49349183802308805,0.5094378567366625,-0.019457023104951676
