@@ -1,0 +1,331 @@
+{
+  "created_at_utc": "2026-08-14T17:26:25.189073+00:00",
+  "target": {
+    "volatility_window": 90,
+    "threshold_multiplier": 0.7
+  },
+  "feature_groups": [
+    "breadth",
+    "calendar",
+    "interaction_consensus"
+  ],
+  "feature_count": 58,
+  "periods": {
+    "training_end": "2020-09-18T00:00:00",
+    "validation_start": "2020-09-21T00:00:00",
+    "validation_end": "2023-08-30T00:00:00"
+  },
+  "selection_policy": "No new hyperparameter search. Re-evaluate only the three parameter sets already selected by the nested development folds, elect one using development-only TimeSeriesSplit, fit on all development MOVE rows, then evaluate the locked outer-validation period once.",
+  "results": {
+    "xgboost_binary_winner": {
+      "metrics": {
+        "roc_auc": 0.5406586021505377,
+        "inverted_roc_auc": 0.4593413978494624,
+        "balanced_accuracy": 0.5295698924731183,
+        "macro_f1": 0.5097396905076081,
+        "sign_accuracy": 0.5121212121212121,
+        "magnitude_weighted_sign_accuracy": 0.5215264582723851,
+        "architecture": "xgboost_binary_winner",
+        "move_rows": 330,
+        "up_share": 0.5636363636363636,
+        "decision_threshold": 0.5322275757789612,
+        "bootstrap_auc_lower_95": 0.4706335147570418,
+        "bootstrap_auc_upper_95": 0.6047970499313575,
+        "bootstrap_probability_auc_above_0_50": 0.847,
+        "development_parameter_cv_auc": 0.5535270771943873,
+        "development_parameter_cv_auc_std": 0.043315600260888196,
+        "parameter_source_study": "xgboost_binary_winner_outer_3",
+        "stability_block_auc_mean": 0.5397053412335004,
+        "stability_block_auc_std": 0.08520864759324656,
+        "primary_auc_gate_0_55": false,
+        "bootstrap_lower_above_0_50": false
+      },
+      "blocks": [
+        {
+          "block": 1,
+          "start": "2020-09-21T00:00:00",
+          "end": "2021-10-14T00:00:00",
+          "rows": 110,
+          "up_share": 0.6090909090909091,
+          "roc_auc": 0.4342242276987157
+        },
+        {
+          "block": 2,
+          "start": "2021-10-15T00:00:00",
+          "end": "2022-09-09T00:00:00",
+          "rows": 110,
+          "up_share": 0.5272727272727272,
+          "roc_auc": 0.6429045092838197
+        },
+        {
+          "block": 3,
+          "start": "2022-09-13T00:00:00",
+          "end": "2023-08-29T00:00:00",
+          "rows": 110,
+          "up_share": 0.5545454545454546,
+          "roc_auc": 0.5419872867179658
+        }
+      ],
+      "parameters": {
+        "n_estimators": 700,
+        "max_depth": 5,
+        "learning_rate": 0.11357895183231731,
+        "subsample": 0.6010980100617314,
+        "colsample_bytree": 0.6727039676951357,
+        "min_child_weight": 0.03706591888264713,
+        "gamma": 0.0005006615817618829,
+        "reg_alpha": 2.3867046733372797e-05,
+        "reg_lambda": 8.166886278989688
+      },
+      "parameter_election": {
+        "selected": {
+          "parameters": {
+            "n_estimators": 700,
+            "max_depth": 5,
+            "learning_rate": 0.11357895183231731,
+            "subsample": 0.6010980100617314,
+            "colsample_bytree": 0.6727039676951357,
+            "min_child_weight": 0.03706591888264713,
+            "gamma": 0.0005006615817618829,
+            "reg_alpha": 2.3867046733372797e-05,
+            "reg_lambda": 8.166886278989688
+          },
+          "source_study": "xgboost_binary_winner_outer_3",
+          "source_inner_cv_auc": 0.5243613526197147,
+          "cv_auc_mean": 0.5535270771943873,
+          "cv_auc_std": 0.043315600260888196,
+          "fold_auc": [
+            0.5661549707602339,
+            0.49530201342281877,
+            0.5991242474001095
+          ]
+        },
+        "evaluated_existing_parameter_sets": [
+          {
+            "parameters": {
+              "n_estimators": 700,
+              "max_depth": 5,
+              "learning_rate": 0.11357895183231731,
+              "subsample": 0.6010980100617314,
+              "colsample_bytree": 0.6727039676951357,
+              "min_child_weight": 0.03706591888264713,
+              "gamma": 0.0005006615817618829,
+              "reg_alpha": 2.3867046733372797e-05,
+              "reg_lambda": 8.166886278989688
+            },
+            "source_study": "xgboost_binary_winner_outer_3",
+            "source_inner_cv_auc": 0.5243613526197147,
+            "cv_auc_mean": 0.5535270771943873,
+            "cv_auc_std": 0.043315600260888196,
+            "fold_auc": [
+              0.5661549707602339,
+              0.49530201342281877,
+              0.5991242474001095
+            ]
+          },
+          {
+            "parameters": {
+              "n_estimators": 600,
+              "max_depth": 2,
+              "learning_rate": 0.18841406916436354,
+              "subsample": 0.8343283673978392,
+              "colsample_bytree": 0.9960495172488969,
+              "min_child_weight": 0.005018764504364624,
+              "gamma": 0.0004062912187017745,
+              "reg_alpha": 3.938307203108912e-09,
+              "reg_lambda": 0.0002587970127693163
+            },
+            "source_study": "xgboost_binary_winner_outer_1",
+            "source_inner_cv_auc": 0.5222977582846003,
+            "cv_auc_mean": 0.546428805570208,
+            "cv_auc_std": 0.030911586983437486,
+            "fold_auc": [
+              0.55,
+              0.5069109377834209,
+              0.5823754789272031
+            ]
+          },
+          {
+            "parameters": {
+              "n_estimators": 200,
+              "max_depth": 8,
+              "learning_rate": 0.005837291800643338,
+              "subsample": 0.9901488098608933,
+              "colsample_bytree": 0.8575027364114209,
+              "min_child_weight": 3.322261899700561,
+              "gamma": 0.00011899530718094775,
+              "reg_alpha": 0.00376164371547965,
+              "reg_lambda": 1.5576387326278789
+            },
+            "source_study": "xgboost_binary_winner_outer_2",
+            "source_inner_cv_auc": 0.5579574196779574,
+            "cv_auc_mean": 0.5356451830580626,
+            "cv_auc_std": 0.024519073998634264,
+            "fold_auc": [
+              0.5435672514619884,
+              0.5024487574823145,
+              0.560919540229885
+            ]
+          }
+        ]
+      },
+      "prediction_path": "experiments\\stage2_outer_validation_xgboost_binary_winner_20260814_172605_802386.csv"
+    },
+    "xgboost_regression_volnorm_winner": {
+      "metrics": {
+        "roc_auc": 0.5389038231780168,
+        "inverted_roc_auc": 0.4610961768219833,
+        "balanced_accuracy": 0.5044802867383512,
+        "macro_f1": 0.44545271224037103,
+        "sign_accuracy": 0.4696969696969697,
+        "magnitude_weighted_sign_accuracy": 0.49602804957547153,
+        "architecture": "xgboost_regression_volnorm_winner",
+        "move_rows": 330,
+        "up_share": 0.5636363636363636,
+        "decision_threshold": 0.0,
+        "bootstrap_auc_lower_95": 0.48162058819998976,
+        "bootstrap_auc_upper_95": 0.6087667362072869,
+        "bootstrap_probability_auc_above_0_50": 0.912,
+        "development_parameter_cv_auc": 0.5511377766320731,
+        "development_parameter_cv_auc_std": 0.024937227274998457,
+        "parameter_source_study": "xgboost_regression_volnorm_winner_outer_3",
+        "stability_block_auc_mean": 0.5373572529163403,
+        "stability_block_auc_std": 0.07061175501851763,
+        "primary_auc_gate_0_55": false,
+        "bootstrap_lower_above_0_50": false
+      },
+      "blocks": [
+        {
+          "block": 1,
+          "start": "2020-09-21T00:00:00",
+          "end": "2021-10-14T00:00:00",
+          "rows": 110,
+          "up_share": 0.6090909090909091,
+          "roc_auc": 0.4581742450538008
+        },
+        {
+          "block": 2,
+          "start": "2021-10-15T00:00:00",
+          "end": "2022-09-09T00:00:00",
+          "rows": 110,
+          "up_share": 0.5272727272727272,
+          "roc_auc": 0.6296419098143237
+        },
+        {
+          "block": 3,
+          "start": "2022-09-13T00:00:00",
+          "end": "2023-08-29T00:00:00",
+          "rows": 110,
+          "up_share": 0.5545454545454546,
+          "roc_auc": 0.5242556038808965
+        }
+      ],
+      "parameters": {
+        "n_estimators": 1000,
+        "max_depth": 7,
+        "learning_rate": 0.03570703659134264,
+        "subsample": 0.6217909773284532,
+        "colsample_bytree": 0.7547824874137825,
+        "min_child_weight": 5.346849269854158,
+        "gamma": 0.0007771077980701365,
+        "reg_alpha": 0.0018597088477510736,
+        "reg_lambda": 6.4813771811211645
+      },
+      "parameter_election": {
+        "selected": {
+          "parameters": {
+            "n_estimators": 1000,
+            "max_depth": 7,
+            "learning_rate": 0.03570703659134264,
+            "subsample": 0.6217909773284532,
+            "colsample_bytree": 0.7547824874137825,
+            "min_child_weight": 5.346849269854158,
+            "gamma": 0.0007771077980701365,
+            "reg_alpha": 0.0018597088477510736,
+            "reg_lambda": 6.4813771811211645
+          },
+          "source_study": "xgboost_regression_volnorm_winner_outer_3",
+          "source_inner_cv_auc": 0.545389947287871,
+          "cv_auc_mean": 0.5511377766320731,
+          "cv_auc_std": 0.024937227274998457,
+          "fold_auc": [
+            0.5642178362573099,
+            0.5162343551605297,
+            0.5729611384783798
+          ]
+        },
+        "evaluated_existing_parameter_sets": [
+          {
+            "parameters": {
+              "n_estimators": 1000,
+              "max_depth": 7,
+              "learning_rate": 0.03570703659134264,
+              "subsample": 0.6217909773284532,
+              "colsample_bytree": 0.7547824874137825,
+              "min_child_weight": 5.346849269854158,
+              "gamma": 0.0007771077980701365,
+              "reg_alpha": 0.0018597088477510736,
+              "reg_lambda": 6.4813771811211645
+            },
+            "source_study": "xgboost_regression_volnorm_winner_outer_3",
+            "source_inner_cv_auc": 0.545389947287871,
+            "cv_auc_mean": 0.5511377766320731,
+            "cv_auc_std": 0.024937227274998457,
+            "fold_auc": [
+              0.5642178362573099,
+              0.5162343551605297,
+              0.5729611384783798
+            ]
+          },
+          {
+            "parameters": {
+              "n_estimators": 550,
+              "max_depth": 8,
+              "learning_rate": 0.09228847298019774,
+              "subsample": 0.7875517542973677,
+              "colsample_bytree": 0.7090438820835385,
+              "min_child_weight": 0.0026088195368303797,
+              "gamma": 0.0003395079937915408,
+              "reg_alpha": 1.1119481681049529e-08,
+              "reg_lambda": 2.7905054416861867
+            },
+            "source_study": "xgboost_regression_volnorm_winner_outer_1",
+            "source_inner_cv_auc": 0.5197636452241715,
+            "cv_auc_mean": 0.5447648454653208,
+            "cv_auc_std": 0.015259074674852022,
+            "fold_auc": [
+              0.5624269005847953,
+              0.5466715037184836,
+              0.5251961320926838
+            ]
+          },
+          {
+            "parameters": {
+              "n_estimators": 450,
+              "max_depth": 3,
+              "learning_rate": 0.15659906262396406,
+              "subsample": 0.9007874694076218,
+              "colsample_bytree": 0.673227247046596,
+              "min_child_weight": 2.198848711993499,
+              "gamma": 0.0009275381410460622,
+              "reg_alpha": 2.245029102314525e-10,
+              "reg_lambda": 0.035919357237876086
+            },
+            "source_study": "xgboost_regression_volnorm_winner_outer_2",
+            "source_inner_cv_auc": 0.534272253972079,
+            "cv_auc_mean": 0.5329242663684416,
+            "cv_auc_std": 0.0063289958958153494,
+            "fold_auc": [
+              0.539766081871345,
+              0.5245057137674588,
+              0.5345010034665207
+            ]
+          }
+        ]
+      },
+      "prediction_path": "experiments\\stage2_outer_validation_xgboost_regression_volnorm_winner_20260814_172605_802386.csv"
+    }
+  },
+  "summary_path": "experiments\\stage2_outer_validation_gate_v1_20260814_172605_802386.csv",
+  "held_out_test_evaluated": false
+}

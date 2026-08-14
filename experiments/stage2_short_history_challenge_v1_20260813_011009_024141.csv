@@ -1,0 +1,4 @@
+phase,target_name,candidate_name,groups,training_rows,oof_auc,champion_control_oof_auc,delta_oof_auc_vs_champion,oof_fold_std,status
+short_history,primary_90d_k700,breadth+calendar+futures_smallcap+interaction_consensus,"['breadth', 'calendar', 'futures_smallcap', 'interaction_consensus']",798,0.4810084033613445,0.5310924369747898,-0.05008403361344532,0.04575320140066705,ok
+short_history,primary_90d_k700,breadth+calendar+interaction_consensus+volatility_options_short,"['breadth', 'calendar', 'interaction_consensus', 'volatility_options_short']",2433,0.510964452010603,0.47517548564632356,0.03578896636427947,0.009629228151918818,ok
+short_history,primary_90d_k700,breadth+calendar+futures_smallcap+interaction_consensus+volatility_options_short,"['breadth', 'calendar', 'futures_smallcap', 'interaction_consensus', 'volatility_options_short']",798,0.520672268907563,0.5310924369747898,-0.010420168067226787,0.035145200275508236,ok
