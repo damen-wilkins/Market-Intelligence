@@ -1,0 +1,170 @@
+{
+  "created_at_utc": "2026-08-15T00:39:05.119825+00:00",
+  "experiment_name": "stage2_route_verifier_cascade_v1",
+  "target": {
+    "name": "flat_90d_k700",
+    "volatility_window": 90,
+    "threshold_multiplier": 0.7
+  },
+  "development_cutoff": "2020-09-18T00:00:00",
+  "prerequisites": {
+    "confirmed_route_diagnostic": "experiments\\stage2_route_compatibility_diagnostic_v1_20260815_002303_407915.json",
+    "failed_multiclass_experiment": "experiments\\stage2_route_aware_multiclass_v1_20260815_002340_328458.json"
+  },
+  "winner_groups": [
+    "breadth",
+    "calendar",
+    "interaction_consensus"
+  ],
+  "winner_feature_count": 58,
+  "architecture": {
+    "stage1": "locked xLSTM FLAT vs MOVE candidate detector",
+    "route_verifier": "XGBoost FLAT vs MOVE trained only on Stage-1 OOF-routed rows",
+    "route_verifier_features": "locked Stage-2 winner features plus Stage-1 MOVE probability",
+    "route_verifier_hyperparameters": "independent train-only Optuna search inside each development outer fold",
+    "route_verifier_threshold": "selected from train-only verifier OOF predictions inside each outer fold",
+    "stage2": "existing binary XGBoost DOWN vs UP; no retuning",
+    "secondary_selective_policy": "after verifier confirmation, direction only in HIGH realized_volatility_20; otherwise ABSTAIN"
+  },
+  "statistics": {
+    "outer_splits": 3,
+    "inner_splits": 3,
+    "verifier_optuna_trials": 50,
+    "bootstrap_resamples": 2000,
+    "bootstrap_block_length": 20
+  },
+  "summary": {
+    "binary_control": {
+      "rows": 2466,
+      "accuracy": 0.46958637469586373,
+      "balanced_accuracy": 0.4334407625232585,
+      "macro_f1": 0.4162393172211852,
+      "down_f1": 0.2787524366471735,
+      "flat_f1": 0.6035643564356435,
+      "up_f1": 0.3664011585807386
+    },
+    "verifier_cascade": {
+      "rows": 2466,
+      "accuracy": 0.5450121654501217,
+      "balanced_accuracy": 0.41370004589644677,
+      "macro_f1": 0.4154937961394851,
+      "down_f1": 0.2423469387755102,
+      "flat_f1": 0.704516129032258,
+      "up_f1": 0.29961832061068705
+    },
+    "verifier": {
+      "rows": 1416,
+      "positive_share": 0.4964689265536723,
+      "roc_auc": 0.5777882407394477,
+      "balanced_accuracy": 0.5590845883899697,
+      "macro_f1": 0.5459297310255943
+    },
+    "verifier_bootstrap": {
+      "auc": 0.5777882407394477,
+      "lower_95": 0.5459262352589099,
+      "upper_95": 0.6118306122843574,
+      "probability_auc_above_0_50": 1.0,
+      "valid_resamples": 2000
+    },
+    "route_diagnostics": {
+      "stage1_routed_rows": 1416,
+      "stage1_routed_true_move_rows": 703,
+      "stage1_route_move_purity": 0.4964689265536723,
+      "confirmed_rows": 841,
+      "confirmed_true_move_rows": 458,
+      "confirmed_flat_rows": 383,
+      "confirmed_move_purity": 0.544589774078478,
+      "confirmed_flat_contamination": 0.45541022592152197,
+      "true_move_recall_after_verifier": 0.46215943491422806,
+      "route_purity_lift": 0.048120847524805666
+    },
+    "cascade_paired_bootstrap": {
+      "macro_f1_delta_lower_95": -0.018750947417707574,
+      "macro_f1_delta_upper_95": 0.019296792388163862,
+      "probability_macro_f1_delta_positive": 0.5265,
+      "balanced_accuracy_delta_lower_95": -0.036094777167822806,
+      "balanced_accuracy_delta_upper_95": -0.002430196454696443,
+      "probability_balanced_accuracy_delta_positive": 0.0115
+    },
+    "confirmed_stage2_auc": 0.5531984396917815,
+    "confirmed_stage2_bootstrap": {
+      "auc": 0.5531984396917815,
+      "lower_95": 0.5036128408828232,
+      "upper_95": 0.5914502087120329,
+      "probability_auc_above_0_50": 0.982,
+      "valid_resamples": 2000
+    },
+    "selective_coverage": 0.7145174371451744,
+    "selective_baseline_same_sample": {
+      "rows": 1762,
+      "accuracy": 0.5459704880817253,
+      "balanced_accuracy": 0.43318117262754846,
+      "macro_f1": 0.427948352883089,
+      "down_f1": 0.25263157894736843,
+      "flat_f1": 0.6952554744525548,
+      "up_f1": 0.3359580052493438
+    },
+    "selective_policy": {
+      "rows": 1762,
+      "accuracy": 0.6515323496027242,
+      "balanced_accuracy": 0.37889283086240505,
+      "macro_f1": 0.3616093687580814,
+      "down_f1": 0.14634146341463414,
+      "flat_f1": 0.7893024936754608,
+      "up_f1": 0.14918414918414918
+    },
+    "selective_paired_bootstrap": {
+      "macro_f1_delta_lower_95": -0.09726056583232989,
+      "macro_f1_delta_upper_95": -0.033042316314052696,
+      "probability_macro_f1_delta_positive": 0.0,
+      "balanced_accuracy_delta_lower_95": -0.079710610737146,
+      "balanced_accuracy_delta_upper_95": -0.027823543784257772,
+      "probability_balanced_accuracy_delta_positive": 0.0
+    },
+    "selective_stage2_auc": 0.6738900634249472,
+    "selective_stage2_bootstrap": {
+      "auc": 0.6738900634249472,
+      "lower_95": 0.5909066627816628,
+      "upper_95": 0.7281998516504591,
+      "probability_auc_above_0_50": 1.0,
+      "valid_resamples": 2000
+    },
+    "folds_macro_f1_improved": 2,
+    "verifier_gates": {
+      "verifier_auc_at_least_0_55": true,
+      "verifier_auc_bootstrap_lower_above_0_50": true,
+      "post_verifier_route_purity_above_stage1_route_purity": true,
+      "cascade_macro_f1_above_binary_control": false,
+      "cascade_balanced_accuracy_above_binary_control": false,
+      "paired_macro_f1_delta_bootstrap_lower_above_0": false,
+      "at_least_two_outer_folds_macro_f1_improved": true,
+      "overall_verifier_cascade_gate": false
+    },
+    "selective_gates": {
+      "selective_coverage_at_least_0_60": true,
+      "selective_macro_f1_above_baseline_on_same_dates": false,
+      "selective_balanced_accuracy_above_baseline_on_same_dates": false,
+      "selective_macro_f1_delta_bootstrap_lower_above_0": false,
+      "selective_stage2_auc_at_least_0_55": true,
+      "selective_stage2_auc_bootstrap_lower_above_0_50": true,
+      "overall_selective_cascade_gate": false
+    }
+  },
+  "methodology": {
+    "development_only": true,
+    "new_target_search": false,
+    "new_feature_search": false,
+    "new_regime_search": false,
+    "new_direction_model_hyperparameter_search": false,
+    "new_verifier_hyperparameter_search": true,
+    "outer_validation_loaded": false,
+    "held_out_test_loaded": false
+  },
+  "outputs": {
+    "fold_results": "experiments\\stage2_route_verifier_cascade_v1_fold_results_20260815_003905_105850.csv",
+    "predictions": "experiments\\stage2_route_verifier_cascade_v1_predictions_20260815_003905_105850.csv",
+    "experiment": "experiments\\stage2_route_verifier_cascade_v1_20260815_003905_105850.json",
+    "progress": "experiments\\stage2_route_verifier_cascade_v1_progress.json",
+    "optuna_storage": "sqlite:///experiments/optuna_stage2_route_verifier_v1.db"
+  }
+}

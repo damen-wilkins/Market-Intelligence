@@ -1,0 +1,91 @@
+{
+  "created_at_utc": "2026-08-14T23:40:44.018145+00:00",
+  "experiment_name": "stage2_regime_development_screen_v1",
+  "target": {
+    "volatility_window": 90,
+    "threshold_multiplier": 0.7
+  },
+  "source_predictions": "experiments\\stage2_return_architecture_tree_v1_progress.json",
+  "development_cutoff": "2020-09-18T00:00:00",
+  "winner_groups": [
+    "breadth",
+    "calendar",
+    "interaction_consensus"
+  ],
+  "winner_feature_count": 58,
+  "nested_oof_rows": 991,
+  "nested_oof_auc": 0.5629689994953213,
+  "outer_folds": 3,
+  "regime_hypotheses": [
+    {
+      "family": "volatility",
+      "feature": "implied_realized_ratio_20",
+      "rationale": "Strongest outer-validation state contrast and largest conditional AUC spread."
+    },
+    {
+      "family": "volatility",
+      "feature": "realized_volatility_20",
+      "rationale": "Realized-volatility state separated weak and strong Stage-2 periods."
+    },
+    {
+      "family": "volatility",
+      "feature": "vvix_level",
+      "rationale": "Volatility-of-volatility showed materially different conditional AUC states."
+    },
+    {
+      "family": "trend",
+      "feature": "ma_alignment_score",
+      "rationale": "Trend alignment was one of the largest block-level state differences."
+    },
+    {
+      "family": "trend",
+      "feature": "adx_14",
+      "rationale": "Trend strength showed a large block contrast and conditional AUC range."
+    },
+    {
+      "family": "breadth",
+      "feature": "rsp_relative_return_20",
+      "rationale": "Equal-weight relative leadership differed materially through time."
+    },
+    {
+      "family": "breadth",
+      "feature": "sector_volume_breadth",
+      "rationale": "Volume breadth produced one of the largest conditional AUC ranges."
+    },
+    {
+      "family": "rates_credit",
+      "feature": "hyg_lqd_relative_return_5",
+      "rationale": "Credit-risk state showed conditional directional predictability."
+    },
+    {
+      "family": "cross_asset",
+      "feature": "crude_return_5d",
+      "rationale": "Cross-asset crude state showed a large conditional AUC range."
+    }
+  ],
+  "statistics": {
+    "bootstrap_resamples": 2000,
+    "bootstrap_block_length": 20,
+    "heterogeneity_permutation_resamples": 2000,
+    "multiple_testing_correction": "Benjamini-Hochberg FDR",
+    "development_candidate_rule": "coverage >= 0.95; heterogeneity FDR q <= 0.10; best pooled regime AUC >= 0.55; best-regime moving-block bootstrap lower 95% AUC > 0.50; best regime has valid AUC in at least 2 outer folds",
+    "strict_abstention_rule": "coverage >= 0.95 and worst-regime moving-block bootstrap upper 95% AUC < 0.50"
+  },
+  "methodology": {
+    "model_refit": false,
+    "hyperparameter_search": false,
+    "new_feature_search": false,
+    "threshold_source": "Each development outer fold's training MOVE rows only",
+    "outer_validation_evaluated": false,
+    "held_out_test_evaluated": false,
+    "purpose": "Require the outer-validation regime hypotheses to reproduce inside independent nested development OOF before designing a regime-aware Stage-2 architecture."
+  },
+  "outputs": {
+    "enriched_oof": "experiments\\stage2_regime_development_screen_v1_enriched_oof_20260814_234043_989009.csv",
+    "fold_thresholds": "experiments\\stage2_regime_development_screen_v1_fold_thresholds_20260814_234043_989009.csv",
+    "fold_auc": "experiments\\stage2_regime_development_screen_v1_fold_auc_20260814_234043_989009.csv",
+    "pooled_auc": "experiments\\stage2_regime_development_screen_v1_pooled_auc_20260814_234043_989009.csv",
+    "summary": "experiments\\stage2_regime_development_screen_v1_20260814_234043_989009.csv",
+    "experiment": "experiments\\stage2_regime_development_screen_v1_20260814_234043_989009.json"
+  }
+}

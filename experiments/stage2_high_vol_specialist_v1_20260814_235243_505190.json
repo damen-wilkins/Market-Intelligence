@@ -1,0 +1,74 @@
+{
+  "created_at_utc": "2026-08-14T23:52:43.505190+00:00",
+  "experiment_name": "stage2_high_vol_specialist_v1",
+  "target": {
+    "volatility_window": 90,
+    "threshold_multiplier": 0.7
+  },
+  "development_cutoff": "2020-09-18T00:00:00",
+  "regime": {
+    "feature": "realized_volatility_20",
+    "state": "HIGH",
+    "quantile": 0.6666666666666666,
+    "development_screen_source": "experiments\\stage2_regime_development_screen_v1_20260814_234043_989009.csv",
+    "development_screen_auc": 0.6064724919093852,
+    "development_screen_auc_lower_95": 0.560546510270775
+  },
+  "winner_groups": [
+    "breadth",
+    "calendar",
+    "interaction_consensus"
+  ],
+  "winner_feature_count": 58,
+  "model_policy": {
+    "universal_control": "Existing saved nested OOF XGBoost binary predictions",
+    "specialist_training_rows": "MOVE rows above the outer-fold training-only 66.7th percentile of realized_volatility_20",
+    "specialist_parameters": "Reuse the original development outer-fold XGBoost binary Optuna winner; no new hyperparameter optimization",
+    "specialist_probability_threshold": "Selected from inner walk-forward HIGH-regime OOF predictions using inner-training-only regime thresholds"
+  },
+  "statistics": {
+    "outer_splits": 3,
+    "inner_splits": 3,
+    "bootstrap_resamples": 2000,
+    "bootstrap_block_length": 20,
+    "architecture_gate": "Specialist pooled HIGH-regime AUC > universal; specialist moving-block bootstrap lower 95% AUC > 0.50; paired delta moving-block bootstrap lower 95% > 0; specialist improves at least 2 of 3 outer folds"
+  },
+  "summary": {
+    "high_regime_rows": 193,
+    "high_regime_up_share": 0.533678756476684,
+    "universal_high_regime_auc": 0.6064724919093852,
+    "specialist_high_regime_auc": 0.5482200647249191,
+    "delta_auc": -0.058252427184466105,
+    "specialist_auc_lower_95": 0.4801109872605492,
+    "specialist_auc_upper_95": 0.59380363649906,
+    "specialist_probability_auc_above_0_50": 0.8975,
+    "delta_auc_lower_95": -0.13713709015190284,
+    "delta_auc_upper_95": -0.013206963143889779,
+    "probability_delta_positive": 0.0085,
+    "fold_delta_auc_mean": -0.09281753425352048,
+    "fold_delta_auc_std": 0.05467394456189864,
+    "folds_improved": 0,
+    "fold_count": 3,
+    "gates": {
+      "specialist_auc_above_universal": false,
+      "specialist_bootstrap_lower_above_0_50": false,
+      "delta_bootstrap_lower_above_0": false,
+      "at_least_two_folds_improved": false
+    },
+    "architecture_gate_pass": false
+  },
+  "methodology": {
+    "new_feature_search": false,
+    "new_hyperparameter_search": false,
+    "outer_validation_loaded": false,
+    "held_out_test_loaded": false,
+    "purpose": "Determine whether the development-supported HIGH realized-volatility state warrants a separately trained Stage-2 XGBoost specialist before building a regime router."
+  },
+  "outputs": {
+    "fold_results": "experiments\\stage2_high_vol_specialist_v1_fold_results_20260814_235243_505190.csv",
+    "predictions": "experiments\\stage2_high_vol_specialist_v1_predictions_20260814_235243_505190.csv",
+    "threshold_oof": "experiments\\stage2_high_vol_specialist_v1_threshold_oof_20260814_235243_505190.csv",
+    "parameters": "experiments\\stage2_high_vol_specialist_v1_parameters_20260814_235243_505190.csv",
+    "experiment": "experiments\\stage2_high_vol_specialist_v1_20260814_235243_505190.json"
+  }
+}

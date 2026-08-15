@@ -1,0 +1,89 @@
+{
+  "created_at_utc": "2026-08-15T00:23:40.343476+00:00",
+  "experiment_name": "stage2_route_aware_multiclass_v1",
+  "target": {
+    "name": "flat_90d_k700",
+    "volatility_window": 90,
+    "threshold_multiplier": 0.7
+  },
+  "development_cutoff": "2020-09-18T00:00:00",
+  "confirmed_route_diagnostic": "experiments\\stage2_route_compatibility_diagnostic_v1_20260815_002303_407915.json",
+  "winner_groups": [
+    "breadth",
+    "calendar",
+    "interaction_consensus"
+  ],
+  "winner_feature_count": 58,
+  "architecture": {
+    "training_population": "Stage-1 predicted MOVE rows from Stage-1 inner OOF predictions",
+    "labels": [
+      "DOWN",
+      "FLAT",
+      "UP"
+    ],
+    "features": "locked Stage-2 winner features plus Stage-1 MOVE probability",
+    "class_weighting": "balanced sample weights computed inside each outer-fold training sample",
+    "xgboost_parameters": "reuse existing xgboost_binary_winner outer-fold Optuna parameters; no retuning",
+    "control": "original binary XGBoost trained on true MOVE rows and forced to DOWN/UP after Stage-1 routing"
+  },
+  "summary": {
+    "binary_control": {
+      "rows": 2466,
+      "accuracy": 0.46958637469586373,
+      "balanced_accuracy": 0.4334407625232585,
+      "macro_f1": 0.4162393172211852,
+      "down_f1": 0.2787524366471735,
+      "flat_f1": 0.6035643564356435,
+      "up_f1": 0.3664011585807386
+    },
+    "route_aware_multiclass": {
+      "rows": 2466,
+      "accuracy": 0.5397404703974047,
+      "balanced_accuracy": 0.3937622274252841,
+      "macro_f1": 0.39356590148268866,
+      "down_f1": 0.21588089330024815,
+      "flat_f1": 0.7061417322834646,
+      "up_f1": 0.2586750788643533
+    },
+    "routed_diagnostics": {
+      "routed_rows": 1416,
+      "routed_actual_flat_rows": 713,
+      "routed_true_move_rows": 703,
+      "candidate_false_route_flat_correction_rate": 0.5035063113604488,
+      "baseline_true_move_direction_accuracy": 0.5633001422475107,
+      "candidate_true_move_direction_accuracy": 0.29871977240398295,
+      "candidate_true_move_up_down_auc": 0.4965205803968019
+    },
+    "paired_bootstrap": {
+      "macro_f1_delta_lower_95": -0.04955059758178499,
+      "macro_f1_delta_upper_95": 0.004431316686588957,
+      "probability_macro_f1_delta_positive": 0.0495,
+      "balanced_accuracy_delta_lower_95": -0.06569974214948501,
+      "balanced_accuracy_delta_upper_95": -0.01331299661386967,
+      "probability_balanced_accuracy_delta_positive": 0.004
+    },
+    "folds_macro_f1_improved": 1,
+    "gates": {
+      "pooled_macro_f1_above_binary_control": false,
+      "pooled_balanced_accuracy_above_binary_control": false,
+      "paired_macro_f1_delta_bootstrap_lower_above_0": false,
+      "at_least_two_outer_folds_macro_f1_improved": false,
+      "overall_route_aware_architecture_gate": false
+    }
+  },
+  "methodology": {
+    "development_only": true,
+    "new_feature_search": false,
+    "new_target_search": false,
+    "new_regime_search": false,
+    "new_hyperparameter_search": false,
+    "outer_validation_loaded": false,
+    "held_out_test_loaded": false
+  },
+  "outputs": {
+    "fold_results": "experiments\\stage2_route_aware_multiclass_v1_fold_results_20260815_002340_328458.csv",
+    "predictions": "experiments\\stage2_route_aware_multiclass_v1_predictions_20260815_002340_328458.csv",
+    "experiment": "experiments\\stage2_route_aware_multiclass_v1_20260815_002340_328458.json",
+    "progress": "experiments\\stage2_route_aware_multiclass_v1_progress.json"
+  }
+}

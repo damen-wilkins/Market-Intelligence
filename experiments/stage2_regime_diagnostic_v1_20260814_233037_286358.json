@@ -1,0 +1,156 @@
+{
+  "created_at_utc": "2026-08-14T23:30:37.302000+00:00",
+  "experiment_name": "stage2_regime_diagnostic_v1",
+  "target": {
+    "volatility_window": 90,
+    "threshold_multiplier": 0.7
+  },
+  "periods": {
+    "training_end": "2020-09-18T00:00:00",
+    "validation_start": "2020-09-21T00:00:00",
+    "validation_end": "2023-08-30T00:00:00"
+  },
+  "source_prediction_path": "experiments\\stage2_outer_validation_xgboost_binary_winner_20260814_172605_802386.csv",
+  "prediction_rows": 330,
+  "development_move_rows": 1339,
+  "outer_validation_move_rows": 330,
+  "regime_features": [
+    {
+      "family": "volatility",
+      "feature": "target_rolling_volatility"
+    },
+    {
+      "family": "volatility",
+      "feature": "realized_volatility_20"
+    },
+    {
+      "family": "volatility",
+      "feature": "realized_volatility_40"
+    },
+    {
+      "family": "volatility",
+      "feature": "vix_level"
+    },
+    {
+      "family": "volatility",
+      "feature": "vvix_level"
+    },
+    {
+      "family": "volatility",
+      "feature": "vix_vix3m_ratio"
+    },
+    {
+      "family": "volatility",
+      "feature": "implied_realized_ratio_20"
+    },
+    {
+      "family": "trend",
+      "feature": "close_vs_sma_50"
+    },
+    {
+      "family": "trend",
+      "feature": "ma_alignment_score"
+    },
+    {
+      "family": "trend",
+      "feature": "adx_14"
+    },
+    {
+      "family": "trend",
+      "feature": "signed_trend_efficiency_20"
+    },
+    {
+      "family": "trend",
+      "feature": "distance_from_252d_high"
+    },
+    {
+      "family": "breadth",
+      "feature": "rsp_relative_return_20"
+    },
+    {
+      "family": "breadth",
+      "feature": "sector_positive_participation_5d"
+    },
+    {
+      "family": "breadth",
+      "feature": "sector_return_dispersion_5d"
+    },
+    {
+      "family": "breadth",
+      "feature": "sector_average_correlation_20d"
+    },
+    {
+      "family": "breadth",
+      "feature": "sector_volume_breadth"
+    },
+    {
+      "family": "breadth",
+      "feature": "cyclical_defensive_spread_5d"
+    },
+    {
+      "family": "rates_credit",
+      "feature": "tlt_ief_relative_return_5"
+    },
+    {
+      "family": "rates_credit",
+      "feature": "hyg_lqd_relative_return_5"
+    },
+    {
+      "family": "rates_credit",
+      "feature": "hyg_tlt_risk_on_5d"
+    },
+    {
+      "family": "liquidity",
+      "feature": "relative_volume_20"
+    },
+    {
+      "family": "liquidity",
+      "feature": "log_volume_change"
+    },
+    {
+      "family": "cross_asset",
+      "feature": "iwm_relative_return_5"
+    },
+    {
+      "family": "cross_asset",
+      "feature": "qqq_relative_return_5"
+    },
+    {
+      "family": "cross_asset",
+      "feature": "dxy_return_5d"
+    },
+    {
+      "family": "cross_asset",
+      "feature": "crude_return_5d"
+    },
+    {
+      "family": "cross_asset",
+      "feature": "gold_dollar_relative_return_5d"
+    },
+    {
+      "family": "cross_asset",
+      "feature": "futures_cash_confirmation"
+    }
+  ],
+  "methodology": {
+    "purpose": "Diagnose temporal instability in the consumed Stage-2 outer-validation period without changing the locked model or target.",
+    "chronological_blocks": 3,
+    "regime_threshold_policy": "Tertile thresholds are calculated from development-period true MOVE rows only. No outer-validation values are used to set thresholds.",
+    "contrast_policy": "Block 2 vs Block 1 standardized mean differences are descriptive only. They may generate hypotheses but may not directly define production regimes or select model features.",
+    "minimum_rows_for_conditional_auc": 20,
+    "model_refit": false,
+    "hyperparameter_search": false,
+    "feature_search": false,
+    "validation_threshold_tuning": false
+  },
+  "outputs": {
+    "enriched_validation": "experiments\\stage2_regime_diagnostic_v1_enriched_validation_20260814_233037_286358.csv",
+    "block_diagnostics": "experiments\\stage2_regime_diagnostic_v1_block_diagnostics_20260814_233037_286358.csv",
+    "block_profiles": "experiments\\stage2_regime_diagnostic_v1_block_profiles_20260814_233037_286358.csv",
+    "block_contrasts": "experiments\\stage2_regime_diagnostic_v1_block_contrasts_20260814_233037_286358.csv",
+    "development_tertiles": "experiments\\stage2_regime_diagnostic_v1_development_tertiles_20260814_233037_286358.csv",
+    "regime_auc": "experiments\\stage2_regime_diagnostic_v1_regime_auc_20260814_233037_286358.csv",
+    "experiment": "experiments\\stage2_regime_diagnostic_v1_20260814_233037_286358.json"
+  },
+  "held_out_test_evaluated": false
+}

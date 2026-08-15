@@ -1,0 +1,80 @@
+{
+  "created_at_utc": "2026-08-15T00:23:03.426692+00:00",
+  "experiment_name": "stage2_route_compatibility_diagnostic_v1",
+  "target": {
+    "name": "flat_90d_k700",
+    "volatility_window": 90,
+    "threshold_multiplier": 0.7
+  },
+  "development_cutoff": "2020-09-18T00:00:00",
+  "stage1": {
+    "source": "experiments\\stage1_target_optimization_v1_progress.json",
+    "parameters": {
+      "sequence_length": 10,
+      "embedding_dim": 64,
+      "num_blocks": 3,
+      "num_heads": 4,
+      "conv1d_kernel_size": 2,
+      "qkv_proj_blocksize": 8,
+      "proj_factor": 2.0,
+      "dropout": 0.16113237243086626,
+      "learning_rate": 0.0029617315369159297,
+      "batch_size": 64,
+      "weight_decay": 1.1887925044716813e-07,
+      "gradient_clip": 0.5,
+      "loss_name": "focal",
+      "focal_gamma": 1.5559202496926237,
+      "epochs": 3
+    },
+    "outer_fold_threshold_policy": "3-fold inner OOF threshold selection using locked parameters"
+  },
+  "stage2": {
+    "source": "experiments\\stage2_return_architecture_tree_v1_progress.json",
+    "architecture": "xgboost_binary_winner",
+    "new_training": false
+  },
+  "summary": {
+    "rows": 2466,
+    "true_move_rows": 991,
+    "predicted_move_rows": 1416,
+    "routed_true_move_rows": 703,
+    "routed_flat_rows": 713,
+    "route_move_purity": 0.4964689265536723,
+    "route_flat_contamination": 0.5035310734463276,
+    "true_move_recall": 0.7093844601412714,
+    "routed_direction_accuracy": 0.2796610169491525,
+    "high_vol_routed_rows": 243,
+    "high_vol_routed_true_move_rows": 151,
+    "high_vol_routed_flat_rows": 92,
+    "high_vol_route_move_purity": 0.6213991769547325,
+    "high_vol_route_flat_contamination": 0.3786008230452675,
+    "high_vol_directional_coverage": 0.09854014598540146,
+    "high_vol_direction_accuracy": 0.37037037037037035,
+    "routed_true_move_auc": 0.5623252064620143,
+    "routed_true_move_auc_lower_95": 0.5174678391039254,
+    "routed_true_move_auc_upper_95": 0.6017953550071384,
+    "high_vol_routed_true_move_auc": 0.6160493827160494,
+    "high_vol_routed_true_move_auc_lower_95": 0.5532042037419945,
+    "high_vol_routed_true_move_auc_upper_95": 0.6953043588701481,
+    "false_move_routing_present_in_all_folds": true,
+    "label_space_mismatch": true,
+    "development_confirms_route_compatibility_problem": true
+  },
+  "methodology": {
+    "development_only": true,
+    "new_feature_search": false,
+    "new_target_search": false,
+    "new_regime_search": false,
+    "stage2_hyperparameter_search": false,
+    "outer_validation_loaded": false,
+    "held_out_test_loaded": false,
+    "purpose": "Determine whether the production Stage1->Stage2 route presents Stage 2 with FLAT observations that are outside its binary UP/DOWN training label space."
+  },
+  "outputs": {
+    "fold_results": "experiments\\stage2_route_compatibility_diagnostic_v1_fold_results_20260815_002303_407915.csv",
+    "route_predictions": "experiments\\stage2_route_compatibility_diagnostic_v1_route_predictions_20260815_002303_407915.csv",
+    "routed_stage2": "experiments\\stage2_route_compatibility_diagnostic_v1_routed_stage2_20260815_002303_407915.csv",
+    "experiment": "experiments\\stage2_route_compatibility_diagnostic_v1_20260815_002303_407915.json",
+    "progress": "experiments\\stage2_route_compatibility_diagnostic_v1_progress.json"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "created_at_utc": "2026-08-14T23:59:19.274968+00:00",
+  "experiment_name": "stage2_selective_prediction_gate_v1",
+  "target": {
+    "volatility_window": 90,
+    "threshold_multiplier": 0.7
+  },
+  "development_cutoff": "2020-09-18T00:00:00",
+  "winner_groups": [
+    "breadth",
+    "calendar",
+    "interaction_consensus"
+  ],
+  "winner_feature_count": 58,
+  "selective_policy": {
+    "model": "existing nested OOF xgboost_binary_winner",
+    "regime_feature": "realized_volatility_20",
+    "accepted_regime": "HIGH",
+    "threshold_policy": "outer-fold training MOVE 66.7th percentile; prediction only above q67",
+    "abstained_regimes": [
+      "LOW",
+      "MID"
+    ]
+  },
+  "statistics": {
+    "outer_splits": 3,
+    "bootstrap_resamples": 2000,
+    "bootstrap_block_length": 20,
+    "gates": "Accepted pooled AUC >= 0.55; accepted moving-block bootstrap lower 95% AUC > 0.50; accepted AUC >= 0.55 in at least 2 of 3 outer folds."
+  },
+  "summary": {
+    "move_rows": 991,
+    "accepted_rows": 193,
+    "abstained_rows": 798,
+    "accepted_coverage": 0.19475277497477295,
+    "full_auc": 0.5629689994953213,
+    "accepted_auc": 0.6064724919093852,
+    "abstained_auc": 0.5511218112898268,
+    "accepted_auc_lift_vs_full": 0.04350349241406393,
+    "accepted_auc_lower_95": 0.5581594029394534,
+    "accepted_auc_upper_95": 0.6686234143600696,
+    "accepted_probability_auc_above_0_50": 1.0,
+    "abstained_auc_lower_95": 0.5144634661498658,
+    "abstained_auc_upper_95": 0.5938364148825054,
+    "accepted_balanced_accuracy": 0.5745954692556634,
+    "accepted_macro_f1": 0.5742036160137753,
+    "accepted_sign_accuracy": 0.5751295336787565,
+    "accepted_magnitude_weighted_sign_accuracy": 0.5959484976984847,
+    "abstained_balanced_accuracy": 0.5453334699313594,
+    "abstained_macro_f1": 0.5454147544043719,
+    "folds_with_valid_accepted_auc": 3,
+    "folds_accepted_auc_at_least_0_55": 2,
+    "gates": {
+      "accepted_auc_at_least_0_55": true,
+      "accepted_bootstrap_lower_above_0_50": true,
+      "at_least_two_folds_auc_at_least_0_55": true,
+      "overall_selective_prediction_gate": true
+    }
+  },
+  "methodology": {
+    "new_model_training": false,
+    "new_feature_search": false,
+    "new_hyperparameter_search": false,
+    "outer_validation_loaded": false,
+    "held_out_test_loaded": false,
+    "selection_note": "realized_volatility_20 HIGH was the sole development-supported regime candidate from the prior FDR-controlled regime screen. This experiment formalizes the selective-prediction policy on development OOF only."
+  },
+  "outputs": {
+    "fold_results": "experiments\\stage2_selective_prediction_gate_v1_fold_results_20260814_235919_265515.csv",
+    "predictions": "experiments\\stage2_selective_prediction_gate_v1_predictions_20260814_235919_265515.csv",
+    "thresholds": "experiments\\stage2_selective_prediction_gate_v1_thresholds_20260814_235919_265515.csv",
+    "experiment": "experiments\\stage2_selective_prediction_gate_v1_20260814_235919_265515.json"
+  }
+}
